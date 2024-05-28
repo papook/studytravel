@@ -26,7 +26,6 @@ public class University {
     String name;
     String country;
     String department;
-    URL link;
     String contactPersonName;
     Integer outgoingStudentNumber;
     Integer incomingStudentNumber;
