@@ -1,7 +1,9 @@
 package com.papook.studytravel.services.impl;
 
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,24 @@ import com.papook.studytravel.services.UniversityService;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
+
+    private static Long nextId = 1L;
+    private Set<Long> availableIds = new HashSet<>();
+
+    /**
+     * Generates a unique identifier for a new entity.
+     *
+     * @return A unique identifier of type Long.
+     */
+    private long generateId() {
+        if (availableIds.isEmpty()) {
+            return nextId++;
+        } else {
+            Long id = availableIds.iterator().next();
+            availableIds.remove(id);
+            return id;
+        }
+    }
 
     @Autowired
     UniversityRepository repository;
@@ -49,6 +69,7 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public URI createUniversity(University university) {
+        university.setId(generateId());
         University result = repository.save(university);
         URI location = URI.create(Constants.BASE_URI + Constants.UNIVERSITY_BASE + "/" + result.getId());
         return location;
@@ -70,10 +91,10 @@ public class UniversityServiceImpl implements UniversityService {
     public Optional<URI> updateUniversity(Long id, University university) {
         Optional<University> existing = repository.findById(id);
         if (existing.isPresent()) {
-            university.setId(id);
             repository.save(university);
             return Optional.empty();
         } else {
+            university.setId(id);
             University result = repository.save(university);
             URI location = URI.create(Constants.BASE_URI + Constants.UNIVERSITY_BASE + "/" + result.getId());
             return Optional.of(location);
@@ -88,6 +109,7 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void deleteUniversity(Long id) {
+        availableIds.add(id);
         repository.deleteById(id);
     }
 
