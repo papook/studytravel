@@ -7,4 +7,5 @@ public class Constants {
     public static final String BASE_URI = "localhost:" + PORT + API_BASE;
 
     public static final String UNIVERSITY_BASE = "/universities";
+    public static final String MODULE_BASE = "/modules";
 }
