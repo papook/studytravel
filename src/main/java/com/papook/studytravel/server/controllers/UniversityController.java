@@ -14,22 +14,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.papook.studytravel.Constants;
+import com.papook.studytravel.ServerConfiguration;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
 
 @RestController
-@RequestMapping(Constants.API_BASE)
+@RequestMapping(ServerConfiguration.API_BASE)
 public class UniversityController {
     @Autowired
     private UniversityService universityService;
 
-    @GetMapping(Constants.UNIVERSITY_BASE)
+    @GetMapping(ServerConfiguration.UNIVERSITY_BASE)
     public ResponseEntity<Iterable<University>> getCollection() {
         return ResponseEntity.ok(universityService.getAllUniversities());
     }
 
-    @GetMapping(Constants.UNIVERSITY_BASE + "/{id}")
+    @GetMapping(ServerConfiguration.UNIVERSITY_BASE + "/{id}")
     public ResponseEntity<University> getUniversity(@PathVariable Long id) {
         Optional<University> universityOptional = universityService.getUniversityById(id);
         if (universityOptional.isPresent()) {
@@ -39,14 +39,14 @@ public class UniversityController {
         }
     }
 
-    @PostMapping(Constants.UNIVERSITY_BASE)
+    @PostMapping(ServerConfiguration.UNIVERSITY_BASE)
     public ResponseEntity<Void> postMethodName(@RequestBody University university) {
         URI location = universityService.createUniversity(university);
 
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(Constants.UNIVERSITY_BASE + "/{id}")
+    @PutMapping(ServerConfiguration.UNIVERSITY_BASE + "/{id}")
     public ResponseEntity<Void> putMethodName(@PathVariable Long id, @RequestBody University entity) {
         if (entity.getId() != id)
             return ResponseEntity.badRequest().build();
@@ -60,7 +60,7 @@ public class UniversityController {
 
     }
 
-    @DeleteMapping(Constants.UNIVERSITY_BASE + "/{id}")
+    @DeleteMapping(ServerConfiguration.UNIVERSITY_BASE + "/{id}")
     public ResponseEntity<Void> deleteUniversity(@PathVariable Long id) {
         universityService.deleteUniversity(id);
         return ResponseEntity.noContent().build();

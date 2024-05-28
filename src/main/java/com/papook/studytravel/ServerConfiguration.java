@@ -1,6 +1,6 @@
 package com.papook.studytravel;
 
-public class Constants {
+public class ServerConfiguration {
 
     public static Integer PORT = 8080;
     public static final String API_BASE = "/api";

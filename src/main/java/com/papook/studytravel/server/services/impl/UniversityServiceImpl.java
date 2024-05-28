@@ -8,7 +8,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.papook.studytravel.Constants;
+import com.papook.studytravel.ServerConfiguration;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.repositories.UniversityRepository;
 import com.papook.studytravel.server.services.UniversityService;
@@ -75,13 +75,13 @@ public class UniversityServiceImpl implements UniversityService {
 
         // Set the modules URI
         university.setModules(
-                URI.create(Constants.BASE_URI +
-                        Constants.UNIVERSITY_BASE +
+                URI.create(ServerConfiguration.BASE_URI +
+                        ServerConfiguration.UNIVERSITY_BASE +
                         "/" + university.getId() +
-                        Constants.MODULE_BASE));
+                        ServerConfiguration.MODULE_BASE));
 
         University result = repository.save(university);
-        URI location = URI.create(Constants.BASE_URI + Constants.UNIVERSITY_BASE + "/" + result.getId());
+        URI location = URI.create(ServerConfiguration.BASE_URI + ServerConfiguration.UNIVERSITY_BASE + "/" + result.getId());
         return location;
     }
 
@@ -106,7 +106,7 @@ public class UniversityServiceImpl implements UniversityService {
         } else {
             university.setId(id);
             University result = repository.save(university);
-            URI location = URI.create(Constants.BASE_URI + Constants.UNIVERSITY_BASE + "/" + result.getId());
+            URI location = URI.create(ServerConfiguration.BASE_URI + ServerConfiguration.UNIVERSITY_BASE + "/" + result.getId());
             return Optional.of(location);
         }
     }
