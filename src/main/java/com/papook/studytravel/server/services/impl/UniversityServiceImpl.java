@@ -1,9 +1,7 @@
 package com.papook.studytravel.server.services.impl;
 
 import java.net.URI;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,27 +10,13 @@ import com.papook.studytravel.ServerConfiguration;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.repositories.UniversityRepository;
 import com.papook.studytravel.server.services.UniversityService;
+import com.papook.studytravel.server.utils.IdGenerator;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {
 
-    private static Long nextId = 1L;
-    private Set<Long> availableIds = new HashSet<>();
-
-    /**
-     * Generates a unique identifier for a new entity.
-     *
-     * @return A unique identifier of type Long.
-     */
-    private long generateId() {
-        if (availableIds.isEmpty()) {
-            return nextId++;
-        } else {
-            Long id = availableIds.iterator().next();
-            availableIds.remove(id);
-            return id;
-        }
-    }
+    @Autowired
+    private IdGenerator idGenerator;
 
     @Autowired
     UniversityRepository repository;
@@ -70,7 +54,7 @@ public class UniversityServiceImpl implements UniversityService {
     @Override
     public URI createUniversity(University university) {
         // Generate a new ID for the university
-        long newId = generateId();
+        long newId = idGenerator.nextId();
         university.setId(newId);
 
         // Set the modules URI
@@ -81,7 +65,8 @@ public class UniversityServiceImpl implements UniversityService {
                         ServerConfiguration.MODULE_BASE));
 
         University result = repository.save(university);
-        URI location = URI.create(ServerConfiguration.BASE_URI + ServerConfiguration.UNIVERSITY_BASE + "/" + result.getId());
+        URI location = URI
+                .create(ServerConfiguration.BASE_URI + ServerConfiguration.UNIVERSITY_BASE + "/" + result.getId());
         return location;
     }
 
@@ -106,7 +91,9 @@ public class UniversityServiceImpl implements UniversityService {
         } else {
             university.setId(id);
             University result = repository.save(university);
-            URI location = URI.create(ServerConfiguration.BASE_URI + ServerConfiguration.UNIVERSITY_BASE + "/" + result.getId());
+            URI location = URI.create(ServerConfiguration.BASE_URI +
+                    ServerConfiguration.UNIVERSITY_BASE +
+                    "/" + result.getId());
             return Optional.of(location);
         }
     }
@@ -119,7 +106,7 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void deleteUniversity(Long id) {
-        availableIds.add(id);
+        idGenerator.addId(id);
         repository.deleteById(id);
     }
 
