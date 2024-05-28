@@ -26,7 +26,6 @@ public class StudyModule {
     Semester semester;
     Integer creditPoints;
     @JsonIgnore
-    @ManyToOne
     Long universityId;
 
     /**
