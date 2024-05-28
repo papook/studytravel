@@ -1,4 +1,4 @@
-package com.papook.studytravel.models;
+package com.papook.studytravel.server.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

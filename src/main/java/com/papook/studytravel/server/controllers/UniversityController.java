@@ -1,4 +1,4 @@
-package com.papook.studytravel.controllers;
+package com.papook.studytravel.server.controllers;
 
 import java.net.URI;
 import java.util.Optional;
@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.papook.studytravel.Constants;
-import com.papook.studytravel.models.University;
-import com.papook.studytravel.services.UniversityService;
+import com.papook.studytravel.server.models.University;
+import com.papook.studytravel.server.services.UniversityService;
 
 @RestController
 @RequestMapping(Constants.API_BASE)

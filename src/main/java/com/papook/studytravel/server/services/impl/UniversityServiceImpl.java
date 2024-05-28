@@ -1,4 +1,4 @@
-package com.papook.studytravel.services.impl;
+package com.papook.studytravel.server.services.impl;
 
 import java.net.URI;
 import java.util.HashSet;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.papook.studytravel.Constants;
-import com.papook.studytravel.models.University;
-import com.papook.studytravel.repositories.UniversityRepository;
-import com.papook.studytravel.services.UniversityService;
+import com.papook.studytravel.server.models.University;
+import com.papook.studytravel.server.repositories.UniversityRepository;
+import com.papook.studytravel.server.services.UniversityService;
 
 @Service
 public class UniversityServiceImpl implements UniversityService {

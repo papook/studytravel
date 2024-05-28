@@ -1,9 +1,9 @@
-package com.papook.studytravel.services;
+package com.papook.studytravel.server.services;
 
 import java.net.URI;
 import java.util.Optional;
 
-import com.papook.studytravel.models.University;
+import com.papook.studytravel.server.models.University;
 
 public interface UniversityService {
     public Iterable<University> getAllUniversities();
