@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a partner university for student exchange programs
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

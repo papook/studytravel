@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a module in a study program.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +22,9 @@ public class Module {
     Semester semester;
     Integer creditPoints;
 
+    /**
+     * Represents the semester in which the module is offered.
+     */
     public static enum Semester {
         SPRING,
         FALL,
