@@ -30,7 +30,7 @@ public class UniversityController {
     }
 
     @GetMapping(ServerConfiguration.UNIVERSITY_BASE + "/{id}")
-    public ResponseEntity<University> getUniversity(@PathVariable Long id) {
+    public ResponseEntity<University> getOne(@PathVariable Long id) {
         Optional<University> universityOptional = universityService.getUniversityById(id);
         if (universityOptional.isPresent()) {
             return ResponseEntity.ok(universityOptional.get());
@@ -40,14 +40,14 @@ public class UniversityController {
     }
 
     @PostMapping(ServerConfiguration.UNIVERSITY_BASE)
-    public ResponseEntity<Void> postMethodName(@RequestBody University university) {
+    public ResponseEntity<Void> create(@RequestBody University university) {
         URI location = universityService.createUniversity(university);
 
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(ServerConfiguration.UNIVERSITY_BASE + "/{id}")
-    public ResponseEntity<Void> putMethodName(@PathVariable Long id, @RequestBody University entity) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody University entity) {
         if (entity.getId() != id)
             return ResponseEntity.badRequest().build();
 
@@ -61,7 +61,7 @@ public class UniversityController {
     }
 
     @DeleteMapping(ServerConfiguration.UNIVERSITY_BASE + "/{id}")
-    public ResponseEntity<Void> deleteUniversity(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         universityService.deleteUniversity(id);
         return ResponseEntity.noContent().build();
     }
