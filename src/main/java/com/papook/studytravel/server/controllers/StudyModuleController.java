@@ -7,6 +7,6 @@ import com.papook.studytravel.server.ServerConfiguration;
 
 @RestController
 @RequestMapping(ServerConfiguration.API_BASE)
-public class ModuleController{
+public class StudyModuleController{
 
 }
