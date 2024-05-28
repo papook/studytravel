@@ -69,7 +69,17 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public URI createUniversity(University university) {
-        university.setId(generateId());
+        // Generate a new ID for the university
+        long newId = generateId();
+        university.setId(newId);
+
+        // Set the modules URI
+        university.setModules(
+                URI.create(Constants.BASE_URI +
+                        Constants.UNIVERSITY_BASE +
+                        "/" + university.getId() +
+                        Constants.MODULE_BASE));
+
         University result = repository.save(university);
         URI location = URI.create(Constants.BASE_URI + Constants.UNIVERSITY_BASE + "/" + result.getId());
         return location;

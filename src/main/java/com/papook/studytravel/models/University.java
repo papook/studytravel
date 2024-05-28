@@ -1,5 +1,6 @@
 package com.papook.studytravel.models;
 
+import java.net.URI;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
@@ -28,5 +29,5 @@ public class University {
     Integer incomingStudentNumber;
     LocalDate nextSpringSemesterStart;
     LocalDate nextFallSemesterStart;
-
+    URI modules;
 }
