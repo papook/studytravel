@@ -1,4 +1,4 @@
-package com.papook.studytravel;
+package com.papook.studytravel.server;
 
 public class ServerConfiguration {
 

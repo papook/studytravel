@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.papook.studytravel.ServerConfiguration;
+import com.papook.studytravel.server.ServerConfiguration;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
 
