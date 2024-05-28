@@ -12,7 +12,7 @@ RUN useradd spring & groupadd spring
 USER spring
 
 # Environment Variables to configure the Spring Boot application
-ENV SPRING_APPLICATION_NAME=portfolio3
+ENV SPRING_APPLICATION_NAME="Study Travel"
 ENV SPRING_DATASOURCE_URL=jdbc:h2:mem:memorydb
 ENV SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
 ENV SPRING_DATASOURCE_USERNAME=sa
