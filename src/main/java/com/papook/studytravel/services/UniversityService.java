@@ -12,7 +12,7 @@ public interface UniversityService {
 
     public URI createUniversity(University university);
 
-    public University updateUniversity(Long id, University university);
+    public Optional<URI> updateUniversity(Long id, University university);
 
     public void deleteUniversity(Long id);
 }
