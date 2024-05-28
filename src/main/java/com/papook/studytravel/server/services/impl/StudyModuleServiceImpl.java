@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.papook.studytravel.server.ServerConfiguration;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.repositories.StudyModuleRepository;
 import com.papook.studytravel.server.services.StudyModuleService;
@@ -22,32 +23,59 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
     @Override
     public Iterable<StudyModule> getAllModules() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllModules'");
+        Iterable<StudyModule> result = repository.findAll();
+        return result;
     }
 
     @Override
     public Optional<StudyModule> getModuleById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getModuleById'");
+        Optional<StudyModule> result = repository.findById(id);
+        return result;
     }
 
     @Override
     public URI createModule(StudyModule module) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createModule'");
+        module.setId(idGenerator.nextId());
+        StudyModule result = repository.save(module);
+
+        URI location = URI.create(ServerConfiguration.API_BASE +
+                ServerConfiguration.MODULE_BASE +
+                "/" + result.getId());
+
+        return location;
+    }
+
+    @Override
+    public URI createModuleForUniversity(Long universityId, StudyModule module) {
+        module.setUniversityId(universityId);
+        return createModule(module);
     }
 
     @Override
     public Optional<URI> updateModule(Long id, StudyModule module) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateModule'");
+        Optional<StudyModule> existing = repository.findById(id);
+        if (existing.isPresent()) {
+            repository.save(module);
+            return Optional.empty();
+        } else {
+            module.setId(id);
+            StudyModule result = repository.save(module);
+            URI location = URI.create(ServerConfiguration.BASE_URI +
+                    ServerConfiguration.MODULE_BASE +
+                    "/" + result.getId());
+            return Optional.of(location);
+        }
+    }
+
+    @Override
+    public Optional<URI> updateModuleForUniversity(Long universityId, Long moduleId, StudyModule module) {
+        module.setUniversityId(universityId);
+        return updateModule(moduleId, module);
     }
 
     @Override
     public void deleteModule(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteModule'");
+        repository.deleteById(id);
     }
 
 }
