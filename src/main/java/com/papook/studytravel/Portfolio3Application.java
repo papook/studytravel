@@ -1,4 +1,4 @@
-package com.papook.portfolio3;
+package com.papook.studytravel;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.papook.portfolio3.models;
+package com.papook.studytravel.models;
 
 import java.net.URL;
 import java.time.LocalDate;

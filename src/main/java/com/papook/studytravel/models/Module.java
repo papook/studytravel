@@ -1,4 +1,4 @@
-package com.papook.portfolio3.models;
+package com.papook.studytravel.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
