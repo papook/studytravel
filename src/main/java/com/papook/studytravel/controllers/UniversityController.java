@@ -20,7 +20,7 @@ import com.papook.studytravel.services.UniversityService;
 
 @RestController
 @RequestMapping(Constants.API_BASE)
-public class ApplicationController {
+public class UniversityController {
     @Autowired
     private UniversityService universityService;
 
