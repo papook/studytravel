@@ -3,6 +3,8 @@ package com.papook.studytravel.server.services;
 import java.net.URI;
 import java.util.Optional;
 
+import com.papook.studytravel.server.models.Module;
+
 public interface ModuleService {
     public Iterable<Module> getAllModules();
 
