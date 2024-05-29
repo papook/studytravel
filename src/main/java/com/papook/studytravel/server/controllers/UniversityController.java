@@ -37,17 +37,12 @@ public class UniversityController {
     @GetMapping("/{id}")
     public ResponseEntity<University> getOne(@PathVariable Long id) {
         Optional<University> universityOptional = universityService.getUniversityById(id);
-        if (universityOptional.isPresent()) {
-            return ResponseEntity.ok(universityOptional.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.of(universityOptional);
     }
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody University university) {
         URI location = universityService.createUniversity(university);
-
         return ResponseEntity.created(location).build();
     }
 

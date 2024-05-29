@@ -41,11 +41,7 @@ public class StudyModuleController {
     @GetMapping(MODULE_BASE + "/{id}")
     public ResponseEntity<StudyModule> getOne(@PathVariable Long id) {
         Optional<StudyModule> studyModuleOptional = studyModuleService.getModuleById(id);
-        if (studyModuleOptional.isPresent()) {
-            return ResponseEntity.ok(studyModuleOptional.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.of(studyModuleOptional);
     }
 
     @GetMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE)
