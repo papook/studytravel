@@ -11,6 +11,8 @@ public interface StudyModuleService {
 
     public Optional<StudyModule> getModuleById(Long id);
 
+    public Iterable<StudyModule> getModulesForUniversity(Long universityId);
+
     public URI createModule(StudyModule module);
 
     public URI createModuleForUniversity(Long universityId, StudyModule module);

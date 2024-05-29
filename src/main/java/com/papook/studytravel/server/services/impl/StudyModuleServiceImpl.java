@@ -34,6 +34,12 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     }
 
     @Override
+    public Iterable<StudyModule> getModulesForUniversity(Long universityId) {
+        Iterable<StudyModule> result = repository.findByUniversityId(universityId);
+        return result;
+    }
+
+    @Override
     public URI createModule(StudyModule module) {
         module.setId(idGenerator.nextId());
         StudyModule result = repository.save(module);
