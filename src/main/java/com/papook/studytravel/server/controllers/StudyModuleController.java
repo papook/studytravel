@@ -109,4 +109,51 @@ public class StudyModuleController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    /**
+     * Updates a study module for a specific university.
+     */
+    @PutMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE + "/{moduleId}")
+    public ResponseEntity<Void> updateForUniversity(
+            @PathVariable Long universityId,
+            @PathVariable Long moduleId,
+            @RequestBody StudyModule studyModule) {
+
+        // Check if the ID of the provided StudyModule matches the moduleId in the path
+        if (studyModule.getId() != moduleId) {
+            // If IDs do not match, return a 400 Bad Request response
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Retrieve the university by its ID using the university service
+        Optional<University> universityOptional = universityService.getUniversityById(universityId);
+        // Check if the university exists
+        if (universityOptional.isEmpty()) {
+            // If the university is not found, return a 404 Not Found response
+            return ResponseEntity.notFound().build();
+        }
+
+        // Set the university ID of the StudyModule to
+        // ensure it is associated with the
+        // correct university
+        studyModule.setUniversityId(universityId);
+
+        // Update the study module for the specified
+        // university and module
+        Optional<URI> locationOptional = studyModuleService.updateModuleForUniversity(
+                universityId,
+                moduleId,
+                studyModule);
+
+        // Check if the update operation returned a location URI
+        if (locationOptional.isPresent()) {
+            // If a location URI is present, return a 201 Created response with the URI of
+            // the created resource
+            return ResponseEntity.created(locationOptional.get()).build();
+        } else {
+            // If no location URI is provided, return a 204 No Content response indicating a
+            // successful update with no content
+            return ResponseEntity.noContent().build();
+        }
+    }
 }
