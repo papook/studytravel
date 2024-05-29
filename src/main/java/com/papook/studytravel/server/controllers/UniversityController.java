@@ -26,7 +26,9 @@ public class UniversityController {
 
     @GetMapping
     public ResponseEntity<Iterable<University>> getCollection() {
-        return ResponseEntity.ok(universityService.getAllUniversities());
+        // TODO: Set up pagination and filtering
+        Iterable<University> universities = universityService.getAllUniversities();
+        return ResponseEntity.ok(universities);
     }
 
     @GetMapping("/{id}")
