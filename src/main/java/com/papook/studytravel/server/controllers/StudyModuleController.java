@@ -46,6 +46,8 @@ public class StudyModuleController {
 
     @GetMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE)
     public ResponseEntity<Iterable<StudyModule>> getCollectionOfUniversity(@PathVariable Long universityId) {
+        // TODO: Set up pagination and filtering
+        
         Optional<University> universityOptional = universityService.getUniversityById(universityId);
 
         if (universityOptional.isEmpty()) {
@@ -156,4 +158,6 @@ public class StudyModuleController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    
 }
