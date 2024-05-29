@@ -48,6 +48,21 @@ public class StudyModuleController {
 
     @GetMapping(ServerConfiguration.UNIVERSITY_BASE +
             "/{universityId}" +
+            ServerConfiguration.MODULE_BASE)
+    public ResponseEntity<Iterable<StudyModule>> getCollectionOfUniversity(@PathVariable Long universityId) {
+        Optional<University> universityOptional = universityService.getUniversityById(universityId);
+
+        if (universityOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Iterable<StudyModule> studyModules = studyModuleService.getModulesForUniversity(universityId);
+
+        return ResponseEntity.ok(studyModules);
+    }
+
+    @GetMapping(ServerConfiguration.UNIVERSITY_BASE +
+            "/{universityId}" +
             ServerConfiguration.MODULE_BASE +
             "/{moduleId}")
     public ResponseEntity<StudyModule> getOneOfUniversity(
