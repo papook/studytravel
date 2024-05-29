@@ -1,5 +1,7 @@
 package com.papook.studytravel.server.controllers;
 
+import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_BASE;
+
 import java.net.URI;
 import java.util.Optional;
 
@@ -14,18 +16,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.papook.studytravel.server.ServerConfiguration;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
 
 @RestController
-@RequestMapping(ServerConfiguration.UNIVERSITY_BASE)
+@RequestMapping(UNIVERSITY_BASE)
 public class UniversityController {
     @Autowired
     private UniversityService universityService;
 
     // TODO: Add Hypermedia links to the response headers
-    
+
     @GetMapping
     public ResponseEntity<Iterable<University>> getCollection() {
         // TODO: Set up pagination and filtering

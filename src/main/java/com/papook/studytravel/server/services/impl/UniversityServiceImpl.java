@@ -1,12 +1,15 @@
 package com.papook.studytravel.server.services.impl;
 
+import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
+import static com.papook.studytravel.server.ServerConfiguration.MODULE_BASE;
+import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_BASE;
+
 import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.papook.studytravel.server.ServerConfiguration;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.repositories.UniversityRepository;
 import com.papook.studytravel.server.services.UniversityService;
@@ -59,14 +62,11 @@ public class UniversityServiceImpl implements UniversityService {
 
         // Set the modules URI
         university.setModules(
-                URI.create(ServerConfiguration.BASE_URI +
-                        ServerConfiguration.UNIVERSITY_BASE +
-                        "/" + university.getId() +
-                        ServerConfiguration.MODULE_BASE));
+                URI.create(BASE_URI + UNIVERSITY_BASE + "/" + university.getId() + MODULE_BASE));
 
         University result = repository.save(university);
         URI location = URI
-                .create(ServerConfiguration.BASE_URI + ServerConfiguration.UNIVERSITY_BASE + "/" + result.getId());
+                .create(BASE_URI + UNIVERSITY_BASE + "/" + result.getId());
         return location;
     }
 
@@ -91,9 +91,7 @@ public class UniversityServiceImpl implements UniversityService {
         } else {
             university.setId(id);
             University result = repository.save(university);
-            URI location = URI.create(ServerConfiguration.BASE_URI +
-                    ServerConfiguration.UNIVERSITY_BASE +
-                    "/" + result.getId());
+            URI location = URI.create(BASE_URI + UNIVERSITY_BASE + "/" + result.getId());
             return Optional.of(location);
         }
     }

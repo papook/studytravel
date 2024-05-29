@@ -1,5 +1,8 @@
 package com.papook.studytravel.server.controllers;
 
+import static com.papook.studytravel.server.ServerConfiguration.MODULE_BASE;
+import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_BASE;
+
 import java.net.URI;
 import java.util.Optional;
 
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.papook.studytravel.server.ServerConfiguration;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.StudyModuleService;
@@ -29,14 +31,14 @@ public class StudyModuleController {
     @Autowired
     private StudyModuleService studyModuleService;
 
-    @GetMapping(ServerConfiguration.MODULE_BASE)
+    @GetMapping(MODULE_BASE)
     public ResponseEntity<Iterable<StudyModule>> getCollection() {
         // TODO: Set up pagination and filtering
         Iterable<StudyModule> studyModules = studyModuleService.getAllModules();
         return ResponseEntity.ok(studyModules);
     }
 
-    @GetMapping(ServerConfiguration.MODULE_BASE + "/{id}")
+    @GetMapping(MODULE_BASE + "/{id}")
     public ResponseEntity<StudyModule> getOne(@PathVariable Long id) {
         Optional<StudyModule> studyModuleOptional = studyModuleService.getModuleById(id);
         if (studyModuleOptional.isPresent()) {
@@ -46,9 +48,7 @@ public class StudyModuleController {
         }
     }
 
-    @GetMapping(ServerConfiguration.UNIVERSITY_BASE +
-            "/{universityId}" +
-            ServerConfiguration.MODULE_BASE)
+    @GetMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE)
     public ResponseEntity<Iterable<StudyModule>> getCollectionOfUniversity(@PathVariable Long universityId) {
         Optional<University> universityOptional = universityService.getUniversityById(universityId);
 
@@ -61,10 +61,7 @@ public class StudyModuleController {
         return ResponseEntity.ok(studyModules);
     }
 
-    @GetMapping(ServerConfiguration.UNIVERSITY_BASE +
-            "/{universityId}" +
-            ServerConfiguration.MODULE_BASE +
-            "/{moduleId}")
+    @GetMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE + "/{moduleId}")
     public ResponseEntity<StudyModule> getOneOfUniversity(
             @PathVariable Long universityId,
             @PathVariable Long moduleId) {
@@ -88,16 +85,14 @@ public class StudyModuleController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping(ServerConfiguration.MODULE_BASE)
+    @PostMapping(MODULE_BASE)
     public ResponseEntity<Void> create(@RequestBody StudyModule studyModule) {
         URI location = studyModuleService.createModule(studyModule);
 
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(ServerConfiguration.UNIVERSITY_BASE +
-            "/{universityId}" +
-            ServerConfiguration.MODULE_BASE)
+    @PostMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE)
     public ResponseEntity<Void> createForUniversity(
             @PathVariable Long universityId,
             @RequestBody StudyModule studyModule) {
@@ -106,7 +101,7 @@ public class StudyModuleController {
         return ResponseEntity.created(location).build();
     }
 
-    @PutMapping(ServerConfiguration.MODULE_BASE + "/{id}")
+    @PutMapping(MODULE_BASE + "/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody StudyModule entity) {
         if (entity.getId() != id)
             return ResponseEntity.badRequest().build();
