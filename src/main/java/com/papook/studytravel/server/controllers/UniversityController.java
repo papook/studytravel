@@ -24,6 +24,8 @@ public class UniversityController {
     @Autowired
     private UniversityService universityService;
 
+    // TODO: Add Hypermedia links to the response headers
+    
     @GetMapping
     public ResponseEntity<Iterable<University>> getCollection() {
         // TODO: Set up pagination and filtering
