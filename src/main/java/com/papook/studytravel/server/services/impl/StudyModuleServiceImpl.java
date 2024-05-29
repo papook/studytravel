@@ -38,7 +38,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         module.setId(idGenerator.nextId());
         StudyModule result = repository.save(module);
 
-        URI location = URI.create(ServerConfiguration.API_BASE +
+        URI location = URI.create(ServerConfiguration.BASE_URI +
                 ServerConfiguration.MODULE_BASE +
                 "/" + result.getId());
 
@@ -53,6 +53,11 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
     @Override
     public Optional<URI> updateModule(Long id, StudyModule module) {
+        if (repository.existsById(id)) {
+            Long currentUniversityId = repository.findById(id).get().getUniversityId();
+            module.setUniversityId(currentUniversityId);
+        }
+
         Optional<StudyModule> existing = repository.findById(id);
         if (existing.isPresent()) {
             repository.save(module);
