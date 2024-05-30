@@ -2,7 +2,7 @@ package com.papook.studytravel.server.models;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,5 +34,5 @@ public class University {
     LocalDate nextFallSemesterStart;
     URI modules;
     @JsonIgnore
-    List<Long> moduleIds;
+    Set<Long> moduleIds;
 }
