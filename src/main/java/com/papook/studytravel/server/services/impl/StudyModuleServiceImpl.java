@@ -4,6 +4,7 @@ import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
 import static com.papook.studytravel.server.ServerConfiguration.MODULE_BASE;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,18 +53,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     }
 
     @Override
-    public URI createModuleForUniversity(Long universityId, StudyModule module) {
-        module.setUniversityId(universityId);
-        return createModule(module);
-    }
-
-    @Override
     public Optional<URI> updateModule(Long id, StudyModule module) {
-        if (repository.existsById(id)) {
-            Long currentUniversityId = repository.findById(id).get().getUniversityId();
-            module.setUniversityId(currentUniversityId);
-        }
-
         Optional<StudyModule> existing = repository.findById(id);
         if (existing.isPresent()) {
             repository.save(module);
@@ -74,12 +64,6 @@ public class StudyModuleServiceImpl implements StudyModuleService {
             URI location = URI.create(BASE_URI + MODULE_BASE + "/" + result.getId());
             return Optional.of(location);
         }
-    }
-
-    @Override
-    public Optional<URI> updateModuleForUniversity(Long universityId, Long moduleId, StudyModule module) {
-        module.setUniversityId(universityId);
-        return updateModule(moduleId, module);
     }
 
     @Override

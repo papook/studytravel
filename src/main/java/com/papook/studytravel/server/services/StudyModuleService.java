@@ -15,11 +15,7 @@ public interface StudyModuleService {
 
     public URI createModule(StudyModule module);
 
-    public URI createModuleForUniversity(Long universityId, StudyModule module);
-
     public Optional<URI> updateModule(Long id, StudyModule module);
-
-    public Optional<URI> updateModuleForUniversity(Long universityId, Long moduleId, StudyModule module);
 
     public void deleteModule(Long id);
 

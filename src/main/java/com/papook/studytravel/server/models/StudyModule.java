@@ -24,8 +24,6 @@ public class StudyModule {
     String name;
     Semester semester;
     Integer creditPoints;
-    @JsonIgnore
-    Long universityId;
 
     /**
      * Represents the semester in which the module is offered.
