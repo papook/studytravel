@@ -62,14 +62,32 @@ public class UniversityController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody University entity) {
+    public ResponseEntity<University> update(@PathVariable Long id, @RequestBody University entity) {
+        // Check if the ID in the path and the ID in the entity match
         if (entity.getId() != id)
             return ResponseEntity.badRequest().build();
 
+        // Call the service to update the University
         Optional<URI> locationOptional = universityService.updateUniversity(id, entity);
-        if (locationOptional.isPresent()) {
-            return ResponseEntity.created(locationOptional.get()).build();
+
+        // Check if the University was created
+        boolean newUniversityCreated = locationOptional.isPresent();
+
+        if (newUniversityCreated) {
+            URI location = locationOptional.get();
+            // Extract the ID from the location URI
+            long createdUniversityId = Long
+                    .parseLong(location.getPath().substring(location.getPath().lastIndexOf('/') + 1));
+            // Get the University representation
+            University representation = universityService
+                    .getUniversityById(createdUniversityId)
+                    .get();
+
+            // Return the representation with the location header
+            return ResponseEntity.created(location).body(representation);
+
         } else {
+            // Return a NO CONTENT status code
             return ResponseEntity.noContent().build();
         }
 
