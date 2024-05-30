@@ -4,7 +4,6 @@ import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
 import static com.papook.studytravel.server.ServerConfiguration.MODULE_BASE;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
