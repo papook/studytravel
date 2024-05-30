@@ -47,7 +47,7 @@ public class StudyModuleController {
     @GetMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE)
     public ResponseEntity<Iterable<StudyModule>> getCollectionOfUniversity(@PathVariable Long universityId) {
         // TODO: Set up pagination and filtering
-        
+
         Optional<University> universityOptional = universityService.getUniversityById(universityId);
 
         if (universityOptional.isEmpty()) {
@@ -101,7 +101,7 @@ public class StudyModuleController {
 
     @PutMapping(MODULE_BASE + "/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody StudyModule entity) {
-        if (entity.getId() != id)
+        if (!entity.getId().equals(id))
             return ResponseEntity.badRequest().build();
 
         Optional<URI> locationOptional = studyModuleService.updateModule(id, entity);
@@ -158,6 +158,4 @@ public class StudyModuleController {
             return ResponseEntity.noContent().build();
         }
     }
-
-    
 }

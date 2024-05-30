@@ -64,7 +64,7 @@ public class UniversityController {
     @PutMapping("/{id}")
     public ResponseEntity<University> update(@PathVariable Long id, @RequestBody University entity) {
         // Check if the ID in the path and the ID in the entity match
-        if (entity.getId() != id)
+        if (!entity.getId().equals(id))
             return ResponseEntity.badRequest().build();
 
         // Call the service to update the University
