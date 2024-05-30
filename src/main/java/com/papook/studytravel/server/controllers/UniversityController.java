@@ -41,9 +41,24 @@ public class UniversityController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody University university) {
+    public ResponseEntity<University> create(@RequestBody University university) {
+        // Call the service to create the University
+        // and get the location URI
         URI location = universityService.createUniversity(university);
-        return ResponseEntity.created(location).build();
+
+        // Extract the ID from the location URI
+        long createdUniversityId = Long
+                .parseLong(location.getPath().substring(location.getPath().lastIndexOf('/') + 1));
+        // Get the University representation
+        University representation = universityService
+                .getUniversityById(createdUniversityId)
+                .get();
+
+        // Return the representation with the location header
+        // and the newly created University representation
+        return ResponseEntity
+                .created(location)
+                .body(representation);
     }
 
     @PutMapping("/{id}")
