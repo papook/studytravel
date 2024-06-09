@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,9 +24,12 @@ public class StudyModule {
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     Long id;
+    @NotNull
     String name;
+    @NotNull
     @Setter(AccessLevel.NONE)
     Semester semester;
+    @NotNull
     Integer creditPoints;
 
     @JsonSetter
