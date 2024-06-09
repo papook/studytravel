@@ -44,4 +44,12 @@ public class University {
     URI modules;
     @JsonIgnore
     Set<Long> moduleIds;
+
+    public void addModule(Long moduleId) {
+        moduleIds.add(moduleId);
+    }
+
+    public void removeModule(Long moduleId) {
+        moduleIds.remove(moduleId);
+    }
 }
