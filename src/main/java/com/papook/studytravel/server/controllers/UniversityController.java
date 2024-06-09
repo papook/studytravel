@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(UNIVERSITY_ENDPOINT)
 public class UniversityController {
@@ -41,7 +43,7 @@ public class UniversityController {
     }
 
     @PostMapping
-    public ResponseEntity<University> create(@RequestBody University university) {
+    public ResponseEntity<University> create(@Valid @RequestBody University university) {
         // Call the service to create the University
         // and get the location URI
         URI location = universityService.createUniversity(university);
@@ -62,7 +64,7 @@ public class UniversityController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<University> update(@PathVariable Long id, @RequestBody University entity) {
+    public ResponseEntity<University> update(@PathVariable Long id, @Valid @RequestBody University entity) {
         // Check if the ID in the path and the ID in the entity match
         if (!entity.getId().equals(id))
             return ResponseEntity.badRequest().build();

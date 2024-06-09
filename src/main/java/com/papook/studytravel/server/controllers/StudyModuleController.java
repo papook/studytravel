@@ -21,6 +21,8 @@ import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.StudyModuleService;
 import com.papook.studytravel.server.services.UniversityService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping
 public class StudyModuleController {
@@ -87,7 +89,7 @@ public class StudyModuleController {
     }
 
     @PostMapping(MODULE_ENDPOINT)
-    public ResponseEntity<Void> create(@RequestBody StudyModule studyModule) {
+    public ResponseEntity<Void> create(@Valid @RequestBody StudyModule studyModule) {
         URI location = studyModuleService.createModule(studyModule);
 
         return ResponseEntity.created(location).build();
@@ -96,13 +98,13 @@ public class StudyModuleController {
     @PostMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT)
     public ResponseEntity<Void> createForUniversity(
             @PathVariable Long universityId,
-            @RequestBody StudyModule studyModule) {
+            @Valid @RequestBody StudyModule studyModule) {
         // TODO: Implement this method
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @PutMapping(MODULE_ENDPOINT + "/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody StudyModule entity) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody StudyModule entity) {
         if (!entity.getId().equals(id))
             return ResponseEntity.badRequest().build();
 
