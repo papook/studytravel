@@ -37,8 +37,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
     @Override
     public Iterable<StudyModule> getModulesForUniversity(Long universityId) {
-        Iterable<StudyModule> result = repository.findByUniversityId(universityId);
-        return result;
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
