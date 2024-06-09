@@ -1,5 +1,6 @@
 package com.papook.studytravel.server.controllers;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -23,4 +24,15 @@ public class GlobalExceptionHandler {
                 .body(errorMessage);
     }
 
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorMessage> handleException(ConstraintViolationException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ErrorMessage errorMessage = new ErrorMessage(
+                status.value(),
+                "The request body contains invalid data. Make sure all fields are provided and have the correct format.");
+
+        return ResponseEntity.status(status)
+                .body(errorMessage);
+    }
 }
