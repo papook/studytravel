@@ -1,6 +1,5 @@
 package com.papook.studytravel.server.errors;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,7 +12,6 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-@Entity
 public class ErrorMessage {
     private int status;
     private String message;
