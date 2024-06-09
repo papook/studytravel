@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 public class IdGenerator {
     private Long nextId = 1L;
     private Set<Long> availableIds = new HashSet<>();
+    private Set<Long> usedIds = new HashSet<>();
 
     /**
      * Generates a unique identifier for a new entity.
@@ -41,5 +42,16 @@ public class IdGenerator {
      */
     public void markIdAvailable(Long id) {
         availableIds.add(id);
+    }
+
+    /**
+     * Adds an ID to the set of used IDs
+     * when creating a new entity using a specific ID
+     * and PUT method.
+     * 
+     * @param id The ID to be marked as used.
+     */
+    public void markIdUsed(Long id) {
+        usedIds.add(id);
     }
 }
