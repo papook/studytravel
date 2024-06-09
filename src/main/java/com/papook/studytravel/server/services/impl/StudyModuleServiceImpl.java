@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
@@ -89,6 +90,34 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         });
 
         repository.deleteById(id);
+    }
+
+    @Override
+    public void linkModuleToUniversity(Long moduleId, Long universityId) {
+        // Check if the university exists
+        University university = universityService.getUniversityById(universityId)
+                .orElseThrow(UniversityNotFoundException::new);
+        // Check if the module exists
+        StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
+
+        university.addModule(moduleId);
+        module.setUniversityId(universityId);
+    }
+
+    @Override
+    public void unlinkModuleFromUniversity(Long moduleId, Long universityId) {
+        // Check if the university exists
+        University university = universityService.getUniversityById(universityId)
+                .orElseThrow(UniversityNotFoundException::new);
+        // Check if the module exists
+        StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
+
+        if (module.getUniversityId() != universityId && university.getModuleIds().contains(moduleId)) {
+            throw new ModuleNotLinkedToUniException();
+        }
+
+        university.removeModule(moduleId);
+        module.setUniversityId(null);
     }
 
 }
