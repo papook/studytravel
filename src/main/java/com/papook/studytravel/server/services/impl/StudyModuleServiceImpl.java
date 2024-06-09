@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.models.University;
@@ -79,6 +80,14 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
     @Override
     public void deleteModule(Long id) {
+        // Check if the module exists
+        StudyModule module = repository.findById(id).orElseThrow(StudyModuleNotFoundException::new);
+        // Check if a university is linked to the module. If so, remove the module from
+        // the university.
+        universityService.getUniversityById(module.getUniversityId()).ifPresent(university -> {
+            university.removeModule(id);
+        });
+
         repository.deleteById(id);
     }
 
