@@ -122,8 +122,20 @@ public class StudyModuleController {
     public ResponseEntity<Void> linkToUniversity(
             @PathVariable Long universityId,
             @PathVariable Long moduleId) {
+        studyModuleService.linkModuleToUniversity(moduleId, universityId);
 
-        // TODO: Implement this method
-        throw new UnsupportedOperationException("Not implemented yet");
+        return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Removes a study module from a specific university.
+     */
+    @DeleteMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT + "/{moduleId}")
+    public ResponseEntity<Void> unlinkFromUniversity(
+            @PathVariable Long universityId,
+            @PathVariable Long moduleId) {
+        studyModuleService.unlinkModuleFromUniversity(moduleId, universityId);
+
+        return ResponseEntity.noContent().build();
     }
 }
