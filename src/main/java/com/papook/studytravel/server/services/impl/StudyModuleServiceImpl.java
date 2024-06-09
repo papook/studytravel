@@ -5,13 +5,17 @@ import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
+import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.repositories.StudyModuleRepository;
 import com.papook.studytravel.server.services.StudyModuleService;
+import com.papook.studytravel.server.services.UniversityService;
 import com.papook.studytravel.server.utils.IdGenerator;
 
 @Service
@@ -21,7 +25,10 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     private IdGenerator idGenerator;
 
     @Autowired
-    StudyModuleRepository repository;
+    private StudyModuleRepository repository;
+
+    @Autowired
+    private UniversityService universityService;
 
     @Override
     public Iterable<StudyModule> getAllModules() {
@@ -37,7 +44,12 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
     @Override
     public Iterable<StudyModule> getModulesForUniversity(Long universityId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        University result = universityService.getUniversityById(universityId)
+                .orElseThrow(UniversityNotFoundException::new);
+        Set<Long> moduleIds = result.getModuleIds();
+        Iterable<StudyModule> modules = repository.findAllById(moduleIds);
+
+        return modules;
     }
 
     @Override
