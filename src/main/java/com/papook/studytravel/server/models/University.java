@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 public class University {
     @Id
@@ -44,7 +42,6 @@ public class University {
     LocalDate fallSemesterStart;
     URI modules;
     @JsonIgnore
-    @Builder.Default
     Set<Long> moduleIds = new HashSet<>();
 
     public void addModule(Long moduleId) {
