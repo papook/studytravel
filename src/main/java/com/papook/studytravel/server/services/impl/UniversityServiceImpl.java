@@ -1,8 +1,8 @@
 package com.papook.studytravel.server.services.impl;
 
 import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
-import static com.papook.studytravel.server.ServerConfiguration.MODULE_BASE;
-import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_BASE;
+import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
+import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
 import java.net.URI;
 import java.util.Optional;
@@ -62,11 +62,11 @@ public class UniversityServiceImpl implements UniversityService {
 
         // Set the modules URI
         university.setModules(
-                URI.create(BASE_URI + UNIVERSITY_BASE + "/" + university.getId() + MODULE_BASE));
+                URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + university.getId() + MODULE_ENDPOINT));
 
         University result = repository.save(university);
         URI location = URI
-                .create(BASE_URI + UNIVERSITY_BASE + "/" + result.getId());
+                .create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + result.getId());
         return location;
     }
 
@@ -91,7 +91,7 @@ public class UniversityServiceImpl implements UniversityService {
         } else {
             university.setId(id);
             University result = repository.save(university);
-            URI location = URI.create(BASE_URI + UNIVERSITY_BASE + "/" + result.getId());
+            URI location = URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + result.getId());
             return Optional.of(location);
         }
     }

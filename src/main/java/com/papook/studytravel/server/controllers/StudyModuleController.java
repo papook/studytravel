@@ -1,7 +1,7 @@
 package com.papook.studytravel.server.controllers;
 
-import static com.papook.studytravel.server.ServerConfiguration.MODULE_BASE;
-import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_BASE;
+import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
+import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
 import java.net.URI;
 import java.util.Optional;
@@ -31,20 +31,20 @@ public class StudyModuleController {
     @Autowired
     private StudyModuleService studyModuleService;
 
-    @GetMapping(MODULE_BASE)
+    @GetMapping(MODULE_ENDPOINT)
     public ResponseEntity<Iterable<StudyModule>> getCollection() {
         // TODO: Set up pagination and filtering
         Iterable<StudyModule> studyModules = studyModuleService.getAllModules();
         return ResponseEntity.ok(studyModules);
     }
 
-    @GetMapping(MODULE_BASE + "/{id}")
+    @GetMapping(MODULE_ENDPOINT + "/{id}")
     public ResponseEntity<StudyModule> getOne(@PathVariable Long id) {
         Optional<StudyModule> studyModuleOptional = studyModuleService.getModuleById(id);
         return ResponseEntity.of(studyModuleOptional);
     }
 
-    @GetMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE)
+    @GetMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT)
     public ResponseEntity<Iterable<StudyModule>> getCollectionOfUniversity(@PathVariable Long universityId) {
         // TODO: Set up pagination and filtering
 
@@ -59,7 +59,7 @@ public class StudyModuleController {
         return ResponseEntity.ok(studyModules);
     }
 
-    @GetMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE + "/{moduleId}")
+    @GetMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT + "/{moduleId}")
     public ResponseEntity<StudyModule> getOneOfUniversity(
             @PathVariable Long universityId,
             @PathVariable Long moduleId) {
@@ -86,14 +86,14 @@ public class StudyModuleController {
         // return ResponseEntity.notFound().build();
     }
 
-    @PostMapping(MODULE_BASE)
+    @PostMapping(MODULE_ENDPOINT)
     public ResponseEntity<Void> create(@RequestBody StudyModule studyModule) {
         URI location = studyModuleService.createModule(studyModule);
 
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE)
+    @PostMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT)
     public ResponseEntity<Void> createForUniversity(
             @PathVariable Long universityId,
             @RequestBody StudyModule studyModule) {
@@ -101,7 +101,7 @@ public class StudyModuleController {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @PutMapping(MODULE_BASE + "/{id}")
+    @PutMapping(MODULE_ENDPOINT + "/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody StudyModule entity) {
         if (!entity.getId().equals(id))
             return ResponseEntity.badRequest().build();
@@ -117,7 +117,7 @@ public class StudyModuleController {
     /**
      * Updates a study module for a specific university.
      */
-    @PutMapping(UNIVERSITY_BASE + "/{universityId}" + MODULE_BASE + "/{moduleId}")
+    @PutMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT + "/{moduleId}")
     public ResponseEntity<Void> linkToUniversity(
             @PathVariable Long universityId,
             @PathVariable Long moduleId) {

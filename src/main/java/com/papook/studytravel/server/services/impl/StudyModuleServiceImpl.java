@@ -1,7 +1,7 @@
 package com.papook.studytravel.server.services.impl;
 
 import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
-import static com.papook.studytravel.server.ServerConfiguration.MODULE_BASE;
+import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
 
 import java.net.URI;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         module.setId(idGenerator.nextId());
         StudyModule result = repository.save(module);
 
-        URI location = URI.create(BASE_URI + MODULE_BASE + "/" + result.getId());
+        URI location = URI.create(BASE_URI + MODULE_ENDPOINT + "/" + result.getId());
 
         return location;
     }
@@ -60,7 +60,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         } else {
             module.setId(id);
             StudyModule result = repository.save(module);
-            URI location = URI.create(BASE_URI + MODULE_BASE + "/" + result.getId());
+            URI location = URI.create(BASE_URI + MODULE_ENDPOINT + "/" + result.getId());
             return Optional.of(location);
         }
     }

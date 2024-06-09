@@ -1,6 +1,6 @@
 package com.papook.studytravel.server.controllers;
 
-import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_BASE;
+import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
 import java.net.URI;
 import java.util.Optional;
@@ -20,7 +20,7 @@ import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
 
 @RestController
-@RequestMapping(UNIVERSITY_BASE)
+@RequestMapping(UNIVERSITY_ENDPOINT)
 public class UniversityController {
     @Autowired
     private UniversityService universityService;

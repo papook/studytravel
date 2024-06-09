@@ -25,11 +25,11 @@ public class ServerConfiguration {
     /**
      * The base path for university-related endpoints.
      */
-    public static final String UNIVERSITY_BASE = "/universities";
+    public static final String UNIVERSITY_ENDPOINT = "/universities";
 
     /**
      * The base path for module-related endpoints.
      */
-    public static final String MODULE_BASE = "/modules";
+    public static final String MODULE_ENDPOINT = "/modules";
 
 }
