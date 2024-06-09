@@ -2,6 +2,7 @@ package com.papook.studytravel.server.models;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -43,7 +44,8 @@ public class University {
     LocalDate fallSemesterStart;
     URI modules;
     @JsonIgnore
-    Set<Long> moduleIds;
+    @Builder.Default
+    Set<Long> moduleIds = new HashSet<>();
 
     public void addModule(Long moduleId) {
         moduleIds.add(moduleId);
