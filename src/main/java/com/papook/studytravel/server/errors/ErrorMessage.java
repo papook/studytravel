@@ -15,6 +15,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Entity
 public class ErrorMessage {
-    private String message;
     private int status;
+    private String message;
 }
