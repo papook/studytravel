@@ -102,6 +102,10 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
         university.addModule(moduleId);
         module.setUniversityId(universityId);
+
+        // Save the changes
+        universityService.updateUniversity(universityId, university);
+        module = repository.save(module);
     }
 
     @Override
@@ -118,6 +122,10 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
         university.removeModule(moduleId);
         module.setUniversityId(null);
+
+        // Save the changes
+        universityService.updateUniversity(universityId, university);
+        module = repository.save(module);
     }
 
 }
