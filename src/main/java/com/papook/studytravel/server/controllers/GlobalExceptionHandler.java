@@ -1,9 +1,9 @@
 package com.papook.studytravel.server.controllers;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -24,8 +24,8 @@ public class GlobalExceptionHandler {
                 .body(errorMessage);
     }
 
-    @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ErrorMessage> handleException(ConstraintViolationException ex) {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         ErrorMessage errorMessage = new ErrorMessage(
