@@ -39,7 +39,7 @@ public class IdGenerator {
      *
      * @param id The ID to be added.
      */
-    public void addId(Long id) {
+    public void markIdAvailable(Long id) {
         availableIds.add(id);
     }
 }

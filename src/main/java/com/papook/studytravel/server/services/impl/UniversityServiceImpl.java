@@ -104,7 +104,7 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void deleteUniversity(Long id) {
-        idGenerator.addId(id);
+        idGenerator.markIdAvailable(id);
         repository.deleteById(id);
     }
 
