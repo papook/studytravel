@@ -95,14 +95,6 @@ public class StudyModuleController {
         return ResponseEntity.created(location).build();
     }
 
-    @PostMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT)
-    public ResponseEntity<Void> createForUniversity(
-            @PathVariable Long universityId,
-            @Valid @RequestBody StudyModule studyModule) {
-        // TODO: Implement this method
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
     @PutMapping(MODULE_ENDPOINT + "/{id}")
     public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody StudyModule entity) {
         if (!entity.getId().equals(id))
