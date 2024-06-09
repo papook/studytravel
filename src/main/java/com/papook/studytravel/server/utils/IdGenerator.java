@@ -24,13 +24,19 @@ public class IdGenerator {
      * @return A unique identifier of type Long.
      */
     public long nextId() {
-        if (availableIds.isEmpty()) {
-            return nextId++;
-        } else {
+        if (!availableIds.isEmpty()) {
             Long id = availableIds.iterator().next();
             availableIds.remove(id);
             return id;
         }
+
+        while (usedIds.contains(nextId)) {
+            usedIds.remove(nextId);
+            nextId++;
+        }
+
+        usedIds.add(nextId);
+        return nextId;
     }
 
     /**
