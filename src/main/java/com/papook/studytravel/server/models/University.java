@@ -41,9 +41,9 @@ public class University {
     @NotNull
     Integer incomingStudentNumber;
     @NotNull
-    LocalDate nextSpringSemesterStart;
+    LocalDate springSemesterStart;
     @NotNull
-    LocalDate nextFallSemesterStart;
+    LocalDate fallSemesterStart;
     URI modules;
     @JsonIgnore
     Set<Long> moduleIds;
