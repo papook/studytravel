@@ -57,6 +57,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
             repository.save(module);
             return Optional.empty();
         } else {
+            idGenerator.markIdUsed(id);
             module.setId(id);
             StudyModule result = repository.save(module);
             URI location = URI.create(BASE_URI + MODULE_ENDPOINT + "/" + result.getId());

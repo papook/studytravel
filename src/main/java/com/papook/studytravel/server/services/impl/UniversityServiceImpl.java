@@ -89,6 +89,7 @@ public class UniversityServiceImpl implements UniversityService {
             repository.save(university);
             return Optional.empty();
         } else {
+            idGenerator.markIdUsed(id);
             university.setId(id);
             University result = repository.save(university);
             URI location = URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + result.getId());
