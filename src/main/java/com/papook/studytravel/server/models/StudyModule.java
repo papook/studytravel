@@ -1,5 +1,6 @@
 package com.papook.studytravel.server.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import jakarta.persistence.Entity;
@@ -29,6 +30,8 @@ public class StudyModule {
     Semester semester;
     @NotNull
     Integer creditPoints;
+    @JsonIgnore
+    Long universityId;
 
     @JsonSetter
     public void setSemester(String semester) {
