@@ -3,6 +3,7 @@ package com.papook.studytravel.server.utils;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,8 +12,9 @@ import org.springframework.stereotype.Component;
  * generate a new ID and add an ID to the available set.
  */
 @Component
+@Scope("prototype")
 public class IdGenerator {
-    private static Long nextId = 1L;
+    private Long nextId = 1L;
     private Set<Long> availableIds = new HashSet<>();
 
     /**
