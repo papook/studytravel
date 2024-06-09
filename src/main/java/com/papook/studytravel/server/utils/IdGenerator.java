@@ -52,6 +52,9 @@ public class IdGenerator {
      * @param id The ID to be marked as used.
      */
     public void markIdUsed(Long id) {
+        if (availableIds.contains(id)) {
+            availableIds.remove(id);
+        }
         usedIds.add(id);
     }
 }
