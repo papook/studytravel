@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.papook.studytravel.server.errors.ErrorMessage;
+import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
 
@@ -57,6 +58,18 @@ public class GlobalExceptionHandler {
 		ErrorMessage errorMessage = new ErrorMessage(
 				status.value(),
 				"The requested study module was not found. Please provide a valid study module ID.");
+
+		return ResponseEntity.status(status)
+				.body(errorMessage);
+	}
+
+	@ExceptionHandler(ModuleNotLinkedToUniException.class)
+	public ResponseEntity<ErrorMessage> handleException(ModuleNotLinkedToUniException ex) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+
+		ErrorMessage errorMessage = new ErrorMessage(
+				status.value(),
+				"The requested study module is not linked to this university.");
 
 		return ResponseEntity.status(status)
 				.body(errorMessage);
