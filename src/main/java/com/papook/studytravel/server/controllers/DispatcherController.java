@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("")
 public class DispatcherController {
-        @GetMapping({ "", "/" })
-        public ResponseEntity<Void> getDispatcher() {
-                String getUniversitiesCollectionLink = String.format(
-                                "<%s%s>;rel=\"getUniversitiesCollection\"",
-                                BASE_URI, UNIVERSITY_ENDPOINT);
+	@GetMapping({ "", "/" })
+	public ResponseEntity<Void> getDispatcher() {
+		String getUniversitiesCollectionLink = String.format(
+				"<%s%s>;rel=\"getUniversitiesCollection\"",
+				BASE_URI, UNIVERSITY_ENDPOINT);
 
-                String getModulesCollectionLink = String.format(
-                                "<%s%s>;rel=\"getModulesCollection\"",
-                                BASE_URI, MODULE_ENDPOINT);
+		String getModulesCollectionLink = String.format(
+				"<%s%s>;rel=\"getModulesCollection\"",
+				BASE_URI, MODULE_ENDPOINT);
 
-                String[] links = { getUniversitiesCollectionLink, getModulesCollectionLink };
+		String[] links = { getUniversitiesCollectionLink, getModulesCollectionLink };
 
-                return ResponseEntity.ok()
-                                .header("Link", links)
-                                .build();
-        }
+		return ResponseEntity.ok()
+				.header("Link", links)
+				.build();
+	}
 }
