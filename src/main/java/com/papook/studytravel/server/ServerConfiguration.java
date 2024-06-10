@@ -32,4 +32,8 @@ public class ServerConfiguration {
      */
     public static final String MODULE_ENDPOINT = "/modules";
 
+    /**
+     * Default page size defined for pagination. Cannot be modified by the client.
+     */
+    public static final Integer PAGE_SIZE = 30;
 }
