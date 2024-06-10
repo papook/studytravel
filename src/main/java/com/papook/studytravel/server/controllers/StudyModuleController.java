@@ -84,20 +84,22 @@ public class StudyModuleController {
     }
 
     @PostMapping(MODULE_ENDPOINT)
-    public ResponseEntity<Void> create(@Valid @RequestBody StudyModule studyModule) {
+    public ResponseEntity<StudyModule> create(@Valid @RequestBody StudyModule studyModule) {
         URI location = studyModuleService.createModule(studyModule);
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity.created(location).body(studyModule);
     }
 
     @PutMapping(MODULE_ENDPOINT + "/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody StudyModule entity) {
+    public ResponseEntity<StudyModule> update(@PathVariable Long id, @Valid @RequestBody StudyModule entity) {
         if (!entity.getId().equals(id))
             return ResponseEntity.badRequest().build();
 
         Optional<URI> locationOptional = studyModuleService.updateModule(id, entity);
-        if (locationOptional.isPresent()) {
-            return ResponseEntity.created(locationOptional.get()).build();
+        boolean isModuleCreated = locationOptional.isPresent();
+
+        if (isModuleCreated) {
+            return ResponseEntity.created(locationOptional.get()).body(entity);
         } else {
             return ResponseEntity.noContent().build();
         }
