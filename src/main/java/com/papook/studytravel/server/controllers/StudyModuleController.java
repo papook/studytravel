@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
+import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
+import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.StudyModuleService;
@@ -66,27 +69,18 @@ public class StudyModuleController {
     public ResponseEntity<StudyModule> getOneOfUniversity(
             @PathVariable Long universityId,
             @PathVariable Long moduleId) {
-
-        Optional<University> universityOptional = universityService.getUniversityById(universityId);
-
-        if (universityOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        // Check if the university exists
+        universityService.getUniversityById(universityId)
+                .orElseThrow(UniversityNotFoundException::new);
+        // Check if the module exists
+        StudyModule studyModule = studyModuleService.getModuleById(moduleId)
+                .orElseThrow(StudyModuleNotFoundException::new);
+        // Check if the module is linked to the university
+        if (!studyModuleService.isModuleLinkedToUniversity(moduleId, universityId)) {
+            throw new ModuleNotLinkedToUniException();
         }
 
-        Optional<StudyModule> studyModuleOptional = studyModuleService.getModuleById(moduleId);
-        if (studyModuleOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // TODO: Implement the rest of this method
-        throw new UnsupportedOperationException("Not implemented yet");
-        // boolean moduleBelongsToUniversity =
-        // studyModuleOptional.get().getUniversityId().equals(universityId);
-        // if (moduleBelongsToUniversity) {
-        // return ResponseEntity.ok(studyModuleOptional.get());
-        // }
-
-        // return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(studyModule);
     }
 
     @PostMapping(MODULE_ENDPOINT)
