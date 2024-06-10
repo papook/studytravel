@@ -101,7 +101,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         // Check if the module exists
         StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
 
-        if(moduleHasUniversity(moduleId)) {
+        if (!canModuleBeLinked(moduleId, universityId)) {
             throw new ModuleLinkedToOtherUniversityException();
         }
 
@@ -139,8 +139,8 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         return module.getUniversityId() == universityId;
     }
 
-    private boolean moduleHasUniversity(Long moduleId) {
+    private boolean canModuleBeLinked(Long moduleId, Long universityId) {
         StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
-        return module.getUniversityId() != null;
+        return module.getUniversityId() == null || module.getUniversityId() == universityId;
     }
 }
