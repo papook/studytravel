@@ -48,19 +48,11 @@ public class UniversityController {
         // and get the location URI
         URI location = universityService.createUniversity(university);
 
-        // Extract the ID from the location URI
-        long createdUniversityId = Long
-                .parseLong(location.getPath().substring(location.getPath().lastIndexOf('/') + 1));
-        // Get the University representation
-        University representation = universityService
-                .getUniversityById(createdUniversityId)
-                .get();
-
         // Return the representation with the location header
         // and the newly created University representation
         return ResponseEntity
                 .created(location)
-                .body(representation);
+                .body(university);
     }
 
     @PutMapping("/{id}")
@@ -77,16 +69,9 @@ public class UniversityController {
 
         if (newUniversityCreated) {
             URI location = locationOptional.get();
-            // Extract the ID from the location URI
-            long createdUniversityId = Long
-                    .parseLong(location.getPath().substring(location.getPath().lastIndexOf('/') + 1));
-            // Get the University representation
-            University representation = universityService
-                    .getUniversityById(createdUniversityId)
-                    .get();
 
             // Return the representation with the location header
-            return ResponseEntity.created(location).body(representation);
+            return ResponseEntity.created(location).body(entity);
 
         } else {
             // Return a NO CONTENT status code
