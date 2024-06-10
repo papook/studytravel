@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
 
 		ErrorMessage errorMessage = new ErrorMessage(
 				status.value(),
-				"The requested study module is linked to another university" +
+				"The requested study module is linked to another university. " +
 						"Consider unlinking the module from the other university first.");
 
 		return ResponseEntity.status(status)
