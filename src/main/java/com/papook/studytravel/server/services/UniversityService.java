@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.papook.studytravel.server.models.University;
 
 public interface UniversityService {
-    public Iterable<University> getAllUniversities();
+    public Iterable<University> getUniversities();
 
     public Optional<University> getUniversityById(Long id);
 

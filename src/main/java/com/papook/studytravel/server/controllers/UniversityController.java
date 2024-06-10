@@ -32,7 +32,7 @@ public class UniversityController {
     @GetMapping
     public ResponseEntity<Iterable<University>> getCollection() {
         // TODO: Set up pagination and filtering
-        Iterable<University> universities = universityService.getAllUniversities();
+        Iterable<University> universities = universityService.getUniversities();
         return ResponseEntity.ok(universities);
     }
 

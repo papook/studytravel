@@ -30,7 +30,7 @@ public class UniversityServiceImpl implements UniversityService {
      * @return An iterable collection of universities.
      */
     @Override
-    public Iterable<University> getAllUniversities() {
+    public Iterable<University> getUniversities() {
         Iterable<University> result = repository.findAll();
         return result;
     }
