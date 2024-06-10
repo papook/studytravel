@@ -128,4 +128,9 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         module = repository.save(module);
     }
 
+    @Override
+    public boolean isModuleLinkedToUniversity(Long moduleId, Long universityId) {
+        StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
+        return module.getUniversityId() == universityId;
+    }
 }

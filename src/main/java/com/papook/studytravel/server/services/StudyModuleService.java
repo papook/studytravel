@@ -22,4 +22,6 @@ public interface StudyModuleService {
     public void linkModuleToUniversity(Long moduleId, Long universityId);
 
     public void unlinkModuleFromUniversity(Long moduleId, Long universityId);
+
+    public boolean isModuleLinkedToUniversity(Long moduleId, Long universityId);
 }
