@@ -116,7 +116,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         // Check if the module exists
         StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
 
-        if (module.getUniversityId() != universityId && university.getModuleIds().contains(moduleId)) {
+        if (!isModuleLinkedToUniversity(moduleId, universityId)) {
             throw new ModuleNotLinkedToUniException();
         }
 
