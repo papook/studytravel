@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.papook.studytravel.server.errors.ModuleLinkedToOtherUniversityException;
 import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
@@ -100,6 +101,10 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         // Check if the module exists
         StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
 
+        if(moduleHasUniversity(moduleId)) {
+            throw new ModuleLinkedToOtherUniversityException();
+        }
+
         university.addModule(moduleId);
         module.setUniversityId(universityId);
 
@@ -132,5 +137,10 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     public boolean isModuleLinkedToUniversity(Long moduleId, Long universityId) {
         StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
         return module.getUniversityId() == universityId;
+    }
+
+    private boolean moduleHasUniversity(Long moduleId) {
+        StudyModule module = repository.findById(moduleId).orElseThrow(StudyModuleNotFoundException::new);
+        return module.getUniversityId() != null;
     }
 }
