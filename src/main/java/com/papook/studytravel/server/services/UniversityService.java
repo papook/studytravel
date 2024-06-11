@@ -3,10 +3,12 @@ package com.papook.studytravel.server.services;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+
 import com.papook.studytravel.server.models.University;
 
 public interface UniversityService {
-    public Iterable<University> getUniversities(
+    public Page<University> getUniversities(
             String name,
             String country,
             Integer page);

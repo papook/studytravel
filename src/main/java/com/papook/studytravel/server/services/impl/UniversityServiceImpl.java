@@ -2,12 +2,15 @@ package com.papook.studytravel.server.services.impl;
 
 import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
 import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
+import static com.papook.studytravel.server.ServerConfiguration.PAGE_SIZE;
 import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
 import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.papook.studytravel.server.models.University;
@@ -30,12 +33,12 @@ public class UniversityServiceImpl implements UniversityService {
      * @return An iterable collection of universities.
      */
     @Override
-    public Iterable<University> getUniversities(
+    public Page<University> getUniversities(
             String name,
             String country,
             Integer page) {
-        Iterable<University> result = repository.findAll();
-        return result;
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
+        return repository.findByNameContainingAndCountryContaining(name, country, pageRequest);
     }
 
     /**
