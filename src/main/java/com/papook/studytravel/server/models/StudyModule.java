@@ -27,7 +27,7 @@ public class StudyModule {
     String name;
     @NotNull
     @Setter(AccessLevel.NONE)
-    Semester semester;
+    String semester;
     @NotNull
     Integer creditPoints;
     @JsonIgnore
@@ -35,7 +35,14 @@ public class StudyModule {
 
     @JsonSetter
     public void setSemester(String semester) {
-        this.semester = Semester.valueOf(semester.toUpperCase());
+        // Semester.valueOf() throws an IllegalArgumentException if the given string is
+        // not a valid enum value
+        semester = semester.toUpperCase();
+        Semester.valueOf(semester);
+
+        // If the above line does not throw an exception, the given string is a valid
+        // enum value
+        this.semester = semester;
     }
 
     /**
