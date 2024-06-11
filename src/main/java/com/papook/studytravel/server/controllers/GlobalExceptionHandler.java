@@ -16,6 +16,15 @@ import com.papook.studytravel.server.errors.UniversityNotFoundException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+	/**
+	 * Builds a ResponseEntity object with the specified HTTP status and message.
+	 *
+	 * @param status  the HTTP status of the response
+	 * @param message the error message to be included in the response
+	 * @return a ResponseEntity object containing the error message and status
+	 * 
+	 * @author papook
+	 */
 	private ResponseEntity<ErrorMessage> buildResponse(
 			final HttpStatus status,
 			final String message) {
