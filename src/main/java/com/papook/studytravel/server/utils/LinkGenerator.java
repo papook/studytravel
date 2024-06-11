@@ -31,7 +31,7 @@ public class LinkGenerator {
      * @param page Page object of results.
      * @return HttpHeaders object containing the formatted link headers.
      */
-    public HttpHeaders buildHeaders(Page<?> page) {
+    public HttpHeaders buildPagingLinksHeaders(Page<?> page) {
         // Initialize a map to hold the paging links
         Map<String, String> links = new HashMap<>();
 

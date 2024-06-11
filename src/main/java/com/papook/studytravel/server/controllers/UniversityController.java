@@ -48,7 +48,7 @@ public class UniversityController {
         Page<University> universitiesPage = universityService.getUniversities(name, country, page);
 
         List<University> responseBody = universitiesPage.getContent();
-        HttpHeaders headers = pagingLinkBuilder.buildHeaders(universitiesPage);
+        HttpHeaders headers = pagingLinkBuilder.buildPagingLinksHeaders(universitiesPage);
 
         return ResponseEntity.ok()
                 .headers(headers)
