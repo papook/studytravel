@@ -24,6 +24,20 @@ public class HypermediaGenerator {
     @Autowired
     private HttpServletRequest servletRequest;
 
+    public static String formatLinkHeader(URI uri, String rel) {
+        StringBuilder linkHeader = new StringBuilder();
+        String uriString = uri.toString();
+
+        String formattedLinkHeader = linkHeader.append('<')
+                .append(uriString)
+                .append('>')
+                .append("; rel=\"")
+                .append(rel)
+                .append('\"').toString();
+
+        return formattedLinkHeader;
+    }
+
     /**
      * Builds hypermedia links for pagination. The links include relations for the
      * current (self), previous, and next pages.
