@@ -3,9 +3,12 @@ package com.papook.studytravel.server.controllers;
 import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
+import com.papook.studytravel.server.utils.PagingLinkBuilder;
 
 import jakarta.validation.Valid;
 
@@ -27,13 +32,28 @@ public class UniversityController {
     @Autowired
     private UniversityService universityService;
 
+    @Autowired
+    private PagingLinkBuilder pagingLinkBuilder;
+
     // TODO: Add Hypermedia links to the response headers
 
     @GetMapping
-    public ResponseEntity<Iterable<University>> getCollection() {
-        // TODO: Set up pagination and filtering
-        Iterable<University> universities = universityService.getUniversities();
-        return ResponseEntity.ok(universities);
+    public ResponseEntity<Iterable<University>> getCollection(
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String country,
+            @RequestParam(defaultValue = "0") Integer page) {
+
+        page = Math.max(0, page);
+
+        Page<University> universitiesPage = universityService.getUniversities(name, country, page);
+
+        List<University> responseBody = universitiesPage.getContent();
+        HttpHeaders headers = pagingLinkBuilder.buildHeaders(universitiesPage);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(responseBody);
+
     }
 
     @GetMapping("/{id}")
@@ -85,4 +105,5 @@ public class UniversityController {
         universityService.deleteUniversity(id);
         return ResponseEntity.noContent().build();
     }
+
 }
