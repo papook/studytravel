@@ -24,6 +24,13 @@ public class HypermediaGenerator {
     @Autowired
     private HttpServletRequest servletRequest;
 
+    /**
+     * Formats a link header with the specified URI and relation.
+     * 
+     * @param uri URI to be included in the link header.
+     * @param rel Relation of the link header.
+     * @return Formatted link header as a string.
+     */
     public static String formatLinkHeader(URI uri, String rel) {
         StringBuilder linkHeader = new StringBuilder();
         String formattedLinkHeader = linkHeader.append('<')
