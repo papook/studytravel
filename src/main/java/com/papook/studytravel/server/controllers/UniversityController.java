@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
-import com.papook.studytravel.server.utils.LinkGenerator;
+import com.papook.studytravel.server.utils.HypermediaGenerator;
 
 import jakarta.validation.Valid;
 
@@ -33,7 +33,7 @@ public class UniversityController {
     private UniversityService universityService;
 
     @Autowired
-    private LinkGenerator pagingLinkBuilder;
+    private HypermediaGenerator pagingLinkBuilder;
 
     // TODO: Add Hypermedia links to the response headers
 

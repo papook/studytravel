@@ -14,12 +14,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Responsible for building hypermedia links for pagination.
+ * Responsible for building hypermedia links.
  *
  * @author papook
  */
 @Component
-public class LinkGenerator {
+public class HypermediaGenerator {
 
     @Autowired
     private HttpServletRequest servletRequest;
