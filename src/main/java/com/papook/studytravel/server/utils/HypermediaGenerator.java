@@ -26,10 +26,8 @@ public class HypermediaGenerator {
 
     public static String formatLinkHeader(URI uri, String rel) {
         StringBuilder linkHeader = new StringBuilder();
-        String uriString = uri.toString();
-
         String formattedLinkHeader = linkHeader.append('<')
-                .append(uriString)
+                .append(uri)
                 .append('>')
                 .append("; rel=\"")
                 .append(rel)
