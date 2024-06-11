@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * @author papook
  */
 @Component
-public class PagingLinkBuilder {
+public class LinkGenerator {
 
     @Autowired
     private HttpServletRequest servletRequest;
