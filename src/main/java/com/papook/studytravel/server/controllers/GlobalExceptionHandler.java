@@ -16,76 +16,60 @@ import com.papook.studytravel.server.errors.UniversityNotFoundException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<ErrorMessage> handleException(Exception ex) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+	private ResponseEntity<ErrorMessage> buildResponse(
+			final HttpStatus status,
+			final String message) {
 
 		ErrorMessage errorMessage = new ErrorMessage(
 				status.value(),
-				"Could not read the request body. Please provide a valid JSON object.");
+				message);
 
 		return ResponseEntity.status(status)
 				.body(errorMessage);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ErrorMessage> handleException(Exception ex) {
+		String message = "Could not read the request body. Please provide a valid JSON object.";
+
+		return buildResponse(HttpStatus.BAD_REQUEST, message);
+
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ErrorMessage> handleException(MethodArgumentNotValidException ex) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "The request body contains invalid data." +
+				" Make sure all fields are provided and have the correct format.";
 
-		ErrorMessage errorMessage = new ErrorMessage(
-				status.value(),
-				"The request body contains invalid data. Make sure all fields are provided and have the correct format.");
-
-		return ResponseEntity.status(status)
-				.body(errorMessage);
+		return buildResponse(HttpStatus.BAD_REQUEST, message);
 	}
 
 	@ExceptionHandler(UniversityNotFoundException.class)
 	public ResponseEntity<ErrorMessage> handleException(UniversityNotFoundException ex) {
-		HttpStatus status = HttpStatus.NOT_FOUND;
+		String message = "The requested university was not found. Please provide a valid university ID.";
 
-		ErrorMessage errorMessage = new ErrorMessage(
-				status.value(),
-				"The requested university was not found. Please provide a valid university ID.");
-
-		return ResponseEntity.status(status)
-				.body(errorMessage);
+		return buildResponse(HttpStatus.NOT_FOUND, message);
 	}
 
 	@ExceptionHandler(StudyModuleNotFoundException.class)
 	public ResponseEntity<ErrorMessage> handleException(StudyModuleNotFoundException ex) {
-		HttpStatus status = HttpStatus.NOT_FOUND;
+		String message = "The requested study module was not found. Please provide a valid study module ID.";
 
-		ErrorMessage errorMessage = new ErrorMessage(
-				status.value(),
-				"The requested study module was not found. Please provide a valid study module ID.");
-
-		return ResponseEntity.status(status)
-				.body(errorMessage);
+		return buildResponse(HttpStatus.NOT_FOUND, message);
 	}
 
 	@ExceptionHandler(ModuleNotLinkedToUniException.class)
 	public ResponseEntity<ErrorMessage> handleException(ModuleNotLinkedToUniException ex) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "The requested study module is not linked to this university.";
 
-		ErrorMessage errorMessage = new ErrorMessage(
-				status.value(),
-				"The requested study module is not linked to this university.");
-
-		return ResponseEntity.status(status)
-				.body(errorMessage);
+		return buildResponse(HttpStatus.BAD_REQUEST, message);
 	}
 
 	@ExceptionHandler(ModuleLinkedToOtherUniversityException.class)
 	public ResponseEntity<ErrorMessage> handleException(ModuleLinkedToOtherUniversityException ex) {
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		String message = "The requested study module is linked to another university. " +
+				"Consider unlinking the module from the other university first.";
 
-		ErrorMessage errorMessage = new ErrorMessage(
-				status.value(),
-				"The requested study module is linked to another university. " +
-						"Consider unlinking the module from the other university first.");
-
-		return ResponseEntity.status(status)
-				.body(errorMessage);
+		return buildResponse(HttpStatus.BAD_REQUEST, message);
 	}
 }
