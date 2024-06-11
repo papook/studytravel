@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -127,8 +128,17 @@ public class HypermediaGenerator {
      * @return An array of link headers.
      */
     private List<String> buildLinkHeaders(Map<String, String> links) {
-        return links.entrySet().stream()
-                .map(entry -> String.format("<%s>; rel=\"%s\"", entry.getValue(), entry.getKey()))
+
+        // Convert a map entry to a formatted link header
+        Function<Map.Entry<String, String>, String> entryToFormattedLink = entry -> {
+            String rel = entry.getKey();
+            URI uri = URI.create(entry.getValue());
+            return formatLinkHeader(uri, rel);
+        };
+
+        return links.entrySet()
+                .stream()
+                .map(entryToFormattedLink)
                 .toList();
     }
 
