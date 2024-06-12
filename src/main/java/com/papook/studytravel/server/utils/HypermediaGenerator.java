@@ -1,5 +1,7 @@
 package com.papook.studytravel.server.utils;
 
+import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
@@ -28,14 +30,16 @@ public class HypermediaGenerator {
     /**
      * Formats a link header with the specified URI and relation.
      * 
-     * @param uri URI to be included in the link header.
-     * @param rel Relation of the link header.
+     * @param relativeUri URI consising of a path and query parameters to be
+     *                    included in the link header. The URI should not include
+     *                    the base URL.
+     * @param rel         Relation of the link header.
      * @return Formatted link header as a string.
      */
-    public static String formatLinkHeader(URI uri, String rel) {
+    public static String formatLinkHeader(String relativeUri, String rel) {
         StringBuilder linkHeader = new StringBuilder();
         String formattedLinkHeader = linkHeader.append('<')
-                .append(uri)
+                .append(BASE_URI + relativeUri)
                 .append('>')
                 .append("; rel=\"")
                 .append(rel)
@@ -133,7 +137,8 @@ public class HypermediaGenerator {
         Function<Map.Entry<String, String>, String> entryToFormattedLink = entry -> {
             String rel = entry.getKey();
             URI uri = URI.create(entry.getValue());
-            return formatLinkHeader(uri, rel);
+            String stringUri = uri.toString();
+            return formatLinkHeader(stringUri, rel);
         };
 
         return links.entrySet()
