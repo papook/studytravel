@@ -23,7 +23,19 @@ public class DispatcherController {
 				"<%s%s>;rel=\"getModulesCollection\"",
 				BASE_URI, MODULE_ENDPOINT);
 
-		String[] links = { getUniversitiesCollectionLink, getModulesCollectionLink };
+		String createUniversityLink = String.format(
+				"<%s%s>;rel=\"createUniversity\"",
+				BASE_URI, UNIVERSITY_ENDPOINT);
+
+		String createModuleLink = String.format(
+				"<%s%s>;rel=\"createModule\"",
+				BASE_URI, MODULE_ENDPOINT);
+
+		String[] links = {
+				getUniversitiesCollectionLink,
+				getModulesCollectionLink,
+				createUniversityLink,
+				createModuleLink };
 
 		return ResponseEntity.ok()
 				.header(HttpHeaders.LINK, links)
