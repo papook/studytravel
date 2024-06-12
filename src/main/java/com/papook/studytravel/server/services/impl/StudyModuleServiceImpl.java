@@ -2,12 +2,16 @@ package com.papook.studytravel.server.services.impl;
 
 import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
 import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
+import static com.papook.studytravel.server.ServerConfiguration.PAGE_SIZE;
 
 import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.papook.studytravel.server.errors.ModuleLinkedToOtherUniversityException;
@@ -34,8 +38,13 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     private UniversityService universityService;
 
     @Override
-    public Iterable<StudyModule> getModules() {
-        Iterable<StudyModule> result = repository.findAll();
+    public Page<StudyModule> getModules(
+            String name,
+            String semester,
+            Integer page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Page<StudyModule> result = repository
+                .findByNameContainingAndSemesterContainingIgnoreCase(name, semester, pageable);
         return result;
     }
 

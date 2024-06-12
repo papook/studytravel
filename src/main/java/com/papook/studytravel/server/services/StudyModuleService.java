@@ -3,11 +3,16 @@ package com.papook.studytravel.server.services;
 import java.net.URI;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+
 import com.papook.studytravel.server.models.StudyModule;
 
 public interface StudyModuleService {
 
-    public Iterable<StudyModule> getModules();
+    public Page<StudyModule> getModules(
+            String name,
+            String semester,
+            Integer page);
 
     public Optional<StudyModule> getModuleById(Long id);
 
