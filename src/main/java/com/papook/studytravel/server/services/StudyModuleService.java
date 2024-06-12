@@ -7,7 +7,7 @@ import com.papook.studytravel.server.models.StudyModule;
 
 public interface StudyModuleService {
 
-    public Iterable<StudyModule> getAllModules();
+    public Iterable<StudyModule> getModules();
 
     public Optional<StudyModule> getModuleById(Long id);
 

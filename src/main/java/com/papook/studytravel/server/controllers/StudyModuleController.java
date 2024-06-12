@@ -40,7 +40,7 @@ public class StudyModuleController {
     @GetMapping(MODULE_ENDPOINT)
     public ResponseEntity<Iterable<StudyModule>> getCollection() {
         // TODO: Set up pagination and filtering
-        Iterable<StudyModule> studyModules = studyModuleService.getAllModules();
+        Iterable<StudyModule> studyModules = studyModuleService.getModules();
         return ResponseEntity.ok(studyModules);
     }
 

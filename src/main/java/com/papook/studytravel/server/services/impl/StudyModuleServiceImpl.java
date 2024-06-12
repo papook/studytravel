@@ -34,7 +34,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     private UniversityService universityService;
 
     @Override
-    public Iterable<StudyModule> getAllModules() {
+    public Iterable<StudyModule> getModules() {
         Iterable<StudyModule> result = repository.findAll();
         return result;
     }
