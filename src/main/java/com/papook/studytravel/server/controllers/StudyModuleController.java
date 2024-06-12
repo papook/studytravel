@@ -7,6 +7,8 @@ import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
@@ -24,6 +27,7 @@ import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.StudyModuleService;
 import com.papook.studytravel.server.services.UniversityService;
+import com.papook.studytravel.server.utils.HypermediaGenerator;
 
 import jakarta.validation.Valid;
 
@@ -41,10 +45,18 @@ public class StudyModuleController {
     private HypermediaGenerator hypermediaGenerator;
 
     @GetMapping(MODULE_ENDPOINT)
-    public ResponseEntity<Iterable<StudyModule>> getCollection() {
-        // TODO: Set up pagination and filtering
-        Iterable<StudyModule> studyModules = studyModuleService.getModules();
-        return ResponseEntity.ok(studyModules);
+    public ResponseEntity<Iterable<StudyModule>> getCollection(
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String semester,
+            @RequestParam(defaultValue = "0") Integer page) {
+        page = Math.max(0, page);
+
+        Page<StudyModule> studyModules = studyModuleService.getModules(name, semester, page);
+        HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(studyModules);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(studyModules.getContent());
     }
 
     @GetMapping(MODULE_ENDPOINT + "/{id}")
