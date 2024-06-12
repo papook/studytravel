@@ -63,12 +63,18 @@ public class UniversityController {
         HttpHeaders headers = new HttpHeaders();
 
         String formattedEndpoint = String.format("%s/%d", UNIVERSITY_ENDPOINT, university.getId());
-        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "updateLink");
+        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "putUpdateUniversity");
+        String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "delUniversity");
 
-        String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "deleteLink");
+        // A template for the URI of a module belonging to the university
+        String moduleUriTemplate = university.getModules().getPath() + "/{moduleId}";
+        String linkModule = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "putLinkModule");
+        String unlinkModule = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "delUnlinkModule");
 
         headers.add(HttpHeaders.LINK, updateLink);
         headers.add(HttpHeaders.LINK, deleteLink);
+        headers.add(HttpHeaders.LINK, linkModule);
+        headers.add(HttpHeaders.LINK, unlinkModule);
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -128,7 +134,8 @@ public class UniversityController {
         HttpHeaders headers = new HttpHeaders();
 
         String formattedEndpoint = String.format("%s", UNIVERSITY_ENDPOINT);
-        String getUniversitiesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getUniversities");
+        String getUniversitiesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint,
+                "getUniversitiesCollection");
 
         headers.add(HttpHeaders.LINK, getUniversitiesLink);
 
