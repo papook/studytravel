@@ -24,11 +24,11 @@ public class DispatcherController {
 				BASE_URI, MODULE_ENDPOINT);
 
 		String createUniversityLink = String.format(
-				"<%s%s>;rel=\"createUniversity\"",
+				"<%s%s>;rel=\"postCreateUniversity\"",
 				BASE_URI, UNIVERSITY_ENDPOINT);
 
 		String createModuleLink = String.format(
-				"<%s%s>;rel=\"createModule\"",
+				"<%s%s>;rel=\"postCreateModule\"",
 				BASE_URI, MODULE_ENDPOINT);
 
 		String[] links = {
