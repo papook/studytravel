@@ -70,11 +70,13 @@ public class UniversityController {
         String moduleUriTemplate = university.getModules().getPath() + "/{moduleId}";
         String linkModule = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "putLinkModule");
         String unlinkModule = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "delUnlinkModule");
+        String getModuleOfUniversity = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "getModuleOfUniversity");
 
         headers.add(HttpHeaders.LINK, updateLink);
         headers.add(HttpHeaders.LINK, deleteLink);
         headers.add(HttpHeaders.LINK, linkModule);
         headers.add(HttpHeaders.LINK, unlinkModule);
+        headers.add(HttpHeaders.LINK, getModuleOfUniversity);
 
         return ResponseEntity.ok()
                 .headers(headers)
