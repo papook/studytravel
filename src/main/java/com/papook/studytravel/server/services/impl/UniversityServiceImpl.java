@@ -7,6 +7,7 @@ import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPO
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.University;
+import com.papook.studytravel.server.repositories.StudyModuleRepository;
 import com.papook.studytravel.server.repositories.UniversityRepository;
 import com.papook.studytravel.server.services.UniversityService;
 import com.papook.studytravel.server.utils.IdGenerator;
@@ -27,6 +29,9 @@ public class UniversityServiceImpl implements UniversityService {
 
     @Autowired
     UniversityRepository repository;
+
+    @Autowired
+    StudyModuleRepository moduleRepository;
 
     /**
      * Retrieves all universities from the database.
@@ -118,8 +123,12 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void deleteUniversity(Long id) {
-        // TODO: Also delete all modules linked to the university
+        Set<Long> moduleIds = this.getUniversityById(id).getModuleIds();
+        // Delete all modules linked to the university
+        moduleRepository.deleteAllById(moduleIds);
+        // Mark the University ID as available
         idGenerator.markIdAvailable(id);
+        // Delete the university
         repository.deleteById(id);
     }
 
