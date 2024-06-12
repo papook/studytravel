@@ -182,7 +182,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         // Check if the university exists
         universityService.verifyExists(universityId);
         // Get the module
-        StudyModule module = getModuleById(universityId);
+        StudyModule module = getModuleById(moduleId);
         // Check if the module is linked to the university
         return module.getUniversityId() == universityId;
     }
