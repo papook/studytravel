@@ -1,5 +1,10 @@
 package com.papook.studytravel.server.models;
 
+import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
+import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
+
+import java.net.URI;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -22,7 +27,9 @@ import lombok.Setter;
 @Entity
 public class StudyModule {
     @Id
+    @Setter(AccessLevel.NONE)
     Long id;
+
     @NotNull
     String name;
     @NotNull
@@ -30,6 +37,8 @@ public class StudyModule {
     String semester;
     @NotNull
     Integer creditPoints;
+    @Setter(AccessLevel.NONE)
+    URI self;
     @JsonIgnore
     Long universityId;
 
@@ -43,6 +52,15 @@ public class StudyModule {
         // If the above line does not throw an exception, the given string is a valid
         // enum value
         this.semester = semester;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+        setSelf(id);
+    }
+
+    public void setSelf(Long id) {
+        this.self = URI.create(BASE_URI + MODULE_ENDPOINT + "/" + id);
     }
 
     /**

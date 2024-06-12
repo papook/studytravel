@@ -49,6 +49,8 @@ public class University {
     LocalDate fallSemesterStart;
     @Setter(AccessLevel.NONE)
     URI modules;
+    @Setter(AccessLevel.NONE)
+    URI self;
     @JsonIgnore
     Set<Long> moduleIds = new HashSet<>();
 
@@ -63,9 +65,14 @@ public class University {
     public void setId(Long id) {
         this.id = id;
         setModules(this.id);
+        setSelf(this.id);
     }
 
     public void setModules(Long id) {
         this.modules = URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + id + MODULE_ENDPOINT);
+    }
+
+    public void setSelf(Long id) {
+        this.self = URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + id);
     }
 }
