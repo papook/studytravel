@@ -1,7 +1,6 @@
 package com.papook.studytravel.server.services.impl;
 
 import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
-import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
 import static com.papook.studytravel.server.ServerConfiguration.PAGE_SIZE;
 import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
@@ -72,10 +71,6 @@ public class UniversityServiceImpl implements UniversityService {
         long newId = idGenerator.nextId();
         university.setId(newId);
 
-        // Set the modules URI
-        university.setModules(
-                URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + university.getId() + MODULE_ENDPOINT));
-
         University result = repository.save(university);
         URI location = URI
                 .create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + result.getId());
@@ -96,9 +91,6 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public Optional<URI> updateUniversity(Long id, University university) {
-        // Set the modules URI as it is not provided by the client
-        university.setModules(
-                URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + university.getId() + MODULE_ENDPOINT));
         try {
             this.verifyExists(id);
         } catch (UniversityNotFoundException e) {
