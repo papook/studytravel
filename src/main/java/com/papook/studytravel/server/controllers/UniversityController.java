@@ -58,8 +58,21 @@ public class UniversityController {
 
     @GetMapping("/{id}")
     public ResponseEntity<University> getOne(@PathVariable Long id) {
-        University universityOptional = universityService.getUniversityById(id);
-        return ResponseEntity.ok(universityOptional);
+        University university = universityService.getUniversityById(id);
+
+        HttpHeaders headers = new HttpHeaders();
+
+        String formattedEndpoint = String.format("%s/%d", UNIVERSITY_ENDPOINT, university.getId());
+        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "updateLink");
+
+        String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "deleteLink");
+
+        headers.add(HttpHeaders.LINK, updateLink);
+        headers.add(HttpHeaders.LINK, deleteLink);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(university);
     }
 
     @PostMapping
@@ -94,8 +107,17 @@ public class UniversityController {
             return ResponseEntity.created(location).body(entity);
 
         } else {
+            HttpHeaders headers = new HttpHeaders();
+
+            String formattedEndpoint = String.format("%s/%d", UNIVERSITY_ENDPOINT, id);
+            String getLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getUniversity");
+
+            headers.add(HttpHeaders.LINK, getLink);
+
             // Return a NO CONTENT status code
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent()
+                    .headers(headers)
+                    .build();
         }
 
     }
@@ -103,7 +125,16 @@ public class UniversityController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         universityService.deleteUniversity(id);
-        return ResponseEntity.noContent().build();
+        HttpHeaders headers = new HttpHeaders();
+
+        String formattedEndpoint = String.format("%s", UNIVERSITY_ENDPOINT);
+        String getUniversitiesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getUniversities");
+
+        headers.add(HttpHeaders.LINK, getUniversitiesLink);
+
+        return ResponseEntity.noContent()
+                .headers(headers)
+                .build();
     }
 
 }
