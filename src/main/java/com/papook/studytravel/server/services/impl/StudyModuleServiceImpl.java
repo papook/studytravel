@@ -6,7 +6,6 @@ import static com.papook.studytravel.server.ServerConfiguration.PAGE_SIZE;
 
 import java.net.URI;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,11 +54,24 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     }
 
     @Override
-    public Iterable<StudyModule> getModulesForUniversity(Long universityId) {
-        University result = universityService.getUniversityById(universityId)
+    public Page<StudyModule> getModulesForUniversity(
+            Long universityId,
+            String name,
+            String semester,
+            Integer page) {
+        // Check if the university exists and throw an exception if it doesn't
+        universityService.getUniversityById(universityId)
                 .orElseThrow(UniversityNotFoundException::new);
-        Set<Long> moduleIds = result.getModuleIds();
-        Iterable<StudyModule> modules = repository.findAllById(moduleIds);
+
+        // Create a pageable object
+        PageRequest pageable = PageRequest.of(page, PAGE_SIZE);
+        // Get the modules for the university
+        Page<StudyModule> modules = repository
+                .findAllByUniversityIdAndNameContainingAndSemesterContainingIgnoreCase(
+                        universityId,
+                        name,
+                        semester,
+                        pageable);
 
         return modules;
     }

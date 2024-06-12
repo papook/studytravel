@@ -24,7 +24,6 @@ import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
-import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.StudyModuleService;
 import com.papook.studytravel.server.services.UniversityService;
 import com.papook.studytravel.server.utils.HypermediaGenerator;
@@ -66,18 +65,24 @@ public class StudyModuleController {
     }
 
     @GetMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT)
-    public ResponseEntity<Iterable<StudyModule>> getCollectionOfUniversity(@PathVariable Long universityId) {
+    public ResponseEntity<Iterable<StudyModule>> getCollectionOfUniversity(
+            @PathVariable Long universityId,
+            @RequestParam(defaultValue = "") String name,
+            @RequestParam(defaultValue = "") String semester,
+            @RequestParam(defaultValue = "0") Integer page) {
         // TODO: Set up pagination and filtering
 
-        Optional<University> universityOptional = universityService.getUniversityById(universityId);
+        Page<StudyModule> studyModules = studyModuleService.getModulesForUniversity(
+                universityId,
+                name,
+                semester,
+                page);
 
-        if (universityOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+        HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(studyModules);
 
-        Iterable<StudyModule> studyModules = studyModuleService.getModulesForUniversity(universityId);
-
-        return ResponseEntity.ok(studyModules);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(studyModules.getContent());
     }
 
     @GetMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT + "/{moduleId}")

@@ -16,7 +16,11 @@ public interface StudyModuleService {
 
     public Optional<StudyModule> getModuleById(Long id);
 
-    public Iterable<StudyModule> getModulesForUniversity(Long universityId);
+    public Page<StudyModule> getModulesForUniversity(
+            Long universityId,
+            String name,
+            String semester,
+            Integer page);
 
     public URI createModule(StudyModule module);
 
