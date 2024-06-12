@@ -93,7 +93,8 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     @Override
     public URI createModule(StudyModule module) {
         module.setId(idGenerator.nextId());
-        URI location = this.createModule(module);
+        StudyModule savedModule = repository.save(module);
+        URI location = URI.create(BASE_URI + MODULE_ENDPOINT + "/" + savedModule.getId());
 
         return location;
     }
