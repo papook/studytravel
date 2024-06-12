@@ -124,7 +124,7 @@ public class StudyModuleController {
     }
 
     /**
-     * Updates a study module for a specific university.
+     * Links a study module to a specific university.
      */
     @PutMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT + "/{moduleId}")
     public ResponseEntity<Void> linkToUniversity(
