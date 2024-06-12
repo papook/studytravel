@@ -37,6 +37,9 @@ public class StudyModuleController {
     @Autowired
     private StudyModuleService studyModuleService;
 
+    @Autowired
+    private HypermediaGenerator hypermediaGenerator;
+
     @GetMapping(MODULE_ENDPOINT)
     public ResponseEntity<Iterable<StudyModule>> getCollection() {
         // TODO: Set up pagination and filtering
