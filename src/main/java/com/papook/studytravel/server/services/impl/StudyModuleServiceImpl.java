@@ -1,5 +1,7 @@
 package com.papook.studytravel.server.services.impl;
 
+import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
+import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
 import static com.papook.studytravel.server.ServerConfiguration.PAGE_SIZE;
 
 import java.net.URI;
@@ -103,8 +105,8 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         } catch (StudyModuleNotFoundException e) {
             // If the module does not exist, create a new module
             idGenerator.markIdUsed(id);
-            module.setId(id);
-            URI location = this.createModule(module);
+            StudyModule result = repository.save(module);
+            URI location = URI.create(BASE_URI + MODULE_ENDPOINT + "/" + result.getId());
             return Optional.of(location);
         }
         // If the module exists, update it

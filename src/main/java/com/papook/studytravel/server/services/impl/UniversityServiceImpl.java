@@ -91,13 +91,16 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public Optional<URI> updateUniversity(Long id, University university) {
+        // Set the modules URI as it is not provided by the client
+        university.setModules(
+                URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + university.getId() + MODULE_ENDPOINT));
         try {
             this.verifyExists(id);
         } catch (UniversityNotFoundException e) {
             // If the university does not exist, create a new university
             idGenerator.markIdUsed(id);
-            university.setId(id);
-            URI location = this.createUniversity(university);
+            University result = repository.save(university);
+            URI location = URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + result.getId());
             return Optional.of(location);
         }
 
