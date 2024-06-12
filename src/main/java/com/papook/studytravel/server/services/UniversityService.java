@@ -13,11 +13,13 @@ public interface UniversityService {
             String country,
             Integer page);
 
-    public Optional<University> getUniversityById(Long id);
+    public University getUniversityById(Long id);
 
     public URI createUniversity(University university);
 
     public Optional<URI> updateUniversity(Long id, University university);
 
     public void deleteUniversity(Long id);
+
+    public void verifyExists(Long id);
 }

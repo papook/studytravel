@@ -20,12 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
-import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
-import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.services.StudyModuleService;
-import com.papook.studytravel.server.services.UniversityService;
 import com.papook.studytravel.server.utils.HypermediaGenerator;
 
 import jakarta.validation.Valid;
@@ -33,9 +29,6 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping
 public class StudyModuleController {
-
-    @Autowired
-    private UniversityService universityService;
 
     @Autowired
     private StudyModuleService studyModuleService;
@@ -60,8 +53,8 @@ public class StudyModuleController {
 
     @GetMapping(MODULE_ENDPOINT + "/{id}")
     public ResponseEntity<StudyModule> getOne(@PathVariable Long id) {
-        Optional<StudyModule> studyModuleOptional = studyModuleService.getModuleById(id);
-        return ResponseEntity.of(studyModuleOptional);
+        StudyModule studyModuleOptional = studyModuleService.getModuleById(id);
+        return ResponseEntity.ok(studyModuleOptional);
     }
 
     @GetMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT)
@@ -70,8 +63,6 @@ public class StudyModuleController {
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "") String semester,
             @RequestParam(defaultValue = "0") Integer page) {
-        // TODO: Set up pagination and filtering
-
         Page<StudyModule> studyModules = studyModuleService.getModulesForUniversity(
                 universityId,
                 name,
@@ -89,16 +80,17 @@ public class StudyModuleController {
     public ResponseEntity<StudyModule> getOneOfUniversity(
             @PathVariable Long universityId,
             @PathVariable Long moduleId) {
-        // Check if the university exists
-        universityService.getUniversityById(universityId)
-                .orElseThrow(UniversityNotFoundException::new);
-        // Check if the module exists
-        StudyModule studyModule = studyModuleService.getModuleById(moduleId)
-                .orElseThrow(StudyModuleNotFoundException::new);
-        // Check if the module is linked to the university
-        if (!studyModuleService.isModuleLinkedToUniversity(moduleId, universityId)) {
-            throw new ModuleNotLinkedToUniException();
-        }
+        StudyModule studyModule = studyModuleService.getModuleForUniversity(universityId, moduleId);
+
+        HttpHeaders headers = new HttpHeaders();
+
+        String updateLink = String.format("/%s/%d", MODULE_ENDPOINT, studyModule.getId());
+        updateLink = HypermediaGenerator.formatLinkHeader(updateLink, "updateLink");
+
+        String deleteLink = String.format("/%s/%d", MODULE_ENDPOINT, studyModule.getId());
+        deleteLink = HypermediaGenerator.formatLinkHeader(deleteLink, "deleteLink");
+
+        headers.add(HttpHeaders.LINK, updateLink);
 
         return ResponseEntity.ok(studyModule);
     }

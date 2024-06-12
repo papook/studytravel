@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.repositories.UniversityRepository;
 import com.papook.studytravel.server.services.UniversityService;
@@ -49,8 +50,8 @@ public class UniversityServiceImpl implements UniversityService {
      *         university does not exist.
      */
     @Override
-    public Optional<University> getUniversityById(Long id) {
-        Optional<University> result = repository.findById(id);
+    public University getUniversityById(Long id) {
+        University result = repository.findById(id).orElseThrow(UniversityNotFoundException::new);
         return result;
     }
 
@@ -90,17 +91,20 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public Optional<URI> updateUniversity(Long id, University university) {
-        Optional<University> existing = repository.findById(id);
-        if (existing.isPresent()) {
-            repository.save(university);
-            return Optional.empty();
-        } else {
+        try {
+            this.verifyExists(id);
+        } catch (UniversityNotFoundException e) {
+            // If the university does not exist, create a new university
             idGenerator.markIdUsed(id);
             university.setId(id);
-            University result = repository.save(university);
-            URI location = URI.create(BASE_URI + UNIVERSITY_ENDPOINT + "/" + result.getId());
+            URI location = this.createUniversity(university);
             return Optional.of(location);
         }
+
+        // If the university exists, update it
+        repository.save(university);
+        return Optional.empty();
+
     }
 
     /**
@@ -111,8 +115,23 @@ public class UniversityServiceImpl implements UniversityService {
      */
     @Override
     public void deleteUniversity(Long id) {
+        // TODO: Also delete all modules linked to the university
         idGenerator.markIdAvailable(id);
         repository.deleteById(id);
+    }
+
+    /**
+     * Verifies that a university with the given ID exists. If it does not, throws a
+     * UniversityNotFoundException. Otherwise, exits normally.
+     *
+     * @param id The ID of the university to verify.
+     * @throws UniversityNotFoundException if the university does not exist.
+     */
+    @Override
+    public void verifyExists(Long id) {
+        if (!repository.existsById(id)) {
+            throw new UniversityNotFoundException();
+        }
     }
 
 }

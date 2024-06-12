@@ -14,7 +14,7 @@ public interface StudyModuleService {
             String semester,
             Integer page);
 
-    public Optional<StudyModule> getModuleById(Long id);
+    public StudyModule getModuleById(Long id);
 
     public Page<StudyModule> getModulesForUniversity(
             Long universityId,
@@ -22,11 +22,15 @@ public interface StudyModuleService {
             String semester,
             Integer page);
 
+    public StudyModule getModuleForUniversity(Long universityId, Long moduleId);
+
     public URI createModule(StudyModule module);
 
     public Optional<URI> updateModule(Long id, StudyModule module);
 
     public void deleteModule(Long id);
+
+    public void verifyExists(Long id);
 
     public void linkModuleToUniversity(Long moduleId, Long universityId);
 

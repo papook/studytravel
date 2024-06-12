@@ -58,8 +58,8 @@ public class UniversityController {
 
     @GetMapping("/{id}")
     public ResponseEntity<University> getOne(@PathVariable Long id) {
-        Optional<University> universityOptional = universityService.getUniversityById(id);
-        return ResponseEntity.of(universityOptional);
+        University universityOptional = universityService.getUniversityById(id);
+        return ResponseEntity.ok(universityOptional);
     }
 
     @PostMapping

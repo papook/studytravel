@@ -119,7 +119,7 @@ public class HypermediaGenerator {
         // Create a new HttpHeaders object to hold the link headers
         HttpHeaders headers = new HttpHeaders();
         // Add the link headers to the HttpHeaders object
-        headers.addAll("Link", linksArray);
+        headers.addAll(HttpHeaders.LINK, linksArray);
 
         return headers;
     }

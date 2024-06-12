@@ -4,6 +4,7 @@ import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
 import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
 import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class DispatcherController {
 		String[] links = { getUniversitiesCollectionLink, getModulesCollectionLink };
 
 		return ResponseEntity.ok()
-				.header("Link", links)
+				.header(HttpHeaders.LINK, links)
 				.build();
 	}
 }
