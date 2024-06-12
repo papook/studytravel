@@ -33,7 +33,7 @@ public class UniversityController {
     private UniversityService universityService;
 
     @Autowired
-    private HypermediaGenerator pagingLinkBuilder;
+    private HypermediaGenerator hypermediaGenerator;
 
     // TODO: Add Hypermedia links to the response headers
 
@@ -48,7 +48,7 @@ public class UniversityController {
         Page<University> universitiesPage = universityService.getUniversities(name, country, page);
 
         List<University> responseBody = universitiesPage.getContent();
-        HttpHeaders headers = pagingLinkBuilder.buildPagingLinksHeaders(universitiesPage);
+        HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(universitiesPage);
 
         return ResponseEntity.ok()
                 .headers(headers)
