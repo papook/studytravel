@@ -35,8 +35,6 @@ public class UniversityController {
     @Autowired
     private HypermediaGenerator hypermediaGenerator;
 
-    // TODO: Add Hypermedia links to the response headers
-
     @GetMapping
     public ResponseEntity<Iterable<University>> getCollection(
             @RequestParam(defaultValue = "") String name,

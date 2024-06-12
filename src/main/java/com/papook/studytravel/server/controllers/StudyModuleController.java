@@ -53,8 +53,20 @@ public class StudyModuleController {
 
     @GetMapping(MODULE_ENDPOINT + "/{id}")
     public ResponseEntity<StudyModule> getOne(@PathVariable Long id) {
-        StudyModule studyModuleOptional = studyModuleService.getModuleById(id);
-        return ResponseEntity.ok(studyModuleOptional);
+        StudyModule studyModule = studyModuleService.getModuleById(id);
+
+        HttpHeaders headers = new HttpHeaders();
+
+        String formattedEndpoint = String.format("%s/%d", MODULE_ENDPOINT, id);
+        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "updateModule");
+        String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "deleteModule");
+
+        headers.add(HttpHeaders.LINK, updateLink);
+        headers.add(HttpHeaders.LINK, deleteLink);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(studyModule);
     }
 
     @GetMapping(UNIVERSITY_ENDPOINT + "/{universityId}" + MODULE_ENDPOINT)
@@ -84,15 +96,18 @@ public class StudyModuleController {
 
         HttpHeaders headers = new HttpHeaders();
 
-        String updateLink = String.format("/%s/%d", MODULE_ENDPOINT, studyModule.getId());
-        updateLink = HypermediaGenerator.formatLinkHeader(updateLink, "updateLink");
+        String updateLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
+        updateLink = HypermediaGenerator.formatLinkHeader(updateLink, "updateModule");
 
-        String deleteLink = String.format("/%s/%d", MODULE_ENDPOINT, studyModule.getId());
-        deleteLink = HypermediaGenerator.formatLinkHeader(deleteLink, "deleteLink");
+        String deleteLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
+        deleteLink = HypermediaGenerator.formatLinkHeader(deleteLink, "deleteModule");
 
         headers.add(HttpHeaders.LINK, updateLink);
+        headers.add(HttpHeaders.LINK, deleteLink);
 
-        return ResponseEntity.ok(studyModule);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(studyModule);
     }
 
     @PostMapping(MODULE_ENDPOINT)
@@ -113,6 +128,12 @@ public class StudyModuleController {
         if (isModuleCreated) {
             return ResponseEntity.created(locationOptional.get()).body(entity);
         } else {
+            HttpHeaders headers = new HttpHeaders();
+
+            String formattedEndpoint = String.format("%s/%d", MODULE_ENDPOINT, id);
+            String getModuleLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getSelf");
+
+            headers.add(HttpHeaders.LINK, getModuleLink);
             return ResponseEntity.noContent().build();
         }
     }
@@ -132,7 +153,15 @@ public class StudyModuleController {
             @PathVariable Long moduleId) {
         studyModuleService.linkModuleToUniversity(moduleId, universityId);
 
-        return ResponseEntity.noContent().build();
+        HttpHeaders headers = new HttpHeaders();
+        String formattedEndpoint = String.format("%s/%d/%s", UNIVERSITY_ENDPOINT, universityId, MODULE_ENDPOINT);
+        String getModulesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getModulesOfUniversity");
+
+        headers.add(HttpHeaders.LINK, getModulesLink);
+
+        return ResponseEntity.noContent()
+                .headers(headers)
+                .build();
     }
 
     /**
@@ -144,6 +173,14 @@ public class StudyModuleController {
             @PathVariable Long moduleId) {
         studyModuleService.unlinkModuleFromUniversity(moduleId, universityId);
 
-        return ResponseEntity.noContent().build();
+        HttpHeaders headers = new HttpHeaders();
+        String formattedEndpoint = String.format("%s/%d/%s", UNIVERSITY_ENDPOINT, universityId, MODULE_ENDPOINT);
+        String getModulesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getModulesOfUniversity");
+
+        headers.add(HttpHeaders.LINK, getModulesLink);
+
+        return ResponseEntity.noContent()
+                .headers(headers)
+                .build();
     }
 }
