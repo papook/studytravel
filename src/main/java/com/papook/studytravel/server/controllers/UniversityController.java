@@ -118,7 +118,7 @@ public class UniversityController {
             HttpHeaders headers = new HttpHeaders();
 
             String formattedEndpoint = String.format("%s/%d", UNIVERSITY_ENDPOINT, id);
-            String getLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getUniversity");
+            String getLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getSelf");
 
             headers.add(HttpHeaders.LINK, getLink);
 
