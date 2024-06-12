@@ -9,7 +9,7 @@ import com.papook.studytravel.server.models.StudyModule;
 
 @Repository
 public interface StudyModuleRepository extends CrudRepository<StudyModule, Long> {
-    public Page<StudyModule> findByNameContainingAndSemesterIgnoreCase(
+    public Page<StudyModule> findByNameContainingAndSemesterContainingIgnoreCase(
             String name,
             String semester,
             Pageable pageable);
