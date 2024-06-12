@@ -13,4 +13,10 @@ public interface StudyModuleRepository extends CrudRepository<StudyModule, Long>
             String name,
             String semester,
             Pageable pageable);
+
+    public Page<StudyModule> findAllByUniversityIdAndNameContainingAndSemesterContainingIgnoreCase(
+            Long universityId,
+            String name,
+            String semester,
+            Pageable pageable);
 }
