@@ -60,7 +60,7 @@ public class HypermediaGenerator {
         Map<String, String> links = new HashMap<>();
 
         // Get the current request URL
-        StringBuffer requestURL = servletRequest.getRequestURL();
+        StringBuilder requestURL = new StringBuilder(servletRequest.getRequestURI());
         // Get the query string from the current request
         String queryString = servletRequest.getQueryString();
 
