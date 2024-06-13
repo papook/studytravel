@@ -32,11 +32,6 @@ public class UniversityServiceImpl implements UniversityService {
     @Autowired
     StudyModuleRepository moduleRepository;
 
-    /**
-     * Retrieves all universities from the database.
-     *
-     * @return An iterable collection of universities.
-     */
     @Override
     public Page<University> getUniversities(
             String name,
@@ -46,25 +41,12 @@ public class UniversityServiceImpl implements UniversityService {
         return repository.findByNameContainingAndCountryContainingIgnoreCase(name, country, pageRequest);
     }
 
-    /**
-     * Retrieves a university by its ID from the database.
-     *
-     * @param id The ID of the university to retrieve.
-     * @return An optional containing the university, or an empty optional if the
-     *         university does not exist.
-     */
     @Override
     public University getUniversityById(Long id) {
         University result = repository.findById(id).orElseThrow(UniversityNotFoundException::new);
         return result;
     }
 
-    /**
-     * Creates a new university in the database.
-     *
-     * @param university The university object to create.
-     * @return The URI representing the location of the newly created university.
-     */
     @Override
     public URI createUniversity(University university) {
         // Generate a new ID for the university
@@ -77,18 +59,6 @@ public class UniversityServiceImpl implements UniversityService {
         return location;
     }
 
-    /**
-     * If the university with the given id exists, update it with the given
-     * university and return an empty optional.
-     * Otherwise, create a new university and return an optional containing the URI
-     * of the new university.
-     *
-     * @param id         The ID of the university to update.
-     * @param university The university object.
-     * @return An optional URI representing the location of the newly created
-     *         university, or an empty optional if the university already exists and
-     *         was updated.
-     */
     @Override
     public Optional<URI> updateUniversity(Long id, University university) {
         try {
@@ -107,12 +77,6 @@ public class UniversityServiceImpl implements UniversityService {
 
     }
 
-    /**
-     * Deletes a university from the database.
-     *
-     * @param id The ID of the university to delete.
-     * @throws IllegalArgumentException if the university does not exist.
-     */
     @Override
     public void deleteUniversity(Long id) {
         Set<Long> moduleIds = this.getUniversityById(id).getModuleIds();
@@ -124,13 +88,6 @@ public class UniversityServiceImpl implements UniversityService {
         repository.deleteById(id);
     }
 
-    /**
-     * Verifies that a university with the given ID exists. If it does not, throws a
-     * UniversityNotFoundException. Otherwise, exits normally.
-     *
-     * @param id The ID of the university to verify.
-     * @throws UniversityNotFoundException if the university does not exist.
-     */
     @Override
     public void verifyExists(Long id) {
         if (!repository.existsById(id)) {
