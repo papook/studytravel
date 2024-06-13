@@ -35,6 +35,8 @@ public class HypermediaGenerator {
      *                    the base URL.
      * @param rel         Relation of the link header.
      * @return Formatted link header as a string.
+     * 
+     * @author papook
      */
     public static String formatLinkHeader(String relativeUri, String rel) {
         StringBuilder linkHeader = new StringBuilder();
@@ -54,6 +56,11 @@ public class HypermediaGenerator {
      * 
      * @param page Page object of results.
      * @return HttpHeaders object containing the formatted link headers.
+     * 
+     * @see org.springframework.data.domain.Page
+     * @see org.springframework.http.HttpHeaders
+     * 
+     * @author papook
      */
     public HttpHeaders buildPagingLinksHeaders(Page<?> page) {
         // Initialize a map to hold the paging links
@@ -130,6 +137,8 @@ public class HypermediaGenerator {
      * @param links A map containing link relations (e.g., self, prev, next) and
      *              their corresponding URIs.
      * @return An array of link headers.
+     * 
+     * @author papook
      */
     private List<String> buildLinkHeaders(Map<String, String> links) {
 
