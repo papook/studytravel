@@ -13,6 +13,9 @@ import com.papook.studytravel.server.models.University;
 /**
  * Service interface for university operations.
  * 
+ * This interface defines methods for creating, reading, updating, and deleting
+ * universities in the database.
+ * 
  * @see com.papook.studytravel.server.models.University
  * @see org.springframework.data.domain.Page
  * @see java.net.URI
