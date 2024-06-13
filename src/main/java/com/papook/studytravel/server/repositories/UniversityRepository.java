@@ -9,7 +9,7 @@ import com.papook.studytravel.server.models.University;
 
 @Repository
 public interface UniversityRepository extends CrudRepository<University, Long> {
-    public Page<University> findByNameContainingAndCountryContaining(
+    public Page<University> findByNameContainingAndCountryContainingIgnoreCase(
             String name,
             String country,
             Pageable pageable);

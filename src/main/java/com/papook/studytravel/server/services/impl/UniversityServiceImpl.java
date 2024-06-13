@@ -43,7 +43,7 @@ public class UniversityServiceImpl implements UniversityService {
             String country,
             Integer page) {
         PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
-        return repository.findByNameContainingAndCountryContaining(name, country, pageRequest);
+        return repository.findByNameContainingAndCountryContainingIgnoreCase(name, country, pageRequest);
     }
 
     /**
