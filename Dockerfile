@@ -1,8 +1,20 @@
-# This Dockerfile is used to build a Docker image for a Spring Boot application.
-# It starts with the openjdk:17-jdk-alpine base image as it is a 
-# lightweight image that contains the Java Development Kit (JDK) 
-# and the Alpine Linux operating system.
+# # This Dockerfile is used to build a Docker image for a Spring Boot application.
+# # It starts with the openjdk:17-jdk-alpine base image as it is a 
+# # lightweight image that contains the Java Development Kit (JDK) 
+# # and the Alpine Linux operating system.
 
+# Use a Maven image to build the application
+FROM maven:3.8.4-openjdk-17-slim AS build
+WORKDIR /app
+
+# Copy the project descriptor files
+COPY pom.xml .
+COPY src src
+
+# Build the application with Maven wrapper
+RUN mvn clean package -DskipTests
+
+# Use Alpine OpenJDK image as the base image for runtime
 FROM openjdk:17-jdk-alpine
 
 # Create a user and group named "spring" to run the application with restricted privileges.
@@ -23,7 +35,7 @@ ENV SERVER_PORT=8080
 EXPOSE 8080
 
 # Copy the JAR file of the Spring Boot application to the Docker image
-COPY target/*.jar app.jar
+COPY --from=build /app/target/studytravel.jar app.jar
 
 # Run the Spring Boot application when the Docker container starts
 ENTRYPOINT ["java", "-jar", "/app.jar"]
