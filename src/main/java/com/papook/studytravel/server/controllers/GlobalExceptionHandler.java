@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.papook.studytravel.server.errors.ErrorMessage;
+import com.papook.studytravel.server.errors.IdMismatchException;
 import com.papook.studytravel.server.errors.ModuleLinkedToOtherUniversityException;
 import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
@@ -78,6 +79,13 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorMessage> handleException(ModuleLinkedToOtherUniversityException ex) {
 		String message = "The requested study module is linked to another university. " +
 				"Consider unlinking the module from the other university first.";
+
+		return buildResponse(HttpStatus.BAD_REQUEST, message);
+	}
+
+	@ExceptionHandler(IdMismatchException.class)
+	public ResponseEntity<ErrorMessage> handleException(IdMismatchException ex) {
+		String message = "The ID provided in the request body does not match the ID in the URL.";
 
 		return buildResponse(HttpStatus.BAD_REQUEST, message);
 	}
