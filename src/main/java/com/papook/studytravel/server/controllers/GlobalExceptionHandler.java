@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.papook.studytravel.server.errors.ErrorMessage;
 import com.papook.studytravel.server.errors.IdMismatchException;
-import com.papook.studytravel.server.errors.ModuleLinkedToOtherUniversityException;
-import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
+import com.papook.studytravel.server.errors.ModuleTakenException;
+import com.papook.studytravel.server.errors.ModuleNotLinkedException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
 
@@ -68,15 +68,15 @@ public class GlobalExceptionHandler {
 		return buildResponse(HttpStatus.NOT_FOUND, message);
 	}
 
-	@ExceptionHandler(ModuleNotLinkedToUniException.class)
-	public ResponseEntity<ErrorMessage> handleException(ModuleNotLinkedToUniException ex) {
+	@ExceptionHandler(ModuleNotLinkedException.class)
+	public ResponseEntity<ErrorMessage> handleException(ModuleNotLinkedException ex) {
 		String message = "The requested study module is not linked to this university.";
 
 		return buildResponse(HttpStatus.BAD_REQUEST, message);
 	}
 
-	@ExceptionHandler(ModuleLinkedToOtherUniversityException.class)
-	public ResponseEntity<ErrorMessage> handleException(ModuleLinkedToOtherUniversityException ex) {
+	@ExceptionHandler(ModuleTakenException.class)
+	public ResponseEntity<ErrorMessage> handleException(ModuleTakenException ex) {
 		String message = "The requested study module is linked to another university. " +
 				"Consider unlinking the module from the other university first.";
 

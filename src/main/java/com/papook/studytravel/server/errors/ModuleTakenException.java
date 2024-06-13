@@ -6,6 +6,6 @@ package com.papook.studytravel.server.errors;
  * 
  * @author papook
  */
-public class ModuleLinkedToOtherUniversityException extends RuntimeException {
+public class ModuleTakenException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 }

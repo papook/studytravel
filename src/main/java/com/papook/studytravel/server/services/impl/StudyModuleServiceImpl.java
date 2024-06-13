@@ -13,8 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.papook.studytravel.server.errors.ModuleLinkedToOtherUniversityException;
-import com.papook.studytravel.server.errors.ModuleNotLinkedToUniException;
+import com.papook.studytravel.server.errors.ModuleTakenException;
+import com.papook.studytravel.server.errors.ModuleNotLinkedException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.models.University;
@@ -84,7 +84,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
 
         // Check if the module is linked to the university
         if (!isModuleLinkedToUniversity(moduleId, universityId)) {
-            throw new ModuleNotLinkedToUniException();
+            throw new ModuleNotLinkedException();
         }
 
         return module;
@@ -147,7 +147,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         StudyModule module = this.getModuleById(moduleId);
 
         if (!canModuleBeLinked(moduleId, universityId)) {
-            throw new ModuleLinkedToOtherUniversityException();
+            throw new ModuleTakenException();
         }
 
         university.addModule(moduleId);
@@ -166,7 +166,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         StudyModule module = this.getModuleById(moduleId);
 
         if (!isModuleLinkedToUniversity(moduleId, universityId)) {
-            throw new ModuleNotLinkedToUniException();
+            throw new ModuleNotLinkedException();
         }
 
         university.removeModule(moduleId);

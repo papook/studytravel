@@ -6,6 +6,6 @@ package com.papook.studytravel.server.errors;
  * 
  * @author papook
  */
-public class ModuleNotLinkedToUniException extends RuntimeException {
+public class ModuleNotLinkedException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 }
