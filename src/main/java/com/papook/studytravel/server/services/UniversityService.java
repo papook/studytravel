@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
+import com.papook.studytravel.server.ServerConfiguration;
 import com.papook.studytravel.server.errors.IdMismatchException;
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
 import com.papook.studytravel.server.models.University;
@@ -27,7 +28,8 @@ public interface UniversityService {
      * 
      * @param name    The university name to search for.
      * @param country The country name to search for.
-     * @param page    The page number to retrieve.
+     * @param page    The page number to retrieve. The page number is zero-based and
+     *                the size is defined in {@link ServerConfiguration}.
      * 
      * @return A page of universities that match the search criteria.
      * 
