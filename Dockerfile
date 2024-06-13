@@ -19,7 +19,7 @@ ENV SPRING_DATASOURCE_USERNAME=sa
 ENV SPRING_DATASOURCE_PASSWORD=
 ENV SERVER_PORT=8080
 
-# Expose port 80 to allow external access to the Spring Boot application
+# Expose port 8080 to allow external access to the Spring Boot application
 EXPOSE 8080
 
 # Copy the JAR file of the Spring Boot application to the Docker image
