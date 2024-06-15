@@ -1,6 +1,5 @@
 package com.papook.studytravel.server.controllers;
 
-import static com.papook.studytravel.server.ServerConfiguration.BASE_URI;
 import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
 import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
 
@@ -10,26 +9,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.papook.studytravel.server.utils.HypermediaGenerator;
+
 @RestController
 @RequestMapping("")
 public class DispatcherController {
 	@GetMapping({ "", "/" })
 	public ResponseEntity<Void> getDispatcher() {
-		String getUniversitiesCollectionLink = String.format(
-				"<%s%s>;rel=\"getUniversitiesCollection\"",
-				BASE_URI, UNIVERSITY_ENDPOINT);
-
-		String getModulesCollectionLink = String.format(
-				"<%s%s>;rel=\"getModulesCollection\"",
-				BASE_URI, MODULE_ENDPOINT);
-
-		String createUniversityLink = String.format(
-				"<%s%s>;rel=\"postCreateUniversity\"",
-				BASE_URI, UNIVERSITY_ENDPOINT);
-
-		String createModuleLink = String.format(
-				"<%s%s>;rel=\"postCreateModule\"",
-				BASE_URI, MODULE_ENDPOINT);
+		String getUniversitiesCollectionLink = HypermediaGenerator.formatLinkHeader(
+				UNIVERSITY_ENDPOINT, "getUniversitiesCollection");
+		String getModulesCollectionLink = HypermediaGenerator.formatLinkHeader(
+				MODULE_ENDPOINT, "getModulesCollection");
+		String createUniversityLink = HypermediaGenerator.formatLinkHeader(
+				UNIVERSITY_ENDPOINT, "postCreateUniversity");
+		String createModuleLink = HypermediaGenerator.formatLinkHeader(
+				MODULE_ENDPOINT, "postCreateModule");
 
 		String[] links = {
 				getUniversitiesCollectionLink,
