@@ -6,6 +6,9 @@ package com.papook.studytravel.server;
  */
 public class ServerConfiguration {
 
+    private ServerConfiguration() {
+    }
+
     /**
      * The port number on which the server is running.
      */
