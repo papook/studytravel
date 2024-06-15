@@ -58,8 +58,8 @@ public class StudyModuleController {
         HttpHeaders headers = new HttpHeaders();
 
         String formattedEndpoint = String.format("%s/%d", MODULE_ENDPOINT, id);
-        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "updateModule");
-        String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "deleteModule");
+        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "putUpdateModule");
+        String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "delModule");
 
         headers.add(HttpHeaders.LINK, updateLink);
         headers.add(HttpHeaders.LINK, deleteLink);
