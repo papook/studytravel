@@ -65,7 +65,7 @@ public class UniversityControllerTest {
 				.andExpectAll(
 						// Test the status code, content type, and JSON object count
 						status().isOk(),
-						header().string("Content-Type", "application/json"),
+						content().contentType("application/json"),
 						jsonPath("$.length()").value(universityCount),
 						content().json(objectMapper.writeValueAsString(universityList)))
 				.andReturn()
@@ -102,7 +102,7 @@ public class UniversityControllerTest {
 								delUnlinkModuleLinkHeader,
 								getModuleOfUniversityLinkHeader),
 						status().isOk(),
-						header().string("Content-Type", "application/json"),
+						content().contentType("application/json"),
 						jsonPath("$").exists(),
 						content().json(expectedJSON))
 				.andReturn()
@@ -127,8 +127,8 @@ public class UniversityControllerTest {
 						// Test the status code, Location header, Content-Type, and JSON object
 						status().isCreated(),
 						header().string("Location", location.toString()),
-						header().string("Content-Type", "application/json"),
 						header().doesNotExist("Link"),
+						content().contentType("application/json"),
 						jsonPath("$").exists(),
 						content().json(expectedJSON))
 				.andReturn()
@@ -154,8 +154,8 @@ public class UniversityControllerTest {
 						// Test the status code, Location header, Content-Type, and JSON object
 						status().isCreated(),
 						header().string("Location", locationOptional.get().toString()),
-						header().string("Content-Type", "application/json"),
 						header().doesNotExist("Link"),
+						content().contentType("application/json"),
 						jsonPath("$").exists(),
 						content().json(expectedJSON))
 				.andReturn()
@@ -171,7 +171,7 @@ public class UniversityControllerTest {
 						.content(universityJson1)
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpectAll(
-						// Test the status code, Location header, Content-Type, and JSON object
+						// Test the status code, Location header, and JSON object
 						status().isNoContent(),
 						header().doesNotExist("Location"),
 						header().string("Link", getSelfHeaderLink),
