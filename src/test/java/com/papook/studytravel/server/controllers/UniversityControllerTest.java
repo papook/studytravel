@@ -66,9 +66,7 @@ public class UniversityControllerTest {
 						status().isOk(),
 						content().contentType("application/json"),
 						jsonPath("$.length()").value(universityCount),
-						content().json(expectedJSON))
-				.andReturn()
-				.getResponse();
+						content().json(expectedJSON));
 	}
 
 	@Test
@@ -103,9 +101,7 @@ public class UniversityControllerTest {
 						status().isOk(),
 						content().contentType("application/json"),
 						jsonPath("$").exists(),
-						content().json(expectedJSON))
-				.andReturn()
-				.getResponse();
+						content().json(expectedJSON));
 	}
 
 	@Test
@@ -129,9 +125,7 @@ public class UniversityControllerTest {
 						header().doesNotExist("Link"),
 						content().contentType("application/json"),
 						jsonPath("$").exists(),
-						content().json(expectedJSON))
-				.andReturn()
-				.getResponse();
+						content().json(expectedJSON));
 	}
 
 	@Test
@@ -156,9 +150,7 @@ public class UniversityControllerTest {
 						header().doesNotExist("Link"),
 						content().contentType("application/json"),
 						jsonPath("$").exists(),
-						content().json(expectedJSON))
-				.andReturn()
-				.getResponse();
+						content().json(expectedJSON));
 
 		// Test updating an existing University with a PUT request
 		when(universityService.updateUniversity(1L, universityObject))
@@ -174,9 +166,7 @@ public class UniversityControllerTest {
 						status().isNoContent(),
 						header().doesNotExist("Location"),
 						header().string("Link", getSelfHeaderLink),
-						jsonPath("$").doesNotExist())
-				.andReturn()
-				.getResponse();
+						jsonPath("$").doesNotExist());
 	}
 
 	@Test
@@ -188,10 +178,7 @@ public class UniversityControllerTest {
 						// Test the status code, Content-Length, and Link header
 						status().isNoContent(),
 						header().string("Link", getUniversitiesCollectionHeaderLink),
-						jsonPath("$").doesNotExist())
-				.andReturn()
-				.getResponse();
-		;
+						jsonPath("$").doesNotExist());
 	}
 
 	private static String generateUniversityJsonWithID(int id) {
