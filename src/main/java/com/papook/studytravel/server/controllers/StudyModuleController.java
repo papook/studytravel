@@ -142,8 +142,15 @@ public class StudyModuleController {
 
     @DeleteMapping(MODULE_ENDPOINT + "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        String getModulesCollectionLink = HypermediaGenerator.formatLinkHeader(MODULE_ENDPOINT, "getModulesCollection");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.LINK, getModulesCollectionLink);
+
         studyModuleService.deleteModule(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .headers(headers)
+                .build();
     }
 
     /**
