@@ -97,10 +97,10 @@ public class StudyModuleController {
         HttpHeaders headers = new HttpHeaders();
 
         String updateLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
-        updateLink = HypermediaGenerator.formatLinkHeader(updateLink, "updateModule");
+        updateLink = HypermediaGenerator.formatLinkHeader(updateLink, "putUpdateModule");
 
         String deleteLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
-        deleteLink = HypermediaGenerator.formatLinkHeader(deleteLink, "deleteModule");
+        deleteLink = HypermediaGenerator.formatLinkHeader(deleteLink, "delModule");
 
         headers.add(HttpHeaders.LINK, updateLink);
         headers.add(HttpHeaders.LINK, deleteLink);
