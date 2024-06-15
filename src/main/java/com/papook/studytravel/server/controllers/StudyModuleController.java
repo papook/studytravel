@@ -134,7 +134,9 @@ public class StudyModuleController {
             String getModuleLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getSelf");
 
             headers.add(HttpHeaders.LINK, getModuleLink);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent()
+                    .headers(headers)
+                    .build();
         }
     }
 
