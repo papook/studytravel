@@ -21,7 +21,7 @@ public class DispatcherControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    public void shouldReturnHypermediaLinks() throws Exception {
+    public void testHypermediaLinks() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/")).andReturn();
 
         String getUniversitiesCollection = String.format(
@@ -50,7 +50,7 @@ public class DispatcherControllerTest {
     }
 
     @Test
-    public void shouldReturnEmptyBody() throws Exception {
+    public void testReturnEmptyBody() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/")).andReturn();
 
         String content = mvcResult.getResponse().getContentAsString();
@@ -58,7 +58,7 @@ public class DispatcherControllerTest {
     }
 
     @Test
-    public void shouldReturnStatusOk() throws Exception {
+    public void testReturnStatusOk() throws Exception {
         MvcResult mvcResult = mockMvc.perform(get("/")).andReturn();
 
         int status = mvcResult.getResponse().getStatus();
