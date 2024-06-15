@@ -184,7 +184,7 @@ public class StudyModuleController {
         studyModuleService.unlinkModuleFromUniversity(moduleId, universityId);
 
         HttpHeaders headers = new HttpHeaders();
-        String formattedEndpoint = String.format("%s/%d/%s", UNIVERSITY_ENDPOINT, universityId, MODULE_ENDPOINT);
+        String formattedEndpoint = String.format("%s/%d%s", UNIVERSITY_ENDPOINT, universityId, MODULE_ENDPOINT);
         String getModulesLink = formatLinkHeader(formattedEndpoint, "getModulesOfUniversity");
 
         headers.add(HttpHeaders.LINK, getModulesLink);
