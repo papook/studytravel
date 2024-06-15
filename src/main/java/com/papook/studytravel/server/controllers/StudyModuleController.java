@@ -2,6 +2,7 @@ package com.papook.studytravel.server.controllers;
 
 import static com.papook.studytravel.server.ServerConfiguration.MODULE_ENDPOINT;
 import static com.papook.studytravel.server.ServerConfiguration.UNIVERSITY_ENDPOINT;
+import static com.papook.studytravel.server.utils.HypermediaGenerator.formatLinkHeader;
 
 import java.net.URI;
 import java.util.Optional;
@@ -58,8 +59,8 @@ public class StudyModuleController {
         HttpHeaders headers = new HttpHeaders();
 
         String formattedEndpoint = String.format("%s/%d", MODULE_ENDPOINT, id);
-        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "putUpdateModule");
-        String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "delModule");
+        String updateLink = formatLinkHeader(formattedEndpoint, "putUpdateModule");
+        String deleteLink = formatLinkHeader(formattedEndpoint, "delModule");
 
         headers.add(HttpHeaders.LINK, updateLink);
         headers.add(HttpHeaders.LINK, deleteLink);
@@ -97,10 +98,10 @@ public class StudyModuleController {
         HttpHeaders headers = new HttpHeaders();
 
         String updateLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
-        updateLink = HypermediaGenerator.formatLinkHeader(updateLink, "putUpdateModule");
+        updateLink = formatLinkHeader(updateLink, "putUpdateModule");
 
         String deleteLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
-        deleteLink = HypermediaGenerator.formatLinkHeader(deleteLink, "delModule");
+        deleteLink = formatLinkHeader(deleteLink, "delModule");
 
         headers.add(HttpHeaders.LINK, updateLink);
         headers.add(HttpHeaders.LINK, deleteLink);
@@ -131,7 +132,7 @@ public class StudyModuleController {
             HttpHeaders headers = new HttpHeaders();
 
             String formattedEndpoint = String.format("%s/%d", MODULE_ENDPOINT, id);
-            String getModuleLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getSelf");
+            String getModuleLink = formatLinkHeader(formattedEndpoint, "getSelf");
 
             headers.add(HttpHeaders.LINK, getModuleLink);
             return ResponseEntity.noContent()
@@ -142,7 +143,7 @@ public class StudyModuleController {
 
     @DeleteMapping(MODULE_ENDPOINT + "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        String getModulesCollectionLink = HypermediaGenerator.formatLinkHeader(MODULE_ENDPOINT, "getModulesCollection");
+        String getModulesCollectionLink = formatLinkHeader(MODULE_ENDPOINT, "getModulesCollection");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.LINK, getModulesCollectionLink);
@@ -164,7 +165,7 @@ public class StudyModuleController {
 
         HttpHeaders headers = new HttpHeaders();
         String formattedEndpoint = String.format("%s/%d/%s", UNIVERSITY_ENDPOINT, universityId, MODULE_ENDPOINT);
-        String getModulesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getModulesOfUniversity");
+        String getModulesLink = formatLinkHeader(formattedEndpoint, "getModulesOfUniversity");
 
         headers.add(HttpHeaders.LINK, getModulesLink);
 
@@ -184,7 +185,7 @@ public class StudyModuleController {
 
         HttpHeaders headers = new HttpHeaders();
         String formattedEndpoint = String.format("%s/%d/%s", UNIVERSITY_ENDPOINT, universityId, MODULE_ENDPOINT);
-        String getModulesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "getModulesOfUniversity");
+        String getModulesLink = formatLinkHeader(formattedEndpoint, "getModulesOfUniversity");
 
         headers.add(HttpHeaders.LINK, getModulesLink);
 
