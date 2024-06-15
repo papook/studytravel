@@ -27,7 +27,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -59,15 +58,15 @@ public class UniversityControllerTest {
 
 		// Set up the mock objects
 		when(universityService.getUniversities("", "", 0)).thenReturn(universitiesPage);
-		when(hypermediaGenerator.buildPagingLinksHeaders(universitiesPage)).thenReturn(new HttpHeaders());
 
+		String expectedJSON = objectMapper.writeValueAsString(universityList);
 		mockMvc.perform(get(UNIVERSITY_ENDPOINT))
 				.andExpectAll(
 						// Test the status code, content type, and JSON object count
 						status().isOk(),
 						content().contentType("application/json"),
 						jsonPath("$.length()").value(universityCount),
-						content().json(objectMapper.writeValueAsString(universityList)))
+						content().json(expectedJSON))
 				.andReturn()
 				.getResponse();
 	}
