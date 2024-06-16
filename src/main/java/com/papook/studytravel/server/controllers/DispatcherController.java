@@ -24,12 +24,18 @@ public class DispatcherController {
 				UNIVERSITY_ENDPOINT, "postCreateUniversity");
 		String createStudyModuleLink = HypermediaGenerator.formatLinkHeader(
 				MODULE_ENDPOINT, "postCreateStudyModule");
+		String deleteAllUniversitiesLink = HypermediaGenerator.formatLinkHeader(
+				UNIVERSITY_ENDPOINT, "deleteAllUniversities");
+		String deleteAllStudyModulesLink = HypermediaGenerator.formatLinkHeader(
+				MODULE_ENDPOINT, "deleteAllStudyModules");
 
 		String[] links = {
 				getUniversitiesCollectionLink,
 				getStudyModulesCollectionLink,
 				createUniversityLink,
-				createStudyModuleLink };
+				createStudyModuleLink,
+				deleteAllUniversitiesLink,
+				deleteAllStudyModulesLink };
 
 		return ResponseEntity.ok()
 				.header(HttpHeaders.LINK, links)
