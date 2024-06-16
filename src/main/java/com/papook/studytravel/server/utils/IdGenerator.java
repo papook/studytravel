@@ -63,4 +63,15 @@ public class IdGenerator {
         }
         usedIds.add(id);
     }
+
+    /**
+     * Resets the ID generator.
+     * Clears all available and used IDs.
+     * Sets the next ID to 1.
+     */
+    public void reset() {
+        availableIds.clear();
+        usedIds.clear();
+        nextId = 1L;
+    }
 }
