@@ -95,4 +95,9 @@ public class UniversityServiceImpl implements UniversityService {
         }
     }
 
+    @Override
+    public void deleteAllUniversities() {
+        repository.deleteAll();
+    }
+
 }

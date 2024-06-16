@@ -187,6 +187,11 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         return module.getUniversityId() == universityId;
     }
 
+    @Override
+    public void deleteAllModules() {
+        repository.deleteAll();
+    }
+
     private boolean canModuleBeLinked(Long moduleId, Long universityId) {
         // Check if the university exists
         universityService.verifyExists(universityId);
