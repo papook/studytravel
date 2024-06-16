@@ -31,6 +31,10 @@ public class DispatcherControllerTests {
                 UNIVERSITY_ENDPOINT, "postCreateUniversity");
         String postCreateModule = HypermediaGenerator.formatLinkHeader(
                 MODULE_ENDPOINT, "postCreateStudyModule");
+        String deleteAllUniversities = HypermediaGenerator.formatLinkHeader(
+                UNIVERSITY_ENDPOINT, "deleteAllUniversities");
+        String deleteAllModules = HypermediaGenerator.formatLinkHeader(
+                MODULE_ENDPOINT, "deleteAllStudyModules");
 
         mockMvc.perform(get("/")).andExpectAll(
                 status().isOk(),
@@ -38,7 +42,9 @@ public class DispatcherControllerTests {
                         getUniversitiesCollection,
                         getModulesCollection,
                         postCreateUniversity,
-                        postCreateModule),
+                        postCreateModule,
+                        deleteAllUniversities,
+                        deleteAllModules),
                 jsonPath("$").doesNotExist(),
                 content().string(""));
     }
