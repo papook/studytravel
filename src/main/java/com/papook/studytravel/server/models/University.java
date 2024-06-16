@@ -54,6 +54,7 @@ public class University {
     @Setter(AccessLevel.NONE)
     URI self;
     @JsonIgnore
+    @Builder.Default
     Set<Long> moduleIds = new HashSet<>();
 
     public void addModule(Long moduleId) {
