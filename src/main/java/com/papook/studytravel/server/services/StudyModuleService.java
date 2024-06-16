@@ -209,4 +209,11 @@ public interface StudyModuleService {
      * @author papook
      */
     public boolean isModuleLinkedToUniversity(Long moduleId, Long universityId);
+
+    /**
+     * Delete all study modules from the database.
+     * 
+     * @author papook
+     */
+    public void deleteAllModules();
 }

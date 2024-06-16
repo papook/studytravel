@@ -110,4 +110,11 @@ public interface UniversityService {
      * @author papook
      */
     public void verifyExists(Long id);
+
+    /**
+     * Delete all universities from the database
+     * 
+     * @author papook
+     */
+    public void deleteAllUniversities();
 }
