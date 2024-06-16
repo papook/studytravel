@@ -36,7 +36,7 @@ import com.papook.studytravel.server.services.UniversityService;
 import com.papook.studytravel.server.utils.HypermediaGenerator;
 
 @WebMvcTest(UniversityController.class)
-public class UniversityControllerTest {
+public class UniversityControllerTests {
 
 	@Autowired
 	private MockMvc mockMvc;

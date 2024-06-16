@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.papook.studytravel.server.utils.HypermediaGenerator;
 
 @WebMvcTest(DispatcherController.class)
-public class DispatcherControllerTest {
+public class DispatcherControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
