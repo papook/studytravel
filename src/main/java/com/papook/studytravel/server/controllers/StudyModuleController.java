@@ -193,4 +193,19 @@ public class StudyModuleController {
                 .headers(headers)
                 .build();
     }
+
+    @DeleteMapping(MODULE_ENDPOINT)
+    public ResponseEntity<Void> deleteAll() {
+        studyModuleService.deleteAllModules();
+        HttpHeaders headers = new HttpHeaders();
+
+        String formattedEndpoint = String.format("%s", MODULE_ENDPOINT);
+        String getModulesLink = formatLinkHeader(formattedEndpoint, "getModulesCollection");
+
+        headers.add(HttpHeaders.LINK, getModulesLink);
+
+        return ResponseEntity.noContent()
+                .headers(headers)
+                .build();
+    }
 }

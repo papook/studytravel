@@ -144,4 +144,20 @@ public class UniversityController {
                 .build();
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAll() {
+        universityService.deleteAllUniversities();
+        HttpHeaders headers = new HttpHeaders();
+
+        String formattedEndpoint = String.format("%s", UNIVERSITY_ENDPOINT);
+        String getUniversitiesLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint,
+                "getUniversitiesCollection");
+
+        headers.add(HttpHeaders.LINK, getUniversitiesLink);
+
+        return ResponseEntity.noContent()
+                .headers(headers)
+                .build();
+    }
+
 }
