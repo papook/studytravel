@@ -211,6 +211,18 @@ public class UniversityControllerTests {
 				Set.of());
 	}
 
+	@Test
+	public void testDeleteAll() throws Exception {
+		String getUniversitiesCollectionHeaderLink = formatLinkHeader(UNIVERSITY_ENDPOINT, "getUniversitiesCollection");
+
+		mockMvc.perform(delete(UNIVERSITY_ENDPOINT))
+				.andExpectAll(
+						// Test the status code, Content-Length, and Link header
+						status().isNoContent(),
+						header().string("Link", getUniversitiesCollectionHeaderLink),
+						jsonPath("$").doesNotExist());
+	}
+
 	private static List<University> generateUniversityList(int count) {
 		List<University> list = new ArrayList<>();
 

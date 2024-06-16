@@ -225,6 +225,17 @@ public class StudyModuleControllerTests {
 						jsonPath("$").doesNotExist());
 	}
 
+	@Test
+	public void testDeleteAll() throws Exception {
+		String getModulesCollectionLink = formatLinkHeader(MODULE_ENDPOINT, "getModulesCollection");
+
+		mockMvc.perform(delete(MODULE_ENDPOINT))
+				.andExpectAll(
+						status().isNoContent(),
+						header().string("Link", getModulesCollectionLink),
+						jsonPath("$").doesNotExist());
+	}
+
 	private static String generateStudyModuleJson(int id) {
 		String semester = id % 2 == 0 ? "SPRING" : "FALL";
 
