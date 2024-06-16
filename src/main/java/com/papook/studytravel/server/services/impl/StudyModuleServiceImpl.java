@@ -190,6 +190,7 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     @Override
     public void deleteAllModules() {
         repository.deleteAll();
+        idGenerator.reset();
     }
 
     private boolean canModuleBeLinked(Long moduleId, Long universityId) {
