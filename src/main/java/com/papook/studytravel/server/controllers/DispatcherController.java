@@ -18,18 +18,18 @@ public class DispatcherController {
 	public ResponseEntity<Void> getDispatcher() {
 		String getUniversitiesCollectionLink = HypermediaGenerator.formatLinkHeader(
 				UNIVERSITY_ENDPOINT, "getUniversitiesCollection");
-		String getModulesCollectionLink = HypermediaGenerator.formatLinkHeader(
-				MODULE_ENDPOINT, "getModulesCollection");
+		String getStudyModulesCollectionLink = HypermediaGenerator.formatLinkHeader(
+				MODULE_ENDPOINT, "getStudyModulesCollection");
 		String createUniversityLink = HypermediaGenerator.formatLinkHeader(
 				UNIVERSITY_ENDPOINT, "postCreateUniversity");
-		String createModuleLink = HypermediaGenerator.formatLinkHeader(
-				MODULE_ENDPOINT, "postCreateModule");
+		String createStudyModuleLink = HypermediaGenerator.formatLinkHeader(
+				MODULE_ENDPOINT, "postCreateStudyModule");
 
 		String[] links = {
 				getUniversitiesCollectionLink,
-				getModulesCollectionLink,
+				getStudyModulesCollectionLink,
 				createUniversityLink,
-				createModuleLink };
+				createStudyModuleLink };
 
 		return ResponseEntity.ok()
 				.header(HttpHeaders.LINK, links)

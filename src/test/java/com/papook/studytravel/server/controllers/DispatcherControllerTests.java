@@ -26,11 +26,11 @@ public class DispatcherControllerTests {
         String getUniversitiesCollection = HypermediaGenerator.formatLinkHeader(
                 UNIVERSITY_ENDPOINT, "getUniversitiesCollection");
         String getModulesCollection = HypermediaGenerator.formatLinkHeader(
-                MODULE_ENDPOINT, "getModulesCollection");
+                MODULE_ENDPOINT, "getStudyModulesCollection");
         String postCreateUniversity = HypermediaGenerator.formatLinkHeader(
                 UNIVERSITY_ENDPOINT, "postCreateUniversity");
         String postCreateModule = HypermediaGenerator.formatLinkHeader(
-                MODULE_ENDPOINT, "postCreateModule");
+                MODULE_ENDPOINT, "postCreateStudyModule");
 
         mockMvc.perform(get("/")).andExpectAll(
                 status().isOk(),
