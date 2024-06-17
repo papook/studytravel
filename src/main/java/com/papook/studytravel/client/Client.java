@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.papook.studytravel.client.utils.LocalDateAdapter;
 
 import lombok.extern.log4j.Log4j2;
@@ -130,8 +131,28 @@ public class Client {
         return response;
     }
 
-    private String fetchLinksOnCurrentPage() {
-        throw new UnsupportedOperationException("Not implemented yet.");
+    /**
+     * Processes the response body and creates a map of IDs and links to the
+     * respective resource.
+     * 
+     * @return A map of IDs and links to the respective resource.
+     *
+     * @see #universityLinksOnCurrentPage
+     * @see #studyModuleLinksOnCurrentPage
+     */
+    private Map<String, String> fetchLinksOnCurrentPage() {
+        Map<String, String> result = new HashMap<>();
+
+        List<Map<String, String>> objectList = gson.fromJson(
+                response.body(),
+                new TypeToken<List<Map<String, String>>>() {
+                }.getType());
+
+        for (Map<String, String> object : objectList) {
+            result.put(object.get("id"), object.get("self"));
+        }
+
+        return result;
     }
 
     private String getLinkFromResponseHeaders(String rel) {
