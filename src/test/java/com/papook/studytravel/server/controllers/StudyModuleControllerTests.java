@@ -71,9 +71,9 @@ public class StudyModuleControllerTests {
 		StudyModule studyModule = generateStudyModuleObject(1);
 		when(studyModuleService.getModuleById(1L)).thenReturn(studyModule);
 
-		String putUpdateStudyModuleLinkHeader = formatLinkHeader(formattedEndpoint,
-				"putUpdateModule");
-		String delStudyModuleLinkHeader = formatLinkHeader(formattedEndpoint, "delModule");
+		String updateLinkHeader = formatLinkHeader(formattedEndpoint,
+				"update");
+		String deleteLinkHeader = formatLinkHeader(formattedEndpoint, "delete");
 
 		String expectedJSON = objectMapper.writeValueAsString(studyModule);
 
@@ -81,8 +81,8 @@ public class StudyModuleControllerTests {
 				.andExpectAll(
 						status().isOk(),
 						header().stringValues("Link",
-								putUpdateStudyModuleLinkHeader,
-								delStudyModuleLinkHeader),
+								updateLinkHeader,
+								deleteLinkHeader),
 						content().contentType(MediaType.APPLICATION_JSON),
 						content().json(expectedJSON));
 	}
@@ -111,9 +111,9 @@ public class StudyModuleControllerTests {
 		StudyModule studyModule = generateStudyModuleObject(1);
 		when(studyModuleService.getModuleForUniversity(1L, 1L)).thenReturn(studyModule);
 
-		String putUpdateStudyModuleLinkHeader = formatLinkHeader(formattedEndpoint,
-				"putUpdateModule");
-		String delStudyModuleLinkHeader = formatLinkHeader(formattedEndpoint, "delModule");
+		String updateLinkHeader = formatLinkHeader(formattedEndpoint,
+				"update");
+		String deleteLinkHeader = formatLinkHeader(formattedEndpoint, "delete");
 
 		String expectedJSON = objectMapper.writeValueAsString(studyModule);
 
@@ -121,8 +121,8 @@ public class StudyModuleControllerTests {
 				.andExpectAll(
 						status().isOk(),
 						header().stringValues("Link",
-								putUpdateStudyModuleLinkHeader,
-								delStudyModuleLinkHeader),
+								updateLinkHeader,
+								deleteLinkHeader),
 						content().contentType(MediaType.APPLICATION_JSON),
 						content().json(expectedJSON));
 	}

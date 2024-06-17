@@ -277,8 +277,8 @@ public class StudyTravelApplicationIntegrationTests {
         try {
             response = client.send(request, BodyHandlers.ofString());
             selfLink = gson.fromJson(response.body(), StudyModule.class).getSelf().toString();
-            updateLink = getLinkFromResponseHeaders("putUpdateModule");
-            deleteLink = getLinkFromResponseHeaders("delModule");
+            updateLink = getLinkFromResponseHeaders("update");
+            deleteLink = getLinkFromResponseHeaders("delete");
 
             assertThat(response.statusCode()).isEqualTo(200);
             assertThat(response.body()).contains("Study Module 1");
