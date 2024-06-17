@@ -51,8 +51,10 @@ public class Client {
                 .GET()
                 .build();
 
+        log.info("Sending request to dispatcher at " + DISPATCHER_URI);
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
         } catch (IOException e) {
             log.error("Error sending request to dispatcher. Make sure the server is running.");
         } catch (InterruptedException e) {
@@ -61,10 +63,21 @@ public class Client {
     }
 
     public void fetchLinksFromDispatcher() {
+        log.info("Fetching links from dispatcher response headers.");
+
+        log.info("Fetching getUniversitiesCollection.");
         getUniversitiesCollectionUri = getLinkFromResponseHeaders("getUniversitiesCollection");
+
+        log.info("Fetching getStudyModulesCollection.");
         getStudyModulesCollectionUri = getLinkFromResponseHeaders("getStudyModulesCollection");
+
+        log.info("Fetching postCreateUniversity.");
         postCreateUniversityUri = getLinkFromResponseHeaders("postCreateUniversity");
+
+        log.info("Fetching postCreateStudyModule.");
         postCreateStudyModuleUri = getLinkFromResponseHeaders("postCreateStudyModule");
+
+        log.info("Links fetched.");
     }
 
     public HttpResponse<String> getUniversitiesCollection() {
@@ -73,12 +86,16 @@ public class Client {
                 .GET()
                 .build();
 
+        log.info("[GET]: " + getUniversitiesCollectionUri);
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
         } catch (IOException e) {
             log.error("Error sending request to get universities collection.");
+            return null;
         } catch (InterruptedException e) {
             log.error("The request was interrupted.");
+            return null;
         }
 
         return response;
