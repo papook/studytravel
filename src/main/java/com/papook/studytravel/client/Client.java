@@ -193,16 +193,16 @@ public class Client {
     /**
      * Sends a POST request to the create study module endpoint.
      * 
-     * @param body The body of the request. This should be a JSON string
+     * @param json The body of the request. This should be a JSON string
      *             representing the study module.
      * 
      * @return The response from the server.
      */
-    public void createStudyModule(String body) {
+    public void createStudyModule(String json) {
         request = HttpRequest.newBuilder()
                 .uri(URI.create(postCreateStudyModuleUri))
                 .header("Content-Type", "application/json")
-                .POST(BodyPublishers.ofString(body))
+                .POST(BodyPublishers.ofString(json))
                 .build();
 
         log.info("[POST]: " + postCreateStudyModuleUri);
