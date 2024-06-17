@@ -35,8 +35,8 @@ public class Client {
     public String postCreateUniversityUri;
     public String postCreateStudyModuleUri;
 
-    public Map<Long, String> universityLinksOnCurrentPage = new HashMap<>();
-    public Map<Long, String> studyModuleLinksOnCurrentPage = new HashMap<>();
+    public Map<Long, String> universityLinksOnLastFetchedPage = new HashMap<>();
+    public Map<Long, String> studyModuleLinksOnLastFetchedPage = new HashMap<>();
 
     public HttpClient client;
     public HttpRequest request;
@@ -71,7 +71,7 @@ public class Client {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
-            universityLinksOnCurrentPage = fetchLinksOnCurrentPage();
+            universityLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to dispatcher. Make sure the server is running.");
         } catch (InterruptedException e) {
@@ -121,6 +121,7 @@ public class Client {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
+            universityLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to get universities collection.");
             return null;
@@ -138,8 +139,8 @@ public class Client {
      * 
      * @return A map of IDs and links to the respective resource.
      *
-     * @see #universityLinksOnCurrentPage
-     * @see #studyModuleLinksOnCurrentPage
+     * @see #universityLinksOnLastFetchedPage
+     * @see #studyModuleLinksOnLastFetchedPage
      */
     private Map<Long, String> fetchLinksOnCurrentPage() {
         Map<Long, String> result = new HashMap<>();
