@@ -54,7 +54,7 @@ public class StudyModuleControllerTests {
 		List<StudyModule> studyModuleList = generateStudyModuleList(studyModuleCount);
 		Page<StudyModule> studyModulesPage = new PageImpl<>(studyModuleList);
 
-		when(studyModuleService.getModules("", "", 0, "")).thenReturn(studyModulesPage);
+		when(studyModuleService.getModules("", "", 0, "id_asc")).thenReturn(studyModulesPage);
 
 		String expectedJSON = objectMapper.writeValueAsString(studyModuleList);
 		mockMvc.perform(get(MODULE_ENDPOINT)).andExpectAll(
@@ -93,7 +93,7 @@ public class StudyModuleControllerTests {
 		List<StudyModule> studyModuleList = generateStudyModuleList(studyModuleCount);
 		Page<StudyModule> studyModulesPage = new PageImpl<>(studyModuleList);
 
-		when(studyModuleService.getModulesForUniversity(1L, "", "", 0, "")).thenReturn(studyModulesPage);
+		when(studyModuleService.getModulesForUniversity(1L, "", "", 0, "id_asc")).thenReturn(studyModulesPage);
 
 		String expectedJSON = objectMapper.writeValueAsString(studyModuleList);
 		mockMvc.perform(get(UNIVERSITY_ENDPOINT + "/1" + MODULE_ENDPOINT))

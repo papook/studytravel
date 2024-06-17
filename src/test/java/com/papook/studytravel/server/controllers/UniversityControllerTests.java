@@ -57,7 +57,7 @@ public class UniversityControllerTests {
 		Page<University> universitiesPage = new PageImpl<>(universityList);
 
 		// Set up the mock objects
-		when(universityService.getUniversities("", "", 0, "")).thenReturn(universitiesPage);
+		when(universityService.getUniversities("", "", 0, "id_asc")).thenReturn(universitiesPage);
 
 		String expectedJSON = objectMapper.writeValueAsString(universityList);
 		mockMvc.perform(get(UNIVERSITY_ENDPOINT))
@@ -78,9 +78,9 @@ public class UniversityControllerTests {
 		University university = generateUniversityObject(1);
 		when(universityService.getUniversityById(1L)).thenReturn(university);
 
-		String putUpdateUniversityLinkHeader = formatLinkHeader(formattedEndpoint,
-				"putUpdateUniversity");
-		String delUniversityLinkHeader = formatLinkHeader(formattedEndpoint, "delUniversity");
+		String updateLinkHeader = formatLinkHeader(formattedEndpoint,
+				"update");
+		String deleteLinkHeader = formatLinkHeader(formattedEndpoint, "delete");
 		String putLinkModuleLinkHeader = formatLinkHeader(moduleUriTemplate, "putLinkModule");
 		String delUnlinkModuleLinkHeader = formatLinkHeader(moduleUriTemplate, "delUnlinkModule");
 		String getModuleOfUniversityLinkHeader = formatLinkHeader(moduleUriTemplate,
@@ -93,8 +93,8 @@ public class UniversityControllerTests {
 				.andExpectAll(
 						// Test the status code, content type, and Link headers
 						header().stringValues("Link",
-								putUpdateUniversityLinkHeader,
-								delUniversityLinkHeader,
+								updateLinkHeader,
+								deleteLinkHeader,
 								putLinkModuleLinkHeader,
 								delUnlinkModuleLinkHeader,
 								getModuleOfUniversityLinkHeader),

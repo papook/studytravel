@@ -119,8 +119,8 @@ public class StudyTravelApplicationIntegrationTests {
         try {
             response = client.send(request, BodyHandlers.ofString());
             selfLink = gson.fromJson(response.body(), University.class).getSelf().toString();
-            updateLink = getLinkFromResponseHeaders("putUpdateUniversity");
-            deleteLink = getLinkFromResponseHeaders("delUniversity");
+            updateLink = getLinkFromResponseHeaders("update");
+            deleteLink = getLinkFromResponseHeaders("delete");
 
             assertThat(response.statusCode()).isEqualTo(200);
             assertThat(response.body()).contains("University 1");
@@ -557,7 +557,7 @@ public class StudyTravelApplicationIntegrationTests {
     void deleteUniversityWhichHasLinkedModules() {
         // Create a university
         String universityJson = generateSampleUniversityJsonWithoutId(2);
-        String delUniversityUri = null;
+        String deleteUri = null;
 
         request = HttpRequest.newBuilder()
                 .uri(URI.create(createUniversityUri))
@@ -578,7 +578,7 @@ public class StudyTravelApplicationIntegrationTests {
 
             response = client.send(request, BodyHandlers.ofString());
 
-            delUniversityUri = getLinkFromResponseHeaders("delUniversity");
+            deleteUri = getLinkFromResponseHeaders("delete");
         } catch (IOException e) {
             fail("Error creating university with POST request.");
         } catch (InterruptedException e) {
@@ -647,7 +647,7 @@ public class StudyTravelApplicationIntegrationTests {
 
         // Try to delete the second university
         request = HttpRequest.newBuilder()
-                .uri(URI.create(delUniversityUri))
+                .uri(URI.create(deleteUri))
                 .DELETE()
                 .build();
 
