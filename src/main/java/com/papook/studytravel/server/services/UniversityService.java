@@ -43,7 +43,8 @@ public interface UniversityService {
     public Page<University> getUniversities(
             String name,
             String country,
-            Integer page);
+            Integer page,
+            String sort);
 
     /**
      * Get a university by its ID from the database.

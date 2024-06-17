@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 
-import com.papook.studytravel.server.errors.ModuleTakenException;
 import com.papook.studytravel.server.errors.ModuleNotLinkedException;
+import com.papook.studytravel.server.errors.ModuleTakenException;
 import com.papook.studytravel.server.errors.StudyModuleNotFoundException;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.models.University;
@@ -39,10 +41,25 @@ public class StudyModuleServiceImpl implements StudyModuleService {
     public Page<StudyModule> getModules(
             String name,
             String semester,
-            Integer page) {
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
-        Page<StudyModule> result = repository
-                .findByNameContainingAndSemesterContainingIgnoreCase(name, semester, pageable);
+            Integer page,
+            String sort) {
+        // Split the sort string into field and direction and create a sort object
+        String[] sortParts = sort.split("_");
+        String sortField = sortParts[0];
+        String sortDirection = sortParts[1];
+        Sort sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+        Page<StudyModule> result;
+
+        try {
+            result = repository.findByNameContainingAndSemesterContainingIgnoreCase(name, semester, pageable);
+        } catch (PropertyReferenceException e) {
+            // If the sort field is invalid, default to sorting by ID in ascending order
+            sortConstraint = Sort.by(Sort.Order.asc("id"));
+            pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+            result = repository.findByNameContainingAndSemesterContainingIgnoreCase(name, semester, pageable);
+        }
         return result;
     }
 
@@ -57,19 +74,31 @@ public class StudyModuleServiceImpl implements StudyModuleService {
             Long universityId,
             String name,
             String semester,
-            Integer page) {
+            Integer page,
+            String sort) {
+        // Split the sort string into field and direction and create a sort object
+        String[] sortParts = sort.split("_");
+        String sortField = sortParts[0];
+        String sortDirection = sortParts[1];
+        Sort sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+
         // Check if the university exists
         universityService.verifyExists(universityId);
 
         // Create a pageable object
-        PageRequest pageable = PageRequest.of(page, PAGE_SIZE);
+        PageRequest pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+        Page<StudyModule> modules;
         // Get the modules for the university
-        Page<StudyModule> modules = repository
-                .findAllByUniversityIdAndNameContainingAndSemesterContainingIgnoreCase(
-                        universityId,
-                        name,
-                        semester,
-                        pageable);
+        try {
+            modules = repository.findAllByUniversityIdAndNameContainingAndSemesterContainingIgnoreCase(
+                    universityId, name, semester, pageable);
+        } catch (PropertyReferenceException e) {
+            // If the sort field is invalid, default to sorting by ID in ascending order
+            sortConstraint = Sort.by(Sort.Order.asc("id"));
+            pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+            modules = repository.findAllByUniversityIdAndNameContainingAndSemesterContainingIgnoreCase(
+                    universityId, name, semester, pageable);
+        }
 
         return modules;
     }

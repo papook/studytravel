@@ -41,10 +41,11 @@ public class StudyModuleController {
     public ResponseEntity<Iterable<StudyModule>> getCollection(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "") String semester,
-            @RequestParam(defaultValue = "0") Integer page) {
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "id_asc") String sort) {
         page = Math.max(0, page);
 
-        Page<StudyModule> studyModules = studyModuleService.getModules(name, semester, page);
+        Page<StudyModule> studyModules = studyModuleService.getModules(name, semester, page, sort);
         HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(studyModules);
 
         return ResponseEntity.ok()
@@ -75,12 +76,14 @@ public class StudyModuleController {
             @PathVariable Long universityId,
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "") String semester,
-            @RequestParam(defaultValue = "0") Integer page) {
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "id_asc") String sort) {
         Page<StudyModule> studyModules = studyModuleService.getModulesForUniversity(
                 universityId,
                 name,
                 semester,
-                page);
+                page,
+                sort);
 
         HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(studyModules);
 

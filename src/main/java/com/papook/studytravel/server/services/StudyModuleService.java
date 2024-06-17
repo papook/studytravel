@@ -52,7 +52,8 @@ public interface StudyModuleService {
     public Page<StudyModule> getModules(
             String name,
             String semester,
-            Integer page);
+            Integer page,
+            String sort);
 
     /**
      * Get a study module by its ID from the database.
@@ -88,7 +89,8 @@ public interface StudyModuleService {
             Long universityId,
             String name,
             String semester,
-            Integer page);
+            Integer page,
+            String sort);
 
     /**
      * Get a study module by its ID from the database that is linked to the

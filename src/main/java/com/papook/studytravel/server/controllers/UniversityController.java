@@ -39,11 +39,12 @@ public class UniversityController {
     public ResponseEntity<Iterable<University>> getCollection(
             @RequestParam(defaultValue = "") String name,
             @RequestParam(defaultValue = "") String country,
-            @RequestParam(defaultValue = "0") Integer page) {
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "id_asc") String sort) {
 
         page = Math.max(0, page);
 
-        Page<University> universitiesPage = universityService.getUniversities(name, country, page);
+        Page<University> universitiesPage = universityService.getUniversities(name, country, page, sort);
 
         List<University> responseBody = universitiesPage.getContent();
         HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(universitiesPage);

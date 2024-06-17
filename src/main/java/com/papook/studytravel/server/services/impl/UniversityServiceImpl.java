@@ -11,6 +11,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.stereotype.Service;
 
 import com.papook.studytravel.server.errors.UniversityNotFoundException;
@@ -36,9 +38,29 @@ public class UniversityServiceImpl implements UniversityService {
     public Page<University> getUniversities(
             String name,
             String country,
-            Integer page) {
-        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE);
-        return repository.findByNameContainingAndCountryContainingIgnoreCase(name, country, pageRequest);
+            Integer page,
+            String sort) {
+        // Split the sort string into field and direction and create a sort object
+        String[] sortParts = sort.split("_");
+        String sortField = sortParts[0];
+        String sortDirection = sortParts[1];
+        Sort sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+
+        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+
+        Page<University> result;
+
+        try {
+            result = repository.findByNameContainingAndCountryContainingIgnoreCase(name, country, pageRequest);
+        } catch (PropertyReferenceException e) {
+            // If the sort field is invalid, default to sorting by ID in ascending order
+            sortConstraint = Sort.by(Sort.Order.asc("id"));
+            pageRequest = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+
+            result = repository.findByNameContainingAndCountryContainingIgnoreCase(name, country, pageRequest);
+        }
+
+        return result;
     }
 
     @Override

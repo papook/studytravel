@@ -57,7 +57,7 @@ public class UniversityControllerTests {
 		Page<University> universitiesPage = new PageImpl<>(universityList);
 
 		// Set up the mock objects
-		when(universityService.getUniversities("", "", 0)).thenReturn(universitiesPage);
+		when(universityService.getUniversities("", "", 0, "")).thenReturn(universitiesPage);
 
 		String expectedJSON = objectMapper.writeValueAsString(universityList);
 		mockMvc.perform(get(UNIVERSITY_ENDPOINT))
