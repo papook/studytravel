@@ -62,7 +62,7 @@ public class UniversityController {
         HttpHeaders headers = new HttpHeaders();
 
         String formattedEndpoint = String.format("%s/%d", UNIVERSITY_ENDPOINT, university.getId());
-        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "update");
+        String updateLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "putUpdate");
         String deleteLink = HypermediaGenerator.formatLinkHeader(formattedEndpoint, "delete");
 
         // A template for the URI of a module belonging to the university

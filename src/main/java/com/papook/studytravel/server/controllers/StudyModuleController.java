@@ -60,7 +60,7 @@ public class StudyModuleController {
         HttpHeaders headers = new HttpHeaders();
 
         String formattedEndpoint = String.format("%s/%d", MODULE_ENDPOINT, id);
-        String updateLink = formatLinkHeader(formattedEndpoint, "update");
+        String updateLink = formatLinkHeader(formattedEndpoint, "putUpdate");
         String deleteLink = formatLinkHeader(formattedEndpoint, "delete");
 
         headers.add(HttpHeaders.LINK, updateLink);
@@ -101,7 +101,7 @@ public class StudyModuleController {
         HttpHeaders headers = new HttpHeaders();
 
         String updateLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
-        updateLink = formatLinkHeader(updateLink, "update");
+        updateLink = formatLinkHeader(updateLink, "putUpdate");
 
         String deleteLink = String.format("%s/%d", MODULE_ENDPOINT, studyModule.getId());
         deleteLink = formatLinkHeader(deleteLink, "delete");

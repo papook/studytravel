@@ -72,7 +72,7 @@ public class StudyModuleControllerTests {
 		when(studyModuleService.getModuleById(1L)).thenReturn(studyModule);
 
 		String updateLinkHeader = formatLinkHeader(formattedEndpoint,
-				"update");
+				"putUpdate");
 		String deleteLinkHeader = formatLinkHeader(formattedEndpoint, "delete");
 
 		String expectedJSON = objectMapper.writeValueAsString(studyModule);
@@ -112,7 +112,7 @@ public class StudyModuleControllerTests {
 		when(studyModuleService.getModuleForUniversity(1L, 1L)).thenReturn(studyModule);
 
 		String updateLinkHeader = formatLinkHeader(formattedEndpoint,
-				"update");
+				"putUpdate");
 		String deleteLinkHeader = formatLinkHeader(formattedEndpoint, "delete");
 
 		String expectedJSON = objectMapper.writeValueAsString(studyModule);

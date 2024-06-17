@@ -119,7 +119,7 @@ public class StudyTravelApplicationIntegrationTests {
         try {
             response = client.send(request, BodyHandlers.ofString());
             selfLink = gson.fromJson(response.body(), University.class).getSelf().toString();
-            updateLink = getLinkFromResponseHeaders("update");
+            updateLink = getLinkFromResponseHeaders("putUpdate");
             deleteLink = getLinkFromResponseHeaders("delete");
 
             assertThat(response.statusCode()).isEqualTo(200);
@@ -277,7 +277,7 @@ public class StudyTravelApplicationIntegrationTests {
         try {
             response = client.send(request, BodyHandlers.ofString());
             selfLink = gson.fromJson(response.body(), StudyModule.class).getSelf().toString();
-            updateLink = getLinkFromResponseHeaders("update");
+            updateLink = getLinkFromResponseHeaders("putUpdate");
             deleteLink = getLinkFromResponseHeaders("delete");
 
             assertThat(response.statusCode()).isEqualTo(200);

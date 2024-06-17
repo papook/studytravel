@@ -79,7 +79,7 @@ public class UniversityControllerTests {
 		when(universityService.getUniversityById(1L)).thenReturn(university);
 
 		String updateLinkHeader = formatLinkHeader(formattedEndpoint,
-				"update");
+				"putUpdate");
 		String deleteLinkHeader = formatLinkHeader(formattedEndpoint, "delete");
 		String putLinkModuleLinkHeader = formatLinkHeader(moduleUriTemplate, "putLinkModule");
 		String delUnlinkModuleLinkHeader = formatLinkHeader(moduleUriTemplate, "delUnlinkModule");
