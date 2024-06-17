@@ -217,6 +217,52 @@ public class Client {
     }
 
     /**
+     * Sends a PUT request to the resource with the given ID. The URI is fetched
+     * from the updateUri field. The request body is the given JSON string. The
+     * response is checked for a 204 status code and the getSelfUri field is updated
+     * if the PUT request was successful.
+     * 
+     * @param id   The ID of the resource to update.
+     * @param json The JSON string representing the updated resource.
+     * 
+     * @see #updateUri
+     * @see #deleteUri
+     * @see #getSelfUri
+     * 
+     */
+    public void updateResource(Long id, String json) {
+        if (updateUri == null) {
+            log.error("No update URI found.");
+            return;
+        }
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(updateUri))
+                .header("Content-Type", "application/json")
+                .PUT(BodyPublishers.ofString(json))
+                .build();
+
+        log.info("[PUT]: " + updateUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+            updateUri = null;
+            deleteUri = null;
+
+            log.info("Resource updated successfully.");
+
+            if (response.statusCode() == 204) {
+                getSelfUri = getLinkFromResponseHeaders("getSelf");
+            }
+        } catch (IOException e) {
+            log.error("Error sending request to update resource.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+
+    }
+
+    /**
      * Sends a GET request to the created resource. The URI is fetched from the
      * Location header of the response from the create resource request. The
      * response is deserialized into a Map.
