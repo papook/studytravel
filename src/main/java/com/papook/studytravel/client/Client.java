@@ -1,6 +1,7 @@
 package com.papook.studytravel.client;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -32,7 +33,7 @@ public class Client {
 
     public void getDispatcher() {
         request = HttpRequest.newBuilder()
-                .uri(java.net.URI.create(DISPATCHER_URI))
+                .uri(URI.create(DISPATCHER_URI))
                 .GET()
                 .build();
 
