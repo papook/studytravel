@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -154,6 +155,58 @@ public class Client {
             studyModuleLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to get study modules collection.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
+     * Sends a POST request to the create university endpoint.
+     * 
+     * @param body The body of the request. This should be a JSON string
+     *             representing the university.
+     * 
+     * @return The response from the server.
+     */
+    public void createUniversity(String body) {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(postCreateUniversityUri))
+                .header("Content-Type", "application/json")
+                .POST(BodyPublishers.ofString(body))
+                .build();
+
+        log.info("[POST]: " + postCreateUniversityUri);
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error sending request to create university.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
+     * Sends a POST request to the create study module endpoint.
+     * 
+     * @param body The body of the request. This should be a JSON string
+     *             representing the study module.
+     * 
+     * @return The response from the server.
+     */
+    public void createStudyModule(String body) {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(postCreateStudyModuleUri))
+                .header("Content-Type", "application/json")
+                .POST(BodyPublishers.ofString(body))
+                .build();
+
+        log.info("[POST]: " + postCreateStudyModuleUri);
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error sending request to create study module.");
         } catch (InterruptedException e) {
             log.error("The request was interrupted.");
         }
