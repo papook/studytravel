@@ -20,6 +20,8 @@ public class Client {
 
     public String getUniversitiesCollectionUri;
     public String getStudyModulesCollectionUri;
+    public String postCreateUniversityUri;
+    public String postCreateStudyModuleUri;
 
     public Map<Long, String> universityLinksOnCurrentPage = new HashMap<>();
     public Map<Long, String> studyModuleLinksOnCurrentPage = new HashMap<>();
