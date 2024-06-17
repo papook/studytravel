@@ -263,6 +263,38 @@ public class Client {
     }
 
     /**
+     * Sends a DELETE request to the resource with the given ID. The URI is fetched
+     * from the deleteUri field.
+     * 
+     * @param id The ID of the resource to delete.
+     * 
+     * @see #deleteUri
+     */
+    public void deleteResource(Long id) {
+        if (deleteUri == null) {
+            log.error("No delete URI found.");
+            return;
+        }
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(deleteUri))
+                .DELETE()
+                .build();
+
+        log.info("[DELETE]: " + deleteUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+            deleteUri = null;
+            updateUri = null;
+        } catch (IOException e) {
+            log.error("Error sending request to delete resource.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
      * Sends a GET request to the created resource. The URI is fetched from the
      * Location header of the response from the create resource request. The
      * response is deserialized into a Map.
