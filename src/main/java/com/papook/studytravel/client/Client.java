@@ -255,7 +255,6 @@ public class Client {
      * @return A map of IDs and links to the respective resource.
      *
      * @see #resourceLinksOnLastFetchedPage
-     * @see #resourceLinksOnLastFetchedPage
      */
     private Map<Long, String> fetchLinksOnCurrentPage() {
         Map<Long, String> result = new HashMap<>();
