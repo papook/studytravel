@@ -41,8 +41,7 @@ public class Client {
     public String updateUri;
     public String deleteUri;
 
-    public Map<Long, String> universityLinksOnLastFetchedPage = new HashMap<>();
-    public Map<Long, String> studyModuleLinksOnLastFetchedPage = new HashMap<>();
+    public Map<Long, String> resourceLinksOnLastFetchedPage = new HashMap<>();
 
     public HttpClient client;
     public HttpRequest request;
@@ -77,7 +76,7 @@ public class Client {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
-            universityLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
+            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to dispatcher. Make sure the server is running.");
         } catch (InterruptedException e) {
@@ -118,7 +117,7 @@ public class Client {
      * 
      * @return The response from the server.
      * 
-     * @see #universityLinksOnLastFetchedPage
+     * @see #resourceLinksOnLastFetchedPage
      */
     public void getUniversitiesCollection() {
         request = HttpRequest.newBuilder()
@@ -130,7 +129,7 @@ public class Client {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
-            universityLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
+            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to get universities collection.");
         } catch (InterruptedException e) {
@@ -145,7 +144,7 @@ public class Client {
      * 
      * @return The response from the server.
      * 
-     * @see #studyModuleLinksOnLastFetchedPage
+     * @see #resourceLinksOnLastFetchedPage
      */
     public void getStudyModulesCollection() {
         request = HttpRequest.newBuilder()
@@ -157,7 +156,7 @@ public class Client {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
-            studyModuleLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
+            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to get study modules collection.");
         } catch (InterruptedException e) {
@@ -255,8 +254,8 @@ public class Client {
      * 
      * @return A map of IDs and links to the respective resource.
      *
-     * @see #universityLinksOnLastFetchedPage
-     * @see #studyModuleLinksOnLastFetchedPage
+     * @see #resourceLinksOnLastFetchedPage
+     * @see #resourceLinksOnLastFetchedPage
      */
     private Map<Long, String> fetchLinksOnCurrentPage() {
         Map<Long, String> result = new HashMap<>();
