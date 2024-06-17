@@ -47,6 +47,9 @@ public class Client {
         log.info("Client setup complete.");
     }
 
+    /**
+     * Sends a GET request to the dispatcher.
+     */
     public void getDispatcher() {
         request = HttpRequest.newBuilder()
                 .uri(URI.create(DISPATCHER_URI))
@@ -64,6 +67,15 @@ public class Client {
         }
     }
 
+    /**
+     * Fetches the links from the dispatcher response headers and stores them in the
+     * respective fields.
+     * 
+     * @see #getUniversitiesCollectionUri
+     * @see #getStudyModulesCollectionUri
+     * @see #postCreateUniversityUri
+     * @see #postCreateStudyModuleUri
+     */
     public void fetchLinksFromDispatcher() {
         log.info("Fetching links from dispatcher response headers.");
 
@@ -82,6 +94,11 @@ public class Client {
         log.info("Links fetched.");
     }
 
+    /**
+     * Sends a GET request to the universities collection and
+     * 
+     * @return The response from the server.
+     */
     public HttpResponse<String> getUniversitiesCollection() {
         request = HttpRequest.newBuilder()
                 .uri(URI.create(getUniversitiesCollectionUri))
@@ -101,6 +118,10 @@ public class Client {
         }
 
         return response;
+    }
+    
+    private String fetchLinksOnCurrentPage() {
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     private String getLinkFromResponseHeaders(String rel) {
