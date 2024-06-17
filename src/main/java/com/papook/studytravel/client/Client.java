@@ -218,7 +218,8 @@ public class Client {
 
     /**
      * Sends a GET request to the created resource. The URI is fetched from the
-     * Location header of the response from the create resource request.
+     * Location header of the response from the create resource request. The
+     * response is deserialized into a Map.
      * 
      * @return The received resource as a Map.
      * 
@@ -236,6 +237,8 @@ public class Client {
         try {
             response = client.send(request, BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
+            updateUri = getLinkFromResponseHeaders("putUpdate");
+            deleteUri = getLinkFromResponseHeaders("delete");
         } catch (IOException e) {
             log.error("Error getting the created resource.");
         } catch (InterruptedException e) {
@@ -245,6 +248,49 @@ public class Client {
         Map<String, String> deserializedResource = gson.fromJson(response.body(),
                 new TypeToken<Map<String, String>>() {
                 }.getType());
+        return deserializedResource;
+    }
+
+    /**
+     * Sends a GET request to the resource with the given ID. The URI is fetched
+     * from the resourceLinksOnLastFetchedPage field. The response is deserialized
+     * into a Map.
+     * 
+     * @param id The ID of the resource to fetch. It must be present in the
+     *           {@link #resourceLinksOnLastFetchedPage} field.
+     * 
+     * @return The received resource as a Map or null if the ID is not present in
+     *         the {@link #resourceLinksOnLastFetchedPage} field.
+     */
+    public Map<String, String> getOneResource(Long id) {
+        if (!resourceLinksOnLastFetchedPage.containsKey(id)) {
+            log.error("The ID " + id + " is not present in the resourceLinksOnLastFetchedPage.");
+            return null;
+        }
+
+        String uri = resourceLinksOnLastFetchedPage.get(id);
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(uri))
+                .GET()
+                .build();
+
+        log.info("[GET]: " + uri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+            updateUri = getLinkFromResponseHeaders("putUpdate");
+            deleteUri = getLinkFromResponseHeaders("delete");
+        } catch (IOException e) {
+            log.error("Error getting the resource.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+
+        Map<String, String> deserializedResource = gson.fromJson(response.body(),
+                new TypeToken<Map<String, String>>() {
+                }.getType());
+
         return deserializedResource;
     }
 
