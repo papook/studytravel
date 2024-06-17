@@ -134,6 +134,32 @@ public class Client {
     }
 
     /**
+     * Sends a GET request to the study modules collection and stores the links to
+     * the individual study modules in the studyModuleLinksOnLastFetchedPage field.
+     * 
+     * @return The response from the server.
+     * 
+     * @see #studyModuleLinksOnLastFetchedPage
+     */
+    public void getStudyModulesCollection() {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(getStudyModulesCollectionUri))
+                .GET()
+                .build();
+
+        log.info("[GET]: " + getStudyModulesCollectionUri);
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+            studyModuleLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
+        } catch (IOException e) {
+            log.error("Error sending request to get study modules collection.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
      * Processes the response body and creates a map of IDs and links to the
      * respective resource.
      * 
