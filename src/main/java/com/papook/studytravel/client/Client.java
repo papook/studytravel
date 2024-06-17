@@ -107,9 +107,12 @@ public class Client {
     }
 
     /**
-     * Sends a GET request to the universities collection and
+     * Sends a GET request to the universities collection and stores the links to
+     * the individual universities in the universityLinksOnLastFetchedPage field.
      * 
      * @return The response from the server.
+     * 
+     * @see #universityLinksOnLastFetchedPage
      */
     public void getUniversitiesCollection() {
         request = HttpRequest.newBuilder()
@@ -128,7 +131,7 @@ public class Client {
             log.error("The request was interrupted.");
         }
 
-}
+    }
 
     /**
      * Processes the response body and creates a map of IDs and links to the
