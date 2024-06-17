@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -13,7 +12,6 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,12 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.papook.studytravel.client.utils.LocalDateAdapter;
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.models.University;
 
@@ -1025,18 +1018,5 @@ public class StudyTravelApplicationIntegrationTests {
 
     private static String replacePartInUriTemplate(String uriTemplate, String placeholder, Object replacement) {
         return uriTemplate.replace("{" + placeholder + "}", String.valueOf(replacement));
-    }
-}
-
-class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {
-
-    @Override
-    public JsonElement serialize(LocalDate date, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE)); // "yyyy-mm-dd"
-    }
-
-    @Override
-    public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
-        return LocalDate.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE);
     }
 }
