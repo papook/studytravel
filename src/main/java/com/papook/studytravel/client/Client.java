@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -181,7 +182,7 @@ public class Client {
 
         log.info("[POST]: " + postCreateUniversityUri);
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
         } catch (IOException e) {
             log.error("Error sending request to create university.");
@@ -207,13 +208,45 @@ public class Client {
 
         log.info("[POST]: " + postCreateStudyModuleUri);
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
         } catch (IOException e) {
             log.error("Error sending request to create study module.");
         } catch (InterruptedException e) {
             log.error("The request was interrupted.");
         }
+    }
+
+    /**
+     * Sends a GET request to the created resource. The URI is fetched from the
+     * Location header of the response from the create resource request.
+     * 
+     * @return The received resource as a Map.
+     * 
+     * @see Map
+     */
+    public Map<String, String> getCreatedResource() {
+        String location = response.headers().firstValue("Location").get();
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(location))
+                .GET()
+                .build();
+
+        log.info("[GET]: " + location);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error getting the created resource.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+
+        Map<String, String> deserializedResource = gson.fromJson(response.body(),
+                new TypeToken<Map<String, String>>() {
+                }.getType());
+        return deserializedResource;
     }
 
     /**
