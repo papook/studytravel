@@ -41,8 +41,10 @@ public class Client {
      * @see #fetchLinksFromDispatcher
      */
     public void setup() {
+        log.info("Setting up client.");
         getDispatcher();
         fetchLinksFromDispatcher();
+        log.info("Client setup complete.");
     }
 
     public void getDispatcher() {
