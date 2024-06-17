@@ -71,6 +71,7 @@ public class Client {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
+            universityLinksOnCurrentPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to dispatcher. Make sure the server is running.");
         } catch (InterruptedException e) {
@@ -140,8 +141,8 @@ public class Client {
      * @see #universityLinksOnCurrentPage
      * @see #studyModuleLinksOnCurrentPage
      */
-    private Map<String, String> fetchResourceLinksOnCurrentPage() {
-        Map<String, String> result = new HashMap<>();
+    private Map<Long, String> fetchLinksOnCurrentPage() {
+        Map<Long, String> result = new HashMap<>();
 
         List<Map<String, String>> objectList = gson.fromJson(
                 response.body(),
@@ -149,7 +150,10 @@ public class Client {
                 }.getType());
 
         for (Map<String, String> object : objectList) {
-            result.put(object.get("id"), object.get("self"));
+            Long id = Long.valueOf(object.get("id"));
+            String self = object.get("self");
+
+            result.put(id, self);
         }
 
         return result;
