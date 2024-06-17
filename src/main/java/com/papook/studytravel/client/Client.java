@@ -17,6 +17,7 @@ public class Client {
 
     public Client(final String dispatcherUri) {
         this.DISPATCHER_URI = dispatcherUri;
+        client = HttpClient.newHttpClient();
     }
 
     public String getUniversitiesCollectionUri;
@@ -30,6 +31,18 @@ public class Client {
     public HttpClient client;
     public HttpRequest request;
     public HttpResponse<String> response;
+
+    /**
+     * Setup the client by fetching the links from the dispatcher.
+     * This method calls getDispatcher() and fetchLinksFromDispatcher().
+     * 
+     * @see #getDispatcher
+     * @see #fetchLinksFromDispatcher
+     */
+    public void setup() {
+        getDispatcher();
+        fetchLinksFromDispatcher();
+    }
 
     public void getDispatcher() {
         request = HttpRequest.newBuilder()
@@ -51,6 +64,23 @@ public class Client {
         getStudyModulesCollectionUri = getLinkFromResponseHeaders("getStudyModulesCollection");
         postCreateUniversityUri = getLinkFromResponseHeaders("postCreateUniversity");
         postCreateStudyModuleUri = getLinkFromResponseHeaders("postCreateStudyModule");
+    }
+
+    public HttpResponse<String> getUniversitiesCollection() {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(getUniversitiesCollectionUri))
+                .GET()
+                .build();
+
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            log.error("Error sending request to get universities collection.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+
+        return response;
     }
 
     private String getLinkFromResponseHeaders(String rel) {
