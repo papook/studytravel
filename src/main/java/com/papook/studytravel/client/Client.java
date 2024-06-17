@@ -5,9 +5,14 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.papook.studytravel.client.utils.LocalDateAdapter;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -19,6 +24,9 @@ public class Client {
     public Client(final String dispatcherUri) {
         this.DISPATCHER_URI = dispatcherUri;
         client = HttpClient.newHttpClient();
+        gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
     }
 
     public String getUniversitiesCollectionUri;
@@ -32,6 +40,8 @@ public class Client {
     public HttpClient client;
     public HttpRequest request;
     public HttpResponse<String> response;
+
+    Gson gson;
 
     /**
      * Setup the client by fetching the links from the dispatcher.
@@ -119,7 +129,7 @@ public class Client {
 
         return response;
     }
-    
+
     private String fetchLinksOnCurrentPage() {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
