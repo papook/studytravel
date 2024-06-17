@@ -140,7 +140,7 @@ public class Client {
      * @see #universityLinksOnCurrentPage
      * @see #studyModuleLinksOnCurrentPage
      */
-    private Map<String, String> fetchLinksOnCurrentPage() {
+    private Map<String, String> fetchResourceLinksOnCurrentPage() {
         Map<String, String> result = new HashMap<>();
 
         List<Map<String, String>> objectList = gson.fromJson(
