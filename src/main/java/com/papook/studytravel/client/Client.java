@@ -5,6 +5,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import lombok.extern.log4j.Log4j2;
@@ -42,5 +43,37 @@ public class Client {
         }
     }
 
-    
+    private String getLinkFromResponseHeaders(String rel) {
+
+        List<String> linkHeaders = response.headers().allValues("Link");
+
+        if (linkHeaders.size() == 0) {
+            return null;
+        }
+
+        // Iterate through each "Link" header
+        for (String linkHeader : linkHeaders) {
+            String[] parts = linkHeader.split(";");
+            if (parts.length <= 1) {
+                continue;
+            }
+
+            // Extract the URL part and the rel part
+            String urlPart = parts[0].trim();
+            String relPart = parts[1].trim();
+
+            // Check if the rel part matches the desired relation type
+            if (relPart.equals("rel=\"" + rel + "\"")) {
+                // Remove the angle brackets from the URL part and return it
+                return urlPart.substring(1, urlPart.length() - 1);
+            }
+
+        }
+
+        return null;
+    }
+
+    private static String replacePartInUriTemplate(String uriTemplate, String placeholder, Object replacement) {
+        return uriTemplate.replace("{" + placeholder + "}", String.valueOf(replacement));
+    }
 }
