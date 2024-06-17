@@ -36,6 +36,10 @@ public class Client {
     public String postCreateUniversityUri;
     public String postCreateStudyModuleUri;
 
+    public String getSelfUri;
+    public String updateUri;
+    public String deleteUri;
+
     public Map<Long, String> universityLinksOnLastFetchedPage = new HashMap<>();
     public Map<Long, String> studyModuleLinksOnLastFetchedPage = new HashMap<>();
 
