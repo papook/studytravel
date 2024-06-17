@@ -45,6 +45,13 @@ public class Client {
         }
     }
 
+    public void fetchLinksFromDispatcher() {
+        getUniversitiesCollectionUri = getLinkFromResponseHeaders("getUniversitiesCollection");
+        getStudyModulesCollectionUri = getLinkFromResponseHeaders("getStudyModulesCollection");
+        postCreateUniversityUri = getLinkFromResponseHeaders("postCreateUniversity");
+        postCreateStudyModuleUri = getLinkFromResponseHeaders("postCreateStudyModule");
+    }
+
     private String getLinkFromResponseHeaders(String rel) {
 
         List<String> linkHeaders = response.headers().allValues("Link");
