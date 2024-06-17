@@ -111,7 +111,7 @@ public class Client {
      * 
      * @return The response from the server.
      */
-    public HttpResponse<String> getUniversitiesCollection() {
+    public void getUniversitiesCollection() {
         request = HttpRequest.newBuilder()
                 .uri(URI.create(getUniversitiesCollectionUri))
                 .GET()
@@ -124,14 +124,11 @@ public class Client {
             universityLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to get universities collection.");
-            return null;
         } catch (InterruptedException e) {
             log.error("The request was interrupted.");
-            return null;
         }
 
-        return response;
-    }
+}
 
     /**
      * Processes the response body and creates a map of IDs and links to the
