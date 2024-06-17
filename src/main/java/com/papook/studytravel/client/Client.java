@@ -12,6 +12,7 @@ import java.util.Map;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
+@SuppressWarnings("unused")
 public class Client {
     public final String DISPATCHER_URI;
 
