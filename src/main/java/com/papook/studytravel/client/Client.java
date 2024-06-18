@@ -373,6 +373,60 @@ public class Client {
     }
 
     /**
+     * Sends a PUT request to link the module with the given ID to the current
+     * university. The URI is fetched from the putLinkModule field in the response
+     * of the GET request to the universities collection.
+     * 
+     * @param moduleId The ID of the module to link to the current university.
+     */
+    public void linkModuleToUniversity(Long moduleId) {
+        String linkModuleUri = getLinkFromResponseHeaders("putLinkModule");
+        linkModuleUri = replacePartInUriTemplate(linkModuleUri, "moduleId", moduleId);
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(linkModuleUri))
+                .PUT(BodyPublishers.noBody())
+                .build();
+
+        log.info("[PUT]: " + linkModuleUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error linking module to university.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
+     * Sends a DELETE request to unlink the module with the given ID from the
+     * current university. The URI is fetched from the delUnlinkModule field in the
+     * response of the GET request to the universities collection.
+     * 
+     * @param moduleId The ID of the module to unlink from the current university.
+     */
+    public void unlinkModuleFromUniversity(Long moduleId) {
+        String unlinkModuleUri = getLinkFromResponseHeaders("delUnlinkModule");
+        unlinkModuleUri = replacePartInUriTemplate(unlinkModuleUri, "moduleId", moduleId);
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(unlinkModuleUri))
+                .DELETE()
+                .build();
+
+        log.info("[DELETE]: " + unlinkModuleUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error unlinking module from university.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
      * Processes the response body and creates a map of IDs and links to the
      * respective resource.
      * 
