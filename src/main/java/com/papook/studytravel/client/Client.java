@@ -497,6 +497,46 @@ public class Client {
     }
 
     /**
+     * Sends a DELETE request to delete all universities.
+     */
+    public void deleteAllUniversities() {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(deleteAllUniversitiesUri))
+                .DELETE()
+                .build();
+
+        log.info("[DELETE]: " + deleteAllUniversitiesUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error sending request to delete all universities.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
+     * Sends a DELETE request to delete all study modules.
+     */
+    public void deleteAllStudyModules() {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(deleteAllStudyModulesUri))
+                .DELETE()
+                .build();
+
+        log.info("[DELETE]: " + deleteAllStudyModulesUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error sending request to delete all study modules.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
      * Processes the response body and creates a map of IDs and links to the
      * respective resource.
      * 
