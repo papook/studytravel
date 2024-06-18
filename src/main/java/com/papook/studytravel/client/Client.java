@@ -427,6 +427,39 @@ public class Client {
     }
 
     /**
+     * Sends a GET request to get a module that belongs to the current university.
+     * The URI is fetched from the getModuleOfUniversity field in the response of
+     * the GET request to the universities collection.
+     * 
+     * @return A map of module IDs and links to the respective module.
+     */
+    public Map<String, String> getModuleOfUniversity(Long id) {
+        String getModuleOfUniversityUri = getLinkFromResponseHeaders("getModuleOfUniversity");
+        getModuleOfUniversityUri = replacePartInUriTemplate(getModuleOfUniversityUri, "moduleId", id);
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(getModuleOfUniversityUri))
+                .GET()
+                .build();
+
+        log.info("[GET]: " + getModuleOfUniversityUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+        } catch (IOException e) {
+            log.error("Error getting module of university.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+
+        Map<String, String> deserializedResource = gson.fromJson(response.body(),
+                new TypeToken<Map<String, String>>() {
+                }.getType());
+
+        return deserializedResource;
+    }
+
+    /**
      * Processes the response body and creates a map of IDs and links to the
      * respective resource.
      * 
