@@ -86,6 +86,10 @@ public class StudyModuleController {
                 sort);
 
         HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(studyModules);
+        
+        String uriTemplatePath = UNIVERSITY_ENDPOINT + universityId + MODULE_ENDPOINT + "/{moduleId}";
+        String getModuleOfUniversityHeader = formatLinkHeader(uriTemplatePath, "getModuleOfUniversity");
+        headers.add(HttpHeaders.LINK, getModuleOfUniversityHeader);
 
         return ResponseEntity.ok()
                 .headers(headers)
