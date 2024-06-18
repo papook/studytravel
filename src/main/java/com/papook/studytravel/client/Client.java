@@ -77,7 +77,6 @@ public class Client {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
             log.info("Code: " + response.statusCode());
-            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
         } catch (IOException e) {
             log.error("Error sending request to dispatcher. Make sure the server is running.");
         } catch (InterruptedException e) {
