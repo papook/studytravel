@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -118,56 +120,22 @@ public class Client {
     }
 
     /**
-     * Sends a GET request to the universities collection and stores the links to
-     * the individual universities in the universityLinksOnLastFetchedPage field.
-     * 
-     * @return The response from the server.
-     * 
-     * @see #resourceLinksOnLastFetchedPage
+     * Sends a GET request to the universities collection without any filtering or
+     * sorting.
      */
     public void getUniversitiesCollection() {
-        request = HttpRequest.newBuilder()
-                .uri(URI.create(getUniversitiesCollectionUri))
-                .GET()
-                .build();
-
-        log.info("[GET]: " + getUniversitiesCollectionUri);
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            log.info("Code: " + response.statusCode());
-            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
-        } catch (IOException e) {
-            log.error("Error sending request to get universities collection.");
-        } catch (InterruptedException e) {
-            log.error("The request was interrupted.");
-        }
-
+        newGetUniversitiesRequest()
+                .send();
     }
 
     /**
-     * Sends a GET request to the study modules collection and stores the links to
-     * the individual study modules in the studyModuleLinksOnLastFetchedPage field.
-     * 
-     * @return The response from the server.
-     * 
-     * @see #resourceLinksOnLastFetchedPage
+     * Sends a GET request to the study modules collection without any filtering
+     * sorting.
      */
     public void getStudyModulesCollection() {
-        request = HttpRequest.newBuilder()
-                .uri(URI.create(getStudyModulesCollectionUri))
-                .GET()
-                .build();
-
-        log.info("[GET]: " + getStudyModulesCollectionUri);
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            log.info("Code: " + response.statusCode());
-            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
-        } catch (IOException e) {
-            log.error("Error sending request to get study modules collection.");
-        } catch (InterruptedException e) {
-            log.error("The request was interrupted.");
-        }
+        newGetStudyModulesRequest()
+                .allModules()
+                .send();
     }
 
     /**
@@ -465,33 +433,13 @@ public class Client {
     }
 
     /**
-     * Sends a GET request to get the modules of the current university. The URI is
-     * fetched from the modules field in the response of the GET request to the
-     * universities collection. Sets the resourceLinksOnLastFetchedPage field to the
-     * links of the fetched modules.
-     * 
-     * @see #resourceLinksOnLastFetchedPage
+     * Sends a GET request to get the modules of the current university without any
+     * filtering or sorting.
      */
-    public void getModulesOfUniversity() {
-        Map<String, String> currentUniversity = gson.fromJson(response.body(), new TypeToken<Map<String, String>>() {
-        }.getType());
-        String getModulesOfUniversityUri = currentUniversity.get("modules");
-
-        request = HttpRequest.newBuilder()
-                .uri(URI.create(getModulesOfUniversityUri))
-                .GET()
-                .build();
-
-        log.info("[GET]: " + getModulesOfUniversityUri);
-        try {
-            response = client.send(request, BodyHandlers.ofString());
-            log.info("Code: " + response.statusCode());
-            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
-        } catch (IOException e) {
-            log.error("Error getting modules of university.");
-        } catch (InterruptedException e) {
-            log.error("The request was interrupted.");
-        }
+    public void getAllModulesOfUniversity() {
+        newGetStudyModulesRequest()
+                .ofCurrentUniversity()
+                .send();
     }
 
     /**
@@ -626,4 +574,216 @@ public class Client {
     private static String replacePartInUriTemplate(String uriTemplate, String placeholder, Object replacement) {
         return uriTemplate.replace("{" + placeholder + "}", String.valueOf(replacement));
     }
+
+    /**
+     * A class to create a GET request to the universities collection with custom
+     * filters and sorting.
+     * 
+     * @see #newGetUniversitiesRequest
+     */
+    public class GetUniversitiesRequest {
+        private String uri = getUniversitiesCollectionUri;
+        private String filterByName;
+        private String filterByCountry;
+        private String sort;
+
+        private GetUniversitiesRequest() {
+            this.uri = getUniversitiesCollectionUri;
+        }
+
+        public GetUniversitiesRequest filterByName(String name) {
+            this.filterByName = name;
+            return this;
+        }
+
+        public GetUniversitiesRequest dontFilterByName() {
+            this.filterByName = null;
+            return this;
+        }
+
+        public GetUniversitiesRequest filterByCountry(String country) {
+            this.filterByCountry = country;
+            return this;
+        }
+
+        public GetUniversitiesRequest dontFilterByCountry() {
+            this.filterByCountry = null;
+            return this;
+        }
+
+        public GetUniversitiesRequest sort(String sortBy, String order) {
+            this.sort = sortBy + "_" + order;
+            return this;
+        }
+
+        public GetUniversitiesRequest dontSort() {
+            this.sort = null;
+            return this;
+        }
+
+        public void send() {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
+            if (filterByName != null) {
+                uriBuilder.queryParam("name", filterByName);
+            }
+
+            if (filterByCountry != null) {
+                uriBuilder.queryParam("country", filterByCountry);
+            }
+
+            if (sort != null) {
+                uriBuilder.queryParam("sort", sort);
+            }
+
+            URI requestUri = uriBuilder.build().toUri();
+
+            request = HttpRequest.newBuilder()
+                    .uri(requestUri)
+                    .GET()
+                    .build();
+
+            log.info("[GET]: " + requestUri);
+            try {
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                log.info("Code: " + response.statusCode());
+                resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
+            } catch (IOException e) {
+                log.error("Error sending request to get universities collection.");
+            } catch (InterruptedException e) {
+                log.error("The request was interrupted.");
+            }
+        }
+    }
+
+    /**
+     * A class to create a GET request to the study modules collection with custom
+     * filters and sorting.
+     * 
+     * @see #newGetStudyModulesRequest
+     */
+    public class GetStudyModulesRequest {
+        private String uri = getStudyModulesCollectionUri;
+        private String filterByName;
+        private String filterBySemester;
+        private String sort;
+
+        private GetStudyModulesRequest() {
+            this.uri = getStudyModulesCollectionUri;
+        }
+
+        /**
+         * Fetch the study modules of the current university.
+         */
+        public GetStudyModulesRequest ofCurrentUniversity() {
+            Map<String, String> currentUniversity = gson.fromJson(response.body(),
+                    new TypeToken<Map<String, String>>() {
+                    }.getType());
+
+            String modulesUri = currentUniversity.get("modules");
+            uri = modulesUri;
+            return this;
+        }
+
+        /**
+         * Fetch all study modules.
+         */
+        public GetStudyModulesRequest allModules() {
+            uri = getStudyModulesCollectionUri;
+            return this;
+        }
+
+        public GetStudyModulesRequest filterByName(String name) {
+            this.filterByName = name;
+            return this;
+        }
+
+        public GetStudyModulesRequest dontFilterByName() {
+            this.filterByName = null;
+            return this;
+        }
+
+        public GetStudyModulesRequest filterBySemester(String semester) {
+            this.filterBySemester = semester;
+            return this;
+        }
+
+        public GetStudyModulesRequest dontFilterBySemester() {
+            this.filterBySemester = null;
+            return this;
+        }
+
+        public GetStudyModulesRequest sort(String sortBy, String order) {
+            this.sort = sortBy + "_" + order;
+            return this;
+        }
+
+        public GetStudyModulesRequest dontSort() {
+            this.sort = null;
+            return this;
+        }
+
+        public void send() {
+            if (uri == null) {
+                log.error("Cannot get study modules collection.");
+                return;
+            }
+
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
+            if (filterByName != null) {
+                uriBuilder.queryParam("name", filterByName);
+            }
+
+            if (filterBySemester != null) {
+                uriBuilder.queryParam("semester", filterBySemester);
+            }
+
+            if (sort != null) {
+                uriBuilder.queryParam("sort", sort);
+            }
+
+            URI requestUri = uriBuilder.build().toUri();
+
+            request = HttpRequest.newBuilder()
+                    .uri(requestUri)
+                    .GET()
+                    .build();
+
+            log.info("[GET]: " + requestUri);
+            try {
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                log.info("Code: " + response.statusCode());
+                resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
+            } catch (IOException e) {
+                log.error("Error sending request to get universities collection.");
+            } catch (InterruptedException e) {
+                log.error("The request was interrupted.");
+            }
+        }
+    }
+
+    /**
+     * Creates a new GetUniversitiesRequest object which can be used to send a GET
+     * request to the universities collection with custom filters and sorting.
+     * 
+     * @return A new GetUniversitiesRequest object.
+     * 
+     * @see GetUniversitiesRequest
+     * 
+     */
+    public GetUniversitiesRequest newGetUniversitiesRequest() {
+        return new GetUniversitiesRequest();
+    }
+
+    /**
+     * Creates a new GetStudyModulesRequest object which can be used to send a GET
+     * request to the study modules collection with custom filters and sorting.
+     * 
+     * @return A new GetStudyModulesRequest object.
+     * 
+     * @see GetStudyModulesRequest
+     */
+    public GetStudyModulesRequest newGetStudyModulesRequest() {
+        return new GetStudyModulesRequest();
+    }
+
 }
