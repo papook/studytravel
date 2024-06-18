@@ -44,15 +44,17 @@ public class UniversityServiceImpl implements UniversityService {
         String[] sortParts = sort.split("_");
         String sortField = sortParts[0];
         String sortDirection = sortParts[1];
-        Sort sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        Sort sortConstraint;
 
-        PageRequest pageRequest = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+        PageRequest pageRequest;
 
         Page<University> result;
 
         try {
+            sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+            pageRequest = PageRequest.of(page, PAGE_SIZE, sortConstraint);
             result = repository.findByNameContainingAndCountryContainingIgnoreCase(name, country, pageRequest);
-        } catch (PropertyReferenceException e) {
+        } catch (PropertyReferenceException | IllegalArgumentException e) {
             // If the sort field is invalid, default to sorting by ID in ascending order
             sortConstraint = Sort.by(Sort.Order.asc("id"));
             pageRequest = PageRequest.of(page, PAGE_SIZE, sortConstraint);

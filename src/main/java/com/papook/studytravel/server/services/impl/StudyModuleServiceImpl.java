@@ -47,14 +47,16 @@ public class StudyModuleServiceImpl implements StudyModuleService {
         String[] sortParts = sort.split("_");
         String sortField = sortParts[0];
         String sortDirection = sortParts[1];
-        Sort sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+        Sort sortConstraint;
 
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+        Pageable pageable;
         Page<StudyModule> result;
 
         try {
+            sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+            pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
             result = repository.findByNameContainingAndSemesterContainingIgnoreCase(name, semester, pageable);
-        } catch (PropertyReferenceException e) {
+        } catch (PropertyReferenceException | IllegalArgumentException e) {
             // If the sort field is invalid, default to sorting by ID in ascending order
             sortConstraint = Sort.by(Sort.Order.asc("id"));
             pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
@@ -76,23 +78,25 @@ public class StudyModuleServiceImpl implements StudyModuleService {
             String semester,
             Integer page,
             String sort) {
+        // Check if the university exists
+        universityService.verifyExists(universityId);
+
         // Split the sort string into field and direction and create a sort object
         String[] sortParts = sort.split("_");
         String sortField = sortParts[0];
         String sortDirection = sortParts[1];
-        Sort sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
-
-        // Check if the university exists
-        universityService.verifyExists(universityId);
-
+        Sort sortConstraint;
+        
         // Create a pageable object
-        PageRequest pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
+        PageRequest pageable;
         Page<StudyModule> modules;
         // Get the modules for the university
         try {
+            sortConstraint = Sort.by(Sort.Direction.fromString(sortDirection), sortField);
+            pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
             modules = repository.findAllByUniversityIdAndNameContainingAndSemesterContainingIgnoreCase(
                     universityId, name, semester, pageable);
-        } catch (PropertyReferenceException e) {
+        } catch (PropertyReferenceException | IllegalArgumentException e) {
             // If the sort field is invalid, default to sorting by ID in ascending order
             sortConstraint = Sort.by(Sort.Order.asc("id"));
             pageable = PageRequest.of(page, PAGE_SIZE, sortConstraint);
