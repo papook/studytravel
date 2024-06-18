@@ -123,7 +123,7 @@ public class Client {
      * Sends a GET request to the universities collection without any filtering or
      * sorting.
      */
-    public void getUniversitiesCollection() {
+    public void getAllUniversities() {
         newGetUniversitiesRequest()
                 .send();
     }
@@ -132,7 +132,7 @@ public class Client {
      * Sends a GET request to the study modules collection without any filtering
      * sorting.
      */
-    public void getStudyModulesCollection() {
+    public void getAllStudyModules() {
         newGetStudyModulesRequest()
                 .allModules()
                 .send();
