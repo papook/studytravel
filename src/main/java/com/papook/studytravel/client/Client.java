@@ -36,6 +36,8 @@ public class Client {
     public String getStudyModulesCollectionUri;
     public String postCreateUniversityUri;
     public String postCreateStudyModuleUri;
+    public String deleteAllUniversitiesUri;
+    public String deleteAllStudyModulesUri;
 
     public String getSelfUri;
     public String updateUri;
@@ -107,6 +109,12 @@ public class Client {
 
         log.info("Fetching postCreateStudyModule.");
         postCreateStudyModuleUri = getLinkFromResponseHeaders("postCreateStudyModule");
+
+        log.info("Fetching deleteAllUniversities.");
+        deleteAllUniversitiesUri = getLinkFromResponseHeaders("deleteAllUniversities");
+
+        log.info("Fetching deleteAllStudyModules.");
+        deleteAllStudyModulesUri = getLinkFromResponseHeaders("deleteAllStudyModules");
 
         log.info("Links fetched.");
     }
@@ -488,8 +496,6 @@ public class Client {
 
         return deserializedResource;
     }
-
-    
 
     /**
      * Processes the response body and creates a map of IDs and links to the
