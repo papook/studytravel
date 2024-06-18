@@ -427,6 +427,36 @@ public class Client {
     }
 
     /**
+     * Sends a GET request to get the modules of the current university. The URI is
+     * fetched from the modules field in the response of the GET request to the
+     * universities collection. Sets the resourceLinksOnLastFetchedPage field to the
+     * links of the fetched modules.
+     * 
+     * @see #resourceLinksOnLastFetchedPage
+     */
+    public void getModulesOfUniversity() {
+        Map<String, String> currentUniversity = gson.fromJson(response.body(), new TypeToken<Map<String, String>>() {
+        }.getType());
+        String getModulesOfUniversityUri = currentUniversity.get("modules");
+
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(getModulesOfUniversityUri))
+                .GET()
+                .build();
+
+        log.info("[GET]: " + getModulesOfUniversityUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+            resourceLinksOnLastFetchedPage = fetchLinksOnCurrentPage();
+        } catch (IOException e) {
+            log.error("Error getting modules of university.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+    }
+
+    /**
      * Sends a GET request to get a module that belongs to the current university.
      * The URI is fetched from the getModuleOfUniversity field in the response of
      * the GET request to the universities collection.
@@ -458,6 +488,8 @@ public class Client {
 
         return deserializedResource;
     }
+
+    
 
     /**
      * Processes the response body and creates a map of IDs and links to the
