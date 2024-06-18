@@ -308,7 +308,7 @@ public class Client {
      * 
      * @see #deleteUri
      */
-    public void deleteResource(Long id) {
+    public void deleteResource() {
         if (deleteUri == null) {
             log.error("No delete URI found.");
             return;
