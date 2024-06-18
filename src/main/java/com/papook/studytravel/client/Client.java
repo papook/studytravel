@@ -270,6 +270,38 @@ public class Client {
     }
 
     /**
+     * Sends a GET request to the resource with the given ID. The URI is fetched
+     * from the getSelfUri field. The response is deserialized into a Map.
+     * 
+     * @return The received resource as a Map.
+     * 
+     * @see #getSelfUri
+     */
+    public Map<String, String> getUpdatedResource() {
+        request = HttpRequest.newBuilder()
+                .uri(URI.create(getSelfUri))
+                .GET()
+                .build();
+
+        log.info("[GET]: " + getSelfUri);
+        try {
+            response = client.send(request, BodyHandlers.ofString());
+            log.info("Code: " + response.statusCode());
+            updateUri = getLinkFromResponseHeaders("putUpdate");
+            deleteUri = getLinkFromResponseHeaders("delete");
+        } catch (IOException e) {
+            log.error("Error getting the updated resource.");
+        } catch (InterruptedException e) {
+            log.error("The request was interrupted.");
+        }
+
+        Map<String, String> deserializedResource = gson.fromJson(response.body(),
+                new TypeToken<Map<String, String>>() {
+                }.getType());
+        return deserializedResource;
+    }
+
+    /**
      * Sends a DELETE request to the resource with the given ID. The URI is fetched
      * from the deleteUri field.
      * 
