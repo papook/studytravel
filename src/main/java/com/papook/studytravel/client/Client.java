@@ -31,20 +31,20 @@ public class Client {
                 .create();
     }
 
-    public String getUniversitiesCollectionUri;
-    public String getStudyModulesCollectionUri;
-    public String postCreateUniversityUri;
-    public String postCreateStudyModuleUri;
-    public String deleteAllUniversitiesUri;
-    public String deleteAllStudyModulesUri;
+    private String getUniversitiesCollectionUri;
+    private String getStudyModulesCollectionUri;
+    private String postCreateUniversityUri;
+    private String postCreateStudyModuleUri;
+    private String deleteAllUniversitiesUri;
+    private String deleteAllStudyModulesUri;
 
-    public String getSelfUri;
-    public String updateUri;
-    public String deleteUri;
+    private String getSelfUri;
+    private String updateUri;
+    private String deleteUri;
 
     public Map<Long, String> resourceLinksOnLastFetchedPage = new HashMap<>();
 
-    public HttpClient client;
+    private HttpClient client;
     public HttpRequest request;
     public HttpResponse<String> response;
 
