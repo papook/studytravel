@@ -237,7 +237,7 @@ public class Client {
      * @see #getSelfUri
      * 
      */
-    public void updateResource(Long id, String json) {
+    public void updateResource(String json) {
         if (updateUri == null) {
             log.error("No update URI found.");
             return;
