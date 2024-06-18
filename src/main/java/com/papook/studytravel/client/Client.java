@@ -20,7 +20,6 @@ import com.papook.studytravel.client.utils.LocalDateAdapter;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@SuppressWarnings("unused") // TODO: Remove this suppression
 public class Client {
     public final String DISPATCHER_URI;
 
