@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.papook.studytravel.server.models.StudyModule;
 import com.papook.studytravel.server.services.StudyModuleService;
 import com.papook.studytravel.server.utils.HypermediaGenerator;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -37,6 +39,9 @@ public class StudyModuleController {
     @Autowired
     private HypermediaGenerator hypermediaGenerator;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @GetMapping(MODULE_ENDPOINT)
     public ResponseEntity<Iterable<StudyModule>> getCollection(
             @RequestParam(defaultValue = "") String name,
@@ -46,7 +51,77 @@ public class StudyModuleController {
         page = Math.max(0, page);
 
         Page<StudyModule> studyModules = studyModuleService.getModules(name, semester, page, sort);
+
+        String sortField = studyModules.getSort()
+                .get()
+                .findFirst()
+                .get()
+                .getProperty();
+        String setSortOrder = "{field}_{asc, desc}";
+        String reverseSortOrder = studyModules.getSort()
+                .get()
+                .findFirst()
+                .get()
+                .getDirection()
+                .isAscending()
+                        ? "desc"
+                        : "asc";
+
         HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(studyModules);
+
+        if (headers == null) {
+            headers = new HttpHeaders();
+        }
+
+        String requestUri = request.getRequestURI();
+
+        if (request.getQueryString() != null) {
+            requestUri += "?" + request.getQueryString();
+        }
+
+        if (!requestUri.contains("name")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("name", "{name}");
+            String getStudyModulesByName = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getStudyModulesByName");
+
+            headers.add(HttpHeaders.LINK, getStudyModulesByName);
+        }
+
+        if (!requestUri.contains("semester")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("semester", "{semester}");
+            String getStudyModulesBySemester = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getStudyModulesBySemester");
+
+            headers.add(HttpHeaders.LINK, getStudyModulesBySemester);
+        }
+
+        if (!requestUri.contains("name") || !requestUri.contains("semester")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("name", "{name}")
+                    .queryParam("semester", "{semester}");
+            String getStudyModulesByNameAndSemester = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getStudyModulesByNameAndSemester");
+
+            headers.add(HttpHeaders.LINK, getStudyModulesByNameAndSemester);
+        }
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+        uriBuilder.replaceQueryParam("sort", sortField + "_" + reverseSortOrder);
+        String reverseSort = HypermediaGenerator.formatLinkHeader(
+                uriBuilder.build().toString(),
+                "reverseSortOrder");
+        headers.add(HttpHeaders.LINK, reverseSort);
+
+        uriBuilder.replaceQueryParam("sort", setSortOrder);
+        String setSort = HypermediaGenerator.formatLinkHeader(
+                uriBuilder.build().toString(),
+                "setSortOrder");
+        headers.add(HttpHeaders.LINK, setSort);
 
         return ResponseEntity.ok()
                 .headers(headers)
@@ -85,10 +160,75 @@ public class StudyModuleController {
                 page,
                 sort);
 
+        String sortField = studyModules.getSort()
+                .get()
+                .findFirst()
+                .get()
+                .getProperty();
+        String setSortOrder = "{field}_{asc, desc}";
+        String reverseSortOrder = studyModules.getSort()
+                .get()
+                .findFirst()
+                .get()
+                .getDirection()
+                .isAscending()
+                        ? "desc"
+                        : "asc";
+
         HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(studyModules);
         if (headers == null) {
             headers = new HttpHeaders();
         }
+
+        String requestUri = request.getRequestURI();
+
+        if (request.getQueryString() != null) {
+            requestUri += "?" + request.getQueryString();
+        }
+
+        if (!requestUri.contains("name")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("name", "{name}");
+            String getStudyModulesByName = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getStudyModulesByName");
+
+            headers.add(HttpHeaders.LINK, getStudyModulesByName);
+        }
+
+        if (!requestUri.contains("semester")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("semester", "{semester}");
+            String getStudyModulesBySemester = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getStudyModulesBySemester");
+
+            headers.add(HttpHeaders.LINK, getStudyModulesBySemester);
+        }
+
+        if (!requestUri.contains("name") || !requestUri.contains("semester")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("name", "{name}")
+                    .queryParam("semester", "{semester}");
+            String getStudyModulesByNameAndSemester = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getStudyModulesByNameAndSemester");
+
+            headers.add(HttpHeaders.LINK, getStudyModulesByNameAndSemester);
+        }
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+        uriBuilder.replaceQueryParam("sort", sortField + "_" + reverseSortOrder);
+        String reverseSort = HypermediaGenerator.formatLinkHeader(
+                uriBuilder.build().toString(),
+                "reverseSortOrder");
+        headers.add(HttpHeaders.LINK, reverseSort);
+
+        uriBuilder.replaceQueryParam("sort", setSortOrder);
+        String setSort = HypermediaGenerator.formatLinkHeader(
+                uriBuilder.build().toString(),
+                "setSortOrder");
+        headers.add(HttpHeaders.LINK, setSort);
 
         String uriTemplatePath = UNIVERSITY_ENDPOINT + "/" + universityId + MODULE_ENDPOINT + "/{moduleId}";
         String getModuleOfUniversityHeader = formatLinkHeader(uriTemplatePath, "getModuleOfUniversity");

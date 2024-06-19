@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.papook.studytravel.server.models.University;
 import com.papook.studytravel.server.services.UniversityService;
 import com.papook.studytravel.server.utils.HypermediaGenerator;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -34,6 +36,9 @@ public class UniversityController {
 
     @Autowired
     private HypermediaGenerator hypermediaGenerator;
+
+    @Autowired
+    private HttpServletRequest request;
 
     @GetMapping
     public ResponseEntity<Iterable<University>> getCollection(
@@ -46,8 +51,77 @@ public class UniversityController {
 
         Page<University> universitiesPage = universityService.getUniversities(name, country, page, sort);
 
+        String sortField = universitiesPage.getSort()
+                .get()
+                .findFirst()
+                .get()
+                .getProperty();
+        String setSortOrder = "{field}_{asc, desc}";
+        String reverseSortOrder = universitiesPage.getSort()
+                .get()
+                .findFirst()
+                .get()
+                .getDirection()
+                .isAscending()
+                        ? "desc"
+                        : "asc";
+
         List<University> responseBody = universitiesPage.getContent();
         HttpHeaders headers = hypermediaGenerator.buildPagingLinksHeaders(universitiesPage);
+
+        if (headers == null) {
+            headers = new HttpHeaders();
+        }
+
+        String requestUri = request.getRequestURI();
+
+        if (request.getQueryString() != null) {
+            requestUri += "?" + request.getQueryString();
+        }
+
+        if (!requestUri.contains("name")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("name", "{name}");
+            String getUniversitiesByName = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getUniversitiesByName");
+
+            headers.add(HttpHeaders.LINK, getUniversitiesByName);
+        }
+
+        if (!requestUri.contains("country")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("country", "{country}");
+            String getUniversitiesByCountry = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getUniversitiesByCountry");
+
+            headers.add(HttpHeaders.LINK, getUniversitiesByCountry);
+        }
+
+        if (!requestUri.contains("name") || !requestUri.contains("country")) {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+            uriBuilder.queryParam("name", "{name}")
+                    .queryParam("country", "{country}");
+            String getUniversitiesByNameAndCountry = HypermediaGenerator.formatLinkHeader(
+                    uriBuilder.build().toString(),
+                    "getUniversitiesByNameAndCountry");
+
+            headers.add(HttpHeaders.LINK, getUniversitiesByNameAndCountry);
+        }
+
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(requestUri);
+        uriBuilder.replaceQueryParam("sort", sortField + "_" + reverseSortOrder);
+        String reverseSort = HypermediaGenerator.formatLinkHeader(
+                uriBuilder.build().toString(),
+                "reverseSortOrder");
+        headers.add(HttpHeaders.LINK, reverseSort);
+
+        uriBuilder.replaceQueryParam("sort", setSortOrder);
+        String setSort = HypermediaGenerator.formatLinkHeader(
+                uriBuilder.build().toString(),
+                "setSortOrder");
+        headers.add(HttpHeaders.LINK, setSort);
 
         return ResponseEntity.ok()
                 .headers(headers)
