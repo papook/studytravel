@@ -37,9 +37,11 @@ There are 6 test classes available:
 
 ### Running the tests in Maven
 
-If you have maven installed, you can simply navigate to the project root and run `mvn clean test`. If you do not have Maven installed, you can easily use the Maven wrapper that is available in the project root folder. Simply navigate to the root folder and run:
+Before running the tests, make sure that the Server is running. You should either build and run the Docker image or compile and run the server locally using the main function of _`StudyTravelApplication`_ class.
+
+If you have maven installed, you can simply navigate to the project root and run `mvn clean verify`. If you do not have Maven installed, you can easily use the Maven wrapper that is available in the project root folder. Simply navigate to the root folder and run:
 ```sh
-./mvnw clean test
+./mvnw clean verify
 ```
 
 ## Client and Server
