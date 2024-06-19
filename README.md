@@ -33,7 +33,7 @@ There are 6 test classes available:
 3. _`DispatcherControllerTests`_ : A WebMvcTest used for unit testing the Dispatcher controller.
 4. _`UniversityControllerTests`_ : A WebMvcTest used for unit testing the University controller. Uses a Mock version of all beans required.
 5. _`StudyModuleControllerTests`_ : A WebMvcTest used for unit testing the Study Module controller. Uses a Mock version of all beans required.
-6. _`ClientTests`_ : A test classes that uses the AssertJ framework. It tests the methods of a client by sending a request to the server and checking the request URI and the response status code. **Requires a running server!**
+6. _`ClientTests`_ : A test classes that uses the AssertJ framework. It tests the methods of a client by sending a request to the server and checking the request URI and the response status code.
 
 ### Running the tests in Maven
 
