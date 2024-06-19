@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,16 +52,14 @@ public class UniversityController {
 
         Page<University> universitiesPage = universityService.getUniversities(name, country, page, sort);
 
-        String sortField = universitiesPage.getSort()
+        Order sortOrder = universitiesPage.getSort()
                 .get()
                 .findFirst()
-                .get()
+                .orElse(Order.asc("id"));
+        String sortField = sortOrder
                 .getProperty();
         String setSortOrder = "{field}_{asc, desc}";
-        String reverseSortOrder = universitiesPage.getSort()
-                .get()
-                .findFirst()
-                .get()
+        String reverseSortOrder = sortOrder
                 .getDirection()
                 .isAscending()
                         ? "desc"
@@ -143,7 +142,8 @@ public class UniversityController {
         String moduleUriTemplate = university.getModules().getPath() + "/{moduleId}";
         String linkModule = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "putLinkModule");
         String unlinkModule = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "delUnlinkModule");
-        String getModuleOfUniversity = HypermediaGenerator.formatLinkHeader(moduleUriTemplate, "getModuleOfUniversity");
+        String getModuleOfUniversity = HypermediaGenerator.formatLinkHeader(moduleUriTemplate,
+                "getModuleOfUniversity");
 
         headers.add(HttpHeaders.LINK, updateLink);
         headers.add(HttpHeaders.LINK, deleteLink);

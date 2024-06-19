@@ -271,13 +271,31 @@ public class ClientTests {
     @Test
     @Order(13)
     public void testUniversitySorting() {
+        client.getDispatcher();
         URI expectedUri = UriComponentsBuilder
                 .fromUriString(getLinkFromResponseHeaders(getUniversitiesRel))
                 .queryParam("sort", "id_asc")
                 .build()
                 .toUri();
-        client.newGetUniversitiesRequest().sort("id", "asc").send();
+        client.getAllUniversities();
+        client.newGetUniversitiesRequest().setSortOrder("id", "asc").send();
         URI actualUri = client.request.uri();
+
+        // Compare the actual URI with the expected URI
+        assertThat(actualUri).isEqualTo(expectedUri);
+
+        assertThat(client.response.statusCode()).isEqualTo(200);
+
+        // Test reverse sorting
+        client.getDispatcher();
+        expectedUri = UriComponentsBuilder
+                .fromUriString(getLinkFromResponseHeaders(getUniversitiesRel))
+                .queryParam("sort", "id_desc")
+                .build()
+                .toUri();
+        client.getAllUniversities();
+        client.newGetUniversitiesRequest().reverseSortOrder().send();
+        actualUri = client.request.uri();
 
         // Compare the actual URI with the expected URI
         assertThat(actualUri).isEqualTo(expectedUri);
@@ -288,17 +306,54 @@ public class ClientTests {
     @Test
     @Order(14)
     public void testUniversityFiltering() {
+        client.getDispatcher();
         URI expectedUri = UriComponentsBuilder
                 .fromUriString(getLinkFromResponseHeaders(getUniversitiesRel))
                 .queryParam("name", "University 1")
                 .queryParam("country", "Country 1")
                 .build()
                 .toUri();
+        client.getAllUniversities();
         client.newGetUniversitiesRequest()
-                .filterByName("University 1")
-                .filterByCountry("Country 1")
+                .filterByNameAndCountry("University 1", "Country 1")
                 .send();
         URI actualUri = client.request.uri();
+
+        // Compare the actual URI with the expected URI
+        assertThat(actualUri).isEqualTo(expectedUri);
+
+        assertThat(client.response.statusCode()).isEqualTo(200);
+
+        // Test filtering by name only
+        client.getDispatcher();
+        expectedUri = UriComponentsBuilder
+                .fromUriString(getLinkFromResponseHeaders(getUniversitiesRel))
+                .queryParam("name", "University 1")
+                .build()
+                .toUri();
+        client.getAllUniversities();
+        client.newGetUniversitiesRequest()
+                .filterOnlyByName("University 1")
+                .send();
+        actualUri = client.request.uri();
+
+        // Compare the actual URI with the expected URI
+        assertThat(actualUri).isEqualTo(expectedUri);
+
+        assertThat(client.response.statusCode()).isEqualTo(200);
+
+        // Test filtering by country only
+        client.getDispatcher();
+        expectedUri = UriComponentsBuilder
+                .fromUriString(getLinkFromResponseHeaders(getUniversitiesRel))
+                .queryParam("country", "Country 1")
+                .build()
+                .toUri();
+        client.getAllUniversities();
+        client.newGetUniversitiesRequest()
+                .filterOnlyByCountry("Country 1")
+                .send();
+        actualUri = client.request.uri();
 
         // Compare the actual URI with the expected URI
         assertThat(actualUri).isEqualTo(expectedUri);
@@ -322,13 +377,31 @@ public class ClientTests {
     @Test
     @Order(16)
     public void testStudyModuleSorting() {
+        client.getDispatcher();
         URI expectedUri = UriComponentsBuilder
+                .fromUriString(getLinkFromResponseHeaders(getStudyModulesRel))
+                .queryParam("sort", "id_asc")
+                .build()
+                .toUri();
+        client.getAllStudyModules();
+        client.newGetStudyModulesRequest().setSortOrder("id", "asc").send();
+        URI actualUri = client.request.uri();
+
+        // Compare the actual URI with the expected URI
+        assertThat(actualUri).isEqualTo(expectedUri);
+
+        assertThat(client.response.statusCode()).isEqualTo(200);
+
+        // Test reverse sorting
+        client.getDispatcher();
+        expectedUri = UriComponentsBuilder
                 .fromUriString(getLinkFromResponseHeaders(getStudyModulesRel))
                 .queryParam("sort", "id_desc")
                 .build()
                 .toUri();
-        client.newGetStudyModulesRequest().sort("id", "desc").send();
-        URI actualUri = client.request.uri();
+        client.getAllStudyModules();
+        client.newGetStudyModulesRequest().reverseSortOrder().send();
+        actualUri = client.request.uri();
 
         // Compare the actual URI with the expected URI
         assertThat(actualUri).isEqualTo(expectedUri);
@@ -339,17 +412,54 @@ public class ClientTests {
     @Test
     @Order(17)
     public void testStudyModuleFiltering() {
+        client.getDispatcher();
         URI expectedUri = UriComponentsBuilder
                 .fromUriString(getLinkFromResponseHeaders(getStudyModulesRel))
                 .queryParam("name", "Study Module 1")
                 .queryParam("semester", "spring")
                 .build()
                 .toUri();
+        client.getAllStudyModules();
         client.newGetStudyModulesRequest()
-                .filterByName("Study Module 1")
-                .filterBySemester("spring")
+                .filterByNameAndSemester("Study Module 1", "spring")
                 .send();
         URI actualUri = client.request.uri();
+
+        // Compare the actual URI with the expected URI
+        assertThat(actualUri).isEqualTo(expectedUri);
+
+        assertThat(client.response.statusCode()).isEqualTo(200);
+
+        // Test filtering by name only
+        client.getDispatcher();
+        expectedUri = UriComponentsBuilder
+                .fromUriString(getLinkFromResponseHeaders(getStudyModulesRel))
+                .queryParam("name", "Study Module 1")
+                .build()
+                .toUri();
+        client.getAllStudyModules();
+        client.newGetStudyModulesRequest()
+                .filterOnlyByName("Study Module 1")
+                .send();
+        actualUri = client.request.uri();
+
+        // Compare the actual URI with the expected URI
+        assertThat(actualUri).isEqualTo(expectedUri);
+
+        assertThat(client.response.statusCode()).isEqualTo(200);
+
+        // Test filtering by semester only
+        client.getDispatcher();
+        expectedUri = UriComponentsBuilder
+                .fromUriString(getLinkFromResponseHeaders(getStudyModulesRel))
+                .queryParam("semester", "spring")
+                .build()
+                .toUri();
+        client.getAllStudyModules();
+        client.newGetStudyModulesRequest()
+                .filterOnlyBySemester("spring")
+                .send();
+        actualUri = client.request.uri();
 
         // Compare the actual URI with the expected URI
         assertThat(actualUri).isEqualTo(expectedUri);

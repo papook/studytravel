@@ -583,60 +583,44 @@ public class Client {
      */
     public class GetUniversitiesRequest {
         private String uri = getUniversitiesCollectionUri;
-        private String filterByName;
-        private String filterByCountry;
-        private String sort;
 
         private GetUniversitiesRequest() {
             this.uri = getUniversitiesCollectionUri;
         }
 
-        public GetUniversitiesRequest filterByName(String name) {
-            this.filterByName = name;
+        public GetUniversitiesRequest filterOnlyByName(String name) {
+            uri = getLinkFromResponseHeaders("getUniversitiesByName");
+            uri = replacePartInUriTemplate(uri, "name", name);
             return this;
         }
 
-        public GetUniversitiesRequest dontFilterByName() {
-            this.filterByName = null;
+        public GetUniversitiesRequest filterOnlyByCountry(String country) {
+            uri = getLinkFromResponseHeaders("getUniversitiesByCountry");
+            uri = replacePartInUriTemplate(uri, "country", country);
             return this;
         }
 
-        public GetUniversitiesRequest filterByCountry(String country) {
-            this.filterByCountry = country;
+        public GetUniversitiesRequest filterByNameAndCountry(String name, String country) {
+            uri = getLinkFromResponseHeaders("getUniversitiesByNameAndCountry");
+            uri = replacePartInUriTemplate(uri, "name", name);
+            uri = replacePartInUriTemplate(uri, "country", country);
             return this;
         }
 
-        public GetUniversitiesRequest dontFilterByCountry() {
-            this.filterByCountry = null;
+        public GetUniversitiesRequest setSortOrder(String field, String order) {
+            uri = getLinkFromResponseHeaders("setSortOrder");
+            uri = replacePartInUriTemplate(uri, "field", field);
+            uri = replacePartInUriTemplate(uri, "asc, desc", order);
             return this;
         }
 
-        public GetUniversitiesRequest sort(String sortBy, String order) {
-            this.sort = sortBy + "_" + order;
-            return this;
-        }
-
-        public GetUniversitiesRequest dontSort() {
-            this.sort = null;
+        public GetUniversitiesRequest reverseSortOrder() {
+            uri = getLinkFromResponseHeaders("reverseSortOrder");
             return this;
         }
 
         public void send() {
-            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
-            if (filterByName != null) {
-                uriBuilder.queryParam("name", filterByName);
-            }
-
-            if (filterByCountry != null) {
-                uriBuilder.queryParam("country", filterByCountry);
-            }
-
-            if (sort != null) {
-                uriBuilder.queryParam("sort", sort);
-            }
-
-            URI requestUri = uriBuilder.build().toUri();
-
+            URI requestUri = UriComponentsBuilder.fromUriString(uri).build().toUri();
             request = HttpRequest.newBuilder()
                     .uri(requestUri)
                     .GET()
@@ -663,9 +647,6 @@ public class Client {
      */
     public class GetStudyModulesRequest {
         private String uri = getStudyModulesCollectionUri;
-        private String filterByName;
-        private String filterBySemester;
-        private String sort;
 
         private GetStudyModulesRequest() {
             this.uri = getStudyModulesCollectionUri;
@@ -692,56 +673,42 @@ public class Client {
             return this;
         }
 
-        public GetStudyModulesRequest filterByName(String name) {
-            this.filterByName = name;
+        public GetStudyModulesRequest filterOnlyByName(String name) {
+            uri = getLinkFromResponseHeaders("getStudyModulesByName");
+            uri = replacePartInUriTemplate(uri, "name", name);
             return this;
         }
 
-        public GetStudyModulesRequest dontFilterByName() {
-            this.filterByName = null;
+        public GetStudyModulesRequest filterOnlyBySemester(String semester) {
+            uri = getLinkFromResponseHeaders("getStudyModulesBySemester");
+            uri = replacePartInUriTemplate(uri, "semester", semester);
             return this;
         }
 
-        public GetStudyModulesRequest filterBySemester(String semester) {
-            this.filterBySemester = semester;
+        public GetStudyModulesRequest filterByNameAndSemester(String name, String semester) {
+            uri = getLinkFromResponseHeaders("getStudyModulesByNameAndSemester");
+            uri = replacePartInUriTemplate(uri, "name", name);
+            uri = replacePartInUriTemplate(uri, "semester", semester);
             return this;
         }
 
-        public GetStudyModulesRequest dontFilterBySemester() {
-            this.filterBySemester = null;
+        public GetStudyModulesRequest setSortOrder(String field, String order) {
+            uri = getLinkFromResponseHeaders("setSortOrder");
+            uri = replacePartInUriTemplate(uri, "field", field);
+            uri = replacePartInUriTemplate(uri, "asc, desc", order);
+
             return this;
         }
 
-        public GetStudyModulesRequest sort(String sortBy, String order) {
-            this.sort = sortBy + "_" + order;
-            return this;
-        }
-
-        public GetStudyModulesRequest dontSort() {
-            this.sort = null;
+        public GetStudyModulesRequest reverseSortOrder() {
+            uri = getLinkFromResponseHeaders("reverseSortOrder");
             return this;
         }
 
         public void send() {
-            if (uri == null) {
-                log.error("Cannot get study modules collection.");
-                return;
-            }
-
-            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(uri);
-            if (filterByName != null) {
-                uriBuilder.queryParam("name", filterByName);
-            }
-
-            if (filterBySemester != null) {
-                uriBuilder.queryParam("semester", filterBySemester);
-            }
-
-            if (sort != null) {
-                uriBuilder.queryParam("sort", sort);
-            }
-
-            URI requestUri = uriBuilder.build().toUri();
+            URI requestUri = UriComponentsBuilder.fromUriString(uri)
+                    .build()
+                    .toUri();
 
             request = HttpRequest.newBuilder()
                     .uri(requestUri)

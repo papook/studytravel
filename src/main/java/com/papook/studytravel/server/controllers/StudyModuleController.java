@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,16 +53,14 @@ public class StudyModuleController {
 
         Page<StudyModule> studyModules = studyModuleService.getModules(name, semester, page, sort);
 
-        String sortField = studyModules.getSort()
+        Order sortOrder = studyModules.getSort()
                 .get()
                 .findFirst()
-                .get()
+                .orElse(Order.asc("id"));
+        String sortField = sortOrder
                 .getProperty();
         String setSortOrder = "{field}_{asc, desc}";
-        String reverseSortOrder = studyModules.getSort()
-                .get()
-                .findFirst()
-                .get()
+        String reverseSortOrder = sortOrder
                 .getDirection()
                 .isAscending()
                         ? "desc"
@@ -160,17 +159,13 @@ public class StudyModuleController {
                 page,
                 sort);
 
-        String sortField = studyModules.getSort()
+        Order sortOrder = studyModules.getSort()
                 .get()
                 .findFirst()
-                .get()
-                .getProperty();
+                .orElse(Order.asc("id"));
+        String sortField = sortOrder.getProperty();
         String setSortOrder = "{field}_{asc, desc}";
-        String reverseSortOrder = studyModules.getSort()
-                .get()
-                .findFirst()
-                .get()
-                .getDirection()
+        String reverseSortOrder = sortOrder.getDirection()
                 .isAscending()
                         ? "desc"
                         : "asc";
