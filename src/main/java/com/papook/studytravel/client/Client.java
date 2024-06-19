@@ -23,10 +23,9 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 public class Client {
-    public final String DISPATCHER_URI;
+    public final String DISPATCHER_URI = "http://localhost:8080";
 
-    public Client(final String dispatcherUri) {
-        this.DISPATCHER_URI = dispatcherUri;
+    public Client() {
         client = HttpClient.newHttpClient();
         gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())

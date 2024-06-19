@@ -29,12 +29,9 @@ public class ClientTests {
 
     @BeforeAll
     public void setup() {
-        String dispatcherUri = "http://localhost:8080";
-
-        uriBuilder = UriComponentsBuilder.fromHttpUrl(dispatcherUri);
-        client = new Client(dispatcherUri);
+        client = new Client();
+        uriBuilder = UriComponentsBuilder.fromHttpUrl(client.DISPATCHER_URI);
         client.setup();
-
     }
 
     @BeforeEach
