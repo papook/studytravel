@@ -1,5 +1,7 @@
 # StudyTravel
 
+StudyTravel is a RESTful Web Application implemented using the Spring Boot framework. It uses an in-memory H2 Database to store the data.
+
 This is the README file for the StudyTravel RESTful web application. StudyTravel implements the HATEOAS principle for providing the client with the links to the next actions.
 
 It can be used for creating partner universities and modules that students can take, and managing them by linking modules to universities or editing/deleting the resources. The server does not use any authentication and cannot be considered secure.
@@ -12,14 +14,52 @@ This web application was developed as part of the portfolio project of the cours
 
 For Running the server you should either have a JDK 17 installed on your computer or build and run the app in a Docker container.
 
-### UNIX Operating Systems
+### Building and running on your system
+
+To build and run StudyTravel locally, you can either build it manually using Maven or use the `compile-and-run.sh` (only Linux/Mac) script.
+
+#### Building it manually using Maven and executing the Java archive.
+
+To build the project using maven, make sure you have at least JDK 17 available in the system path and follow these steps.
+
+1. Navigate to the root folder of the project.
+
+2. Execute the following command to package the project as a Java archive:
+
+Linux/Mac:
+```sh
+./mvnw clean package -DskipTests
+```
+
+Windows:
+```powershell
+mvnw.cmd clean package -DskipTests
+```
+
+**NOTICE:** The tests should be skipped during the packaging process, because the tests pass only when the server is running.
+
+3. Execute the Java archive with the following command:
+
+Linux/Mac:
+```sh
+java -jar target/studytravel.jar
+```
+
+Windows:
+```powershell
+java -jar target\studytravel.jar
+```
+
+### Running in the Docker Container
+
+#### UNIX Operating Systems
 
 On UNIX operating systems (Linux/Mac), the server can be started with only Docker installed (no need for a separate installation of Maven or JDK) by executing the _`deploy.sh`_ shell script. Simply navigate to the project root in the terminal and execute the following command:
 ```sh
 ./deploy.sh
 ```
 
-### Windows
+#### Windows
 
 On Windows, you should manually build and run the Docker container using the Dockerfile.
 
